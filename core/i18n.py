@@ -6,6 +6,16 @@
 
 找不到翻譯時先退回英文，再退回 key 本身：忘了翻譯的字會顯示出來，
 但頁面不會因此壞掉。
+
+--- English ---
+UI strings in English and Traditional Chinese.
+
+Usage:  t("nav_overview", lang)  ->  "Market" or "市場總覽"
+Data-level names (companies, ports...) carry their own `en` / `zh` fields in
+the JSON files; use `pick(record, "name", lang)` for those.
+
+Missing keys fall back to English, then to the key itself, so a forgotten
+translation is visible but never crashes a page.
 """
 from __future__ import annotations
 

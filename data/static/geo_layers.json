@@ -2,7 +2,9 @@
   "_meta": {
     "note": "Stylised layers for situational awareness. Routes are simplified waypoint polylines, not navigation tracks. Chokepoint risk notes describe structural exposure, not live status: always check current advisories (e.g. JWC Listed Areas, UKMTO, national maritime authorities).",
     "reviewed": "2026-11-16",
-    "advisories_note": "Official sources for current status: UKMTO (Indian Ocean / Red Sea / Gulf incidents), JWC Listed Areas (Lloyd's Market war-risk areas), ReCAAP ISC (Asian piracy/armed robbery), Taiwan MPB navigation warnings, Panama Canal Authority advisories."
+    "advisories_note": "Official sources for current status: UKMTO (Indian Ocean / Red Sea / Gulf incidents), JWC Listed Areas (Lloyd's Market war-risk areas), ReCAAP ISC (Asian piracy/armed robbery), Taiwan MPB navigation warnings, Panama Canal Authority advisories.",
+    "note_zh": "情勢掌握用的示意圖層。航線為簡化的航點折線，不是實際航跡。咽喉要道的風險說明描述結構性曝險，不是即時狀態：請以官方公告為準（JWC 指定區域、UKMTO、各國海事主管機關）。",
+    "advisories_note_zh": "即時狀態的官方來源：UKMTO（印度洋／紅海／波灣事件）、JWC 指定區域（勞合社市場戰爭險區域）、ReCAAP ISC（亞洲海盜與武裝搶劫）、台灣航港局航行警告、巴拿馬運河管理局公告。"
   },
   "chokepoints": [
     {

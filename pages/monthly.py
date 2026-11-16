@@ -3,6 +3,13 @@
 1. 中國成品鋼材出口（海關）：這兩年鋼價低迷的頭號原因
 2. worldsteel 每月粗鋼產量：減產有沒有真的發生
 3. 中鋼月盤調整：台灣內銷鋼價的風向球
+
+--- English ---
+Monthly data: three monthly data sets on supply and demand.
+
+1. China's finished-steel exports (customs): the main reason for weak prices
+2. worldsteel monthly crude steel production: are output cuts real?
+3. China Steel's monthly list-price changes: a bellwether for Taiwan's domestic market
 """
 from __future__ import annotations
 

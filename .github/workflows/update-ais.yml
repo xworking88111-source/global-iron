@@ -3,6 +3,9 @@
 #
 # 免費額度估算（私人 repo 每月 2,000 分鐘）：
 #   每次約 9 分鐘 × 4 次 × 30 天 ≈ 1,080 分鐘，加上市場資料約 90 分鐘，仍在額度內。
+# EN: AIS vessel snapshot 4 times a day (every 6 hours), weekends included because ships never stop.
+# EN: More frequent runs raise the chance of catching ocean-going fleet ships near a receiver.
+# EN: Free-tier budget: ~9 min x 4 runs x 30 days ~= 1,080 min/month, plus ~90 min for market data.
 name: update-ais
 
 on:
@@ -47,5 +50,5 @@ jobs:
           git config user.email "actions@users.noreply.github.com"
           git add data/cache/ais_snapshot.json data/static/fleet.json
           git diff --cached --quiet && exit 0
-          git commit -m "ais: snapshot $(date -u +'%F %H:%M')"
+          git commit -m "船位快照 AIS snapshot $(date -u +'%F %H:%M')"
           git pull --rebase && git push

@@ -2,6 +2,13 @@
 
 之後要加入新產業（例如鋁）：新增一份公司 JSON，並在 PRICE_SERIES 加上帶有
 `industry` 標籤的價格序列即可。其他地方不應該把 "steel" 寫死。
+
+--- English ---
+Central configuration: file paths, price series, colours.
+
+To add an industry later (e.g. aluminium): add a companies JSON and new
+PRICE_SERIES entries with their own `industry` tag. Nothing else should
+hard-code "steel".
 """
 from __future__ import annotations
 

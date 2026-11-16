@@ -5,6 +5,16 @@
 tone = "up" / "down" / "warn" / "info"，介面依此顯示箭頭或圖示（不只靠顏色）。
 
 規則刻意保持簡單、可解釋：每一條都能回溯到畫面上的某張圖或某個數字。
+
+--- English ---
+"This week at a glance": a bilingual summary generated from the data by rules.
+
+Goal: know what happened lately within 10 seconds of opening the home page.
+Each item is (tone, zh text, en text); tone = "up" / "down" / "warn" / "info",
+shown as an arrow or icon (never colour alone).
+
+Rules are deliberately simple and explainable: every bullet traces back to a
+chart or number on the site.
 """
 from __future__ import annotations
 

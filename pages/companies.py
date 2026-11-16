@@ -1,4 +1,8 @@
-"""公司分析：公司檔案、同業相對分數、股價表現、同業比較表。"""
+"""公司分析：公司檔案、同業相對分數、股價表現、同業比較表。
+
+--- English ---
+Companies: profile, peer-relative scores, share performance, quarterly margins, peer table.
+"""
 from __future__ import annotations
 
 import math

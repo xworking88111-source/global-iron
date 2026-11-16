@@ -1,4 +1,8 @@
-"""情境模擬：調整熱軋／鐵礦／焦炭價格，看對某家鋼廠利潤的影響。"""
+"""情境模擬：調整熱軋／鐵礦／焦炭價格，看對某家鋼廠利潤的影響。
+
+--- English ---
+Scenario: shock HRC / iron ore / coke prices and see the impact on a mill's margins.
+"""
 from __future__ import annotations
 
 import math

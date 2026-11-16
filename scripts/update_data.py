@@ -4,6 +4,15 @@
 自動排程：  .github/workflows/update-data.yml（每個平日，免費的 GitHub Actions）
 
 每個區塊互相獨立：某個來源失敗時，其他來源照常更新，失敗來源保留舊資料。
+
+--- English ---
+Refresh all cached market data.
+
+Run locally:   python scripts/update_data.py
+Scheduled:     .github/workflows/update-data.yml (weekdays, free GitHub Actions)
+
+Each block is independent: if one source fails, the others still update and the
+failed source keeps its previous data.
 """
 from __future__ import annotations
 

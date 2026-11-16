@@ -1,5 +1,10 @@
 """貿易與風險：誰賣鋼給誰、淨出口國、鐵礦依賴度、咽喉要道清單、政策時間軸。
 主要給地緣政治研究者與航運保險從業者使用。
+
+--- English ---
+Trade & risk: who ships steel to whom, net exporters, iron-ore dependence,
+chokepoint register and policy timeline. Aimed at geopolitics researchers and
+marine-insurance professionals.
 """
 from __future__ import annotations
 

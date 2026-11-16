@@ -3,6 +3,13 @@
 上方：指標卡（最新價、週／月／年漲跌、10 年分位）。
 中間：依中國高爐利潤分位判斷的市場狀態。
 下方：三張圖，共用一個區間選擇器與事件標註。
+
+--- English ---
+Market overview: the "one glance" home page.
+
+Top: weekly highlights and KPI tiles (latest price, 1W/1M/1Y change, 10-year percentile).
+Middle: market regime from the China blast-furnace margin percentile.
+Bottom: three charts sharing one range selector and an event overlay.
 """
 from __future__ import annotations
 

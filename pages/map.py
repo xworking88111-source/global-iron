@@ -2,6 +2,12 @@
 
 使用 Plotly 的 `scattergeo`（向量世界地圖，不需要圖磚伺服器或 API 金鑰）。
 每個圖層是獨立的 trace，右側勾選清單才能逐一開關。
+
+--- English ---
+Global map: steelmakers, miners, ports, sea lanes, chokepoints, trade flows, AIS vessels.
+
+Built on Plotly's `scattergeo` (vector world map, no tile server or API key).
+Each layer is its own trace so the checklist can toggle it.
 """
 from __future__ import annotations
 

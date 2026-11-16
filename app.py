@@ -10,6 +10,20 @@
 * 只有一個「路由」callback：網址或語言改變時，就重新產生頁面內容。
   每個頁面模組用 `layout(lang)` 產生自己的版面，並用 `register(app)`
   註冊自己的互動 callback。
+
+--- English ---
+Global Iron: web entry point.
+
+Local dev:   python app.py            -> http://127.0.0.1:8050
+Production:  gunicorn app:server      (run by Render / Railway / Fly.io)
+
+How it works
+------------
+* `dcc.Location` holds the URL; `dcc.Store("lang")` holds the language in the
+  browser's localStorage, so a visitor's choice survives reloads.
+* One router callback re-renders the page when the URL or language changes.
+  Each page module builds itself with `layout(lang)` and registers its own
+  interactive callbacks with `register(app)`.
 """
 from __future__ import annotations
 

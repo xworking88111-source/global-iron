@@ -3,6 +3,13 @@
 只有 `scripts/update_data.py` 會呼叫這裡。網站本身在使用者瀏覽時「不會」連網抓
 資料，只讀快取檔。好處：頁面快、不會被資料源限流；資料源掛掉時，網站只是資料
 變舊，而不會整個壞掉。
+
+--- English ---
+Fetchers for free data sources.
+
+Only `scripts/update_data.py` calls these. The site never fetches data while
+someone is browsing; it reads cache files. Pages stay fast, sources are not
+rate-limited, and an outage only makes data stale instead of breaking the site.
 """
 from __future__ import annotations
 

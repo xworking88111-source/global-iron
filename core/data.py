@@ -2,6 +2,12 @@
 
 所有讀取函式都以（檔案路徑, 修改時間）做快取：更新腳本改寫快取檔之後，
 下一個請求就會讀到新資料，不需要重啟伺服器。
+
+--- English ---
+Read-side data access for the web app.
+
+Loaders are cached on (file path, modification time): when the updater rewrites
+a cache file, the next request sees new data without restarting the server.
 """
 from __future__ import annotations
 

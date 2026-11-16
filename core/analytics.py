@@ -2,6 +2,12 @@
 
 全部是對 pandas 物件運算的「純函式」：不讀寫檔案、不碰介面。
 好測試，之後也可以直接給 API 使用。
+
+--- English ---
+Analytics: spreads, percentiles, peer scoring, scenario model.
+
+Pure functions over pandas objects: no file I/O, no UI. Easy to test and to
+reuse from an API later.
 """
 from __future__ import annotations
 

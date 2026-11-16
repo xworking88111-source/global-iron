@@ -19,6 +19,29 @@
 會用船名找出 fleet.json 裡各船的 MMSI 並寫回；之後一般收集就會全球追蹤這些船。
 
 限制：只有岸基 AIS（沿岸涵蓋）；AIS 無法得知船上載什麼貨。
+
+--- English ---
+Collect a snapshot of cargo-ship positions around ore ports and chokepoints.
+
+Free data: AISStream.io (sign in with GitHub, create an API key, no card needed).
+
+    export AISSTREAM_API_KEY=your_key
+    python scripts/collect_ais.py --seconds 300
+
+How it works
+------------
+1. Opens AISStream's WebSocket, subscribing to boxes around every port and
+   chokepoint in data/static/geo_layers.json (plus MMSIs in fleet.json).
+2. Listens for N seconds. Ships broadcast positions every few seconds to minutes
+   and static data (name, type, destination) about every 6 minutes.
+3. Keeps each ship's latest position, drops known non-cargo types, counts ships
+   per zone, writes data/cache/ais_snapshot.json.
+
+Tracking a fleet (e.g. China Steel Express):
+    python scripts/collect_ais.py --discover-fleet --seconds 600
+finds MMSIs for fleet.json vessels by name; later runs track them worldwide.
+
+Limits: terrestrial AIS only (coastal coverage); AIS says nothing about cargo.
 """
 from __future__ import annotations
 

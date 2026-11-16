@@ -6,6 +6,17 @@
 
 注意：被快取的函式參數必須可雜湊（list 請先轉成 tuple），
 回傳的物件會被多個請求共用，呼叫端不可以修改它。
+
+--- English ---
+Result cache.
+
+Every visitor sees the same charts for the same data and options, so there is
+no need to recompute. `@cached` remembers results per (data version, arguments);
+when any data file changes, the version changes and results are recomputed.
+Key to fast pages on Render's low-CPU free tier.
+
+Note: cached function arguments must be hashable (convert lists to tuples), and
+returned objects are shared between requests, so callers must not mutate them.
 """
 from __future__ import annotations
 

@@ -4,6 +4,12 @@
 # 自動抓到的數字不可靠。所以改成：每月 12 日（海關通常 7–10 日公布）檢查
 # data/static/china_steel_exports.json 有沒有上個月的資料，沒有就自動開一張 GitHub Issue 提醒，
 # 附上查找連結。已經有同名的提醒單就不重複開。
+# EN: Monthly reminder to update China's steel exports.
+# EN: Why not fully automatic? The China Customs site blocks automated access, there is no free API,
+# EN: and news headline formats are inconsistent, so scraped numbers would be unreliable. Instead, on the
+# EN: 12th of each month (customs usually publishes on the 7th-10th) this checks
+# EN: data/static/china_steel_exports.json for last month's figure and opens a GitHub issue if it is
+# EN: missing, unless an identical reminder is already open.
 name: export-reminder
 
 on:

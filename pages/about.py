@@ -2,6 +2,12 @@
 
 內容直接讀取 docs/METHODOLOGY.zh.md / METHODOLOGY.en.md，
 所以網站和 GitHub 上的說明永遠是同一份，不會各說各話。
+
+--- English ---
+Data & Method: sources, calculations, limits, refresh times. Transparency is part of credibility.
+
+Content is read straight from docs/METHODOLOGY.zh.md / METHODOLOGY.en.md, so the
+site and GitHub always show the same document.
 """
 from __future__ import annotations
 

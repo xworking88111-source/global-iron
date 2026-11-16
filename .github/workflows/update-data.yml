@@ -1,5 +1,8 @@
 # 市場資料：每個平日更新一次（價格／股價／基本面），再把快取檔 commit 回 repo。
 # Render 偵測到 push 會自動重新部署。AIS 船位另見 update-ais.yml（每天 4 次）。
+# EN: Market data refresh once per weekday (prices / equities / fundamentals / quarterly results /
+# EN: worldsteel monthly output / China Steel prices), committed back to the repo. Render redeploys
+# EN: on every push. AIS vessels are handled by update-ais.yml (4x daily).
 name: update-data
 
 on:
@@ -36,5 +39,5 @@ jobs:
           git config user.email "actions@users.noreply.github.com"
           git add data/cache
           git diff --cached --quiet && exit 0
-          git commit -m "data: refresh $(date -u +%F)"
+          git commit -m "資料更新 data refresh $(date -u +%F)"
           git pull --rebase && git push

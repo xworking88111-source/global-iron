@@ -1,4 +1,8 @@
-"""共用介面元件：圖表樣式、指標卡、卡片、事件標註。"""
+"""共用介面元件：圖表樣式、指標卡、卡片、事件標註。
+
+--- English ---
+Shared UI building blocks: chart style, KPI tiles, cards, event overlays.
+"""
 from __future__ import annotations
 
 import pandas as pd

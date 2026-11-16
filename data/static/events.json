@@ -2,39 +2,133 @@
   "_meta": {
     "note": "Curated market-moving events for overlay on price charts. 'precision' = day | month. Dates checked against legal/press sources on 2026-11-16. Add new events here (no code change needed).",
     "categories": {
-      "tariff":   {"en": "Trade measure", "zh": "貿易措施"},
-      "conflict": {"en": "Conflict / security", "zh": "衝突與安全"},
-      "policy":   {"en": "Policy / regulation", "zh": "政策法規"},
-      "corporate":{"en": "Corporate", "zh": "企業事件"},
-      "shipping": {"en": "Shipping", "zh": "航運"}
-    }
+      "tariff": {
+        "en": "Trade measure",
+        "zh": "貿易措施"
+      },
+      "conflict": {
+        "en": "Conflict / security",
+        "zh": "衝突與安全"
+      },
+      "policy": {
+        "en": "Policy / regulation",
+        "zh": "政策法規"
+      },
+      "corporate": {
+        "en": "Corporate",
+        "zh": "企業事件"
+      },
+      "shipping": {
+        "en": "Shipping",
+        "zh": "航運"
+      }
+    },
+    "note_zh": "影響市場的重要事件，疊加在價格圖上。precision = day（精確到日）或 month（精確到月）。日期已於 2026-11-16 對照法規與新聞來源查核。新增事件只要編輯這個檔案，不用改程式。"
   },
   "events": [
-    {"date": "2018-03-23", "precision": "day", "cat": "tariff", "region": "USA",
-     "en": "US Section 232: 25% tariff on steel imports takes effect", "zh": "美國 232 條款：鋼鐵進口 25% 關稅生效"},
-    {"date": "2018-07-19", "precision": "day", "cat": "tariff", "region": "EU",
-     "en": "EU provisional steel safeguard (quotas + 25% out-of-quota duty)", "zh": "歐盟鋼鐵防衛措施暫行生效（配額＋超額 25% 關稅）"},
-    {"date": "2021-03-23", "precision": "day", "cat": "shipping", "region": "Suez",
-     "en": "Ever Given blocks the Suez Canal for six days", "zh": "長賜輪堵塞蘇伊士運河六天"},
-    {"date": "2022-02-24", "precision": "day", "cat": "conflict", "region": "UKR",
-     "en": "Russia invades Ukraine; Black Sea steel/ore exports disrupted", "zh": "俄羅斯入侵烏克蘭；黑海鋼材與鐵礦出口中斷"},
-    {"date": "2022-03-15", "precision": "day", "cat": "tariff", "region": "EU",
-     "en": "EU bans imports of Russian steel products (4th sanctions package)", "zh": "歐盟禁止進口俄羅斯鋼鐵產品（第四輪制裁）"},
-    {"date": "2023-10-01", "precision": "day", "cat": "policy", "region": "EU",
-     "en": "EU CBAM transitional (reporting) phase begins", "zh": "歐盟碳邊境調整機制（CBAM）過渡期（申報）開始"},
-    {"date": "2023-11-19", "precision": "day", "cat": "conflict", "region": "Red Sea",
-     "en": "Houthis seize Galaxy Leader; Red Sea attacks on shipping begin", "zh": "胡塞武裝扣押 Galaxy Leader，紅海攻擊商船開始"},
-    {"date": "2024-12-31", "precision": "month", "cat": "tariff", "region": "CHN",
-     "en": "China's 2024 steel exports hit a record (~117 Mt incl. semis, worldsteel)", "zh": "中國 2024 鋼材出口創紀錄（含半成品約 1.17 億噸，worldsteel）"},
-    {"date": "2025-03-12", "precision": "day", "cat": "tariff", "region": "USA",
-     "en": "US restores full 25% Section 232 tariff, ends country exemptions/quotas", "zh": "美國恢復 232 條款 25% 關稅並取消國家豁免與配額"},
-    {"date": "2025-06-04", "precision": "day", "cat": "tariff", "region": "USA",
-     "en": "US raises Section 232 steel tariff to 50%", "zh": "美國將 232 鋼鐵關稅提高至 50%"},
-    {"date": "2025-06-18", "precision": "day", "cat": "corporate", "region": "USA",
-     "en": "Nippon Steel completes acquisition of U.S. Steel (US government holds a golden share)", "zh": "日本製鐵完成收購美國鋼鐵（美國政府持有黃金股）"},
-    {"date": "2025-10-07", "precision": "day", "cat": "tariff", "region": "EU",
-     "en": "European Commission proposes new steel regime: quotas cut 47% to 18.3 Mt/yr, 50% out-of-quota duty (from July 2026 if adopted)", "zh": "歐盟執委會提出新鋼鐵機制：免稅配額削減 47% 至每年 1,830 萬噸、超額關稅 50%（若通過，2026 年 7 月起實施）"},
-    {"date": "2026-01-01", "precision": "day", "cat": "policy", "region": "EU",
-     "en": "EU CBAM definitive phase begins (certificates for embedded emissions)", "zh": "歐盟 CBAM 正式階段開始（須依內含排放購買憑證）"}
+    {
+      "date": "2018-03-23",
+      "precision": "day",
+      "cat": "tariff",
+      "region": "USA",
+      "en": "US Section 232: 25% tariff on steel imports takes effect",
+      "zh": "美國 232 條款：鋼鐵進口 25% 關稅生效"
+    },
+    {
+      "date": "2018-07-19",
+      "precision": "day",
+      "cat": "tariff",
+      "region": "EU",
+      "en": "EU provisional steel safeguard (quotas + 25% out-of-quota duty)",
+      "zh": "歐盟鋼鐵防衛措施暫行生效（配額＋超額 25% 關稅）"
+    },
+    {
+      "date": "2021-03-23",
+      "precision": "day",
+      "cat": "shipping",
+      "region": "Suez",
+      "en": "Ever Given blocks the Suez Canal for six days",
+      "zh": "長賜輪堵塞蘇伊士運河六天"
+    },
+    {
+      "date": "2022-02-24",
+      "precision": "day",
+      "cat": "conflict",
+      "region": "UKR",
+      "en": "Russia invades Ukraine; Black Sea steel/ore exports disrupted",
+      "zh": "俄羅斯入侵烏克蘭；黑海鋼材與鐵礦出口中斷"
+    },
+    {
+      "date": "2022-03-15",
+      "precision": "day",
+      "cat": "tariff",
+      "region": "EU",
+      "en": "EU bans imports of Russian steel products (4th sanctions package)",
+      "zh": "歐盟禁止進口俄羅斯鋼鐵產品（第四輪制裁）"
+    },
+    {
+      "date": "2023-10-01",
+      "precision": "day",
+      "cat": "policy",
+      "region": "EU",
+      "en": "EU CBAM transitional (reporting) phase begins",
+      "zh": "歐盟碳邊境調整機制（CBAM）過渡期（申報）開始"
+    },
+    {
+      "date": "2023-11-19",
+      "precision": "day",
+      "cat": "conflict",
+      "region": "Red Sea",
+      "en": "Houthis seize Galaxy Leader; Red Sea attacks on shipping begin",
+      "zh": "胡塞武裝扣押 Galaxy Leader，紅海攻擊商船開始"
+    },
+    {
+      "date": "2024-12-31",
+      "precision": "month",
+      "cat": "tariff",
+      "region": "CHN",
+      "en": "China's 2024 steel exports hit a record (~117 Mt incl. semis, worldsteel)",
+      "zh": "中國 2024 鋼材出口創紀錄（含半成品約 1.17 億噸，worldsteel）"
+    },
+    {
+      "date": "2025-03-12",
+      "precision": "day",
+      "cat": "tariff",
+      "region": "USA",
+      "en": "US restores full 25% Section 232 tariff, ends country exemptions/quotas",
+      "zh": "美國恢復 232 條款 25% 關稅並取消國家豁免與配額"
+    },
+    {
+      "date": "2025-06-04",
+      "precision": "day",
+      "cat": "tariff",
+      "region": "USA",
+      "en": "US raises Section 232 steel tariff to 50%",
+      "zh": "美國將 232 鋼鐵關稅提高至 50%"
+    },
+    {
+      "date": "2025-06-18",
+      "precision": "day",
+      "cat": "corporate",
+      "region": "USA",
+      "en": "Nippon Steel completes acquisition of U.S. Steel (US government holds a golden share)",
+      "zh": "日本製鐵完成收購美國鋼鐵（美國政府持有黃金股）"
+    },
+    {
+      "date": "2025-10-07",
+      "precision": "day",
+      "cat": "tariff",
+      "region": "EU",
+      "en": "European Commission proposes new steel regime: quotas cut 47% to 18.3 Mt/yr, 50% out-of-quota duty (from July 2026 if adopted)",
+      "zh": "歐盟執委會提出新鋼鐵機制：免稅配額削減 47% 至每年 1,830 萬噸、超額關稅 50%（若通過，2026 年 7 月起實施）"
+    },
+    {
+      "date": "2026-01-01",
+      "precision": "day",
+      "cat": "policy",
+      "region": "EU",
+      "en": "EU CBAM definitive phase begins (certificates for embedded emissions)",
+      "zh": "歐盟 CBAM 正式階段開始（須依內含排放購買憑證）"
+    }
   ]
 }

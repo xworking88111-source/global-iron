@@ -2,4 +2,10 @@
 
     layout(lang)  -> 該頁的 Dash 元件樹（版面）
     register(app) -> 註冊該頁的互動 callback（啟動時呼叫一次）
+
+--- English ---
+UI pages. Each module provides:
+
+    layout(lang)  -> the page's Dash component tree
+    register(app) -> attaches the page's interactive callbacks (called once at startup)
 """
