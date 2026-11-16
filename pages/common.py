@@ -19,6 +19,16 @@ def peers():
     return an.peer_table(data.companies(), data.fundamentals(), data.stock_prices())
 
 
+# 所有圖表共用的工具列設定：只留一顆「還原」按鈕且常駐顯示（手機沒有滑鼠停留，不能等 hover 才出現）。
+# 使用者框選放大後，按這顆按鈕或雙擊圖表就能回到原本的刻度。
+GRAPH_CONFIG = {
+    "displaylogo": False,
+    "displayModeBar": True,
+    "modeBarButtons": [["resetScale2d"]],
+    "doubleClick": "reset",
+}
+
+
 # 時間序列頁面共用的區間選項：標籤 -> 往回幾年
 RANGES = {"1Y": 1, "3Y": 3, "5Y": 5, "10Y": 10}
 

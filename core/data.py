@@ -120,7 +120,7 @@ def meta() -> dict:
 # ---------------------------------------------------------------------------
 def version() -> tuple:
     files = [config.PRICES_FILE, config.STOCKS_FILE, config.FUNDAMENTALS_FILE, config.AIS_FILE, config.META_FILE,
-             config.QUARTERLY_FILE, config.WS_MONTHLY_FILE]
+             config.QUARTERLY_FILE, config.WS_MONTHLY_FILE, config.CSC_OFFICIAL_FILE]
     files += sorted(config.STATIC_DIR.glob("*.json"))
     return tuple(_mtime(p) for p in files)
 
@@ -134,8 +134,25 @@ def china_exports() -> dict:
 
 
 def csc_prices() -> dict:
-    """中鋼月盤熱軋／冷軋調整幅度（人工整理自媒體報導）。"""
-    return load_json(config.STATIC_DIR / "csc_price_changes.json")
+    """中鋼月盤熱軋／冷軋調整幅度。
+
+    兩個來源合併：
+    - data/cache/csc_official.json：每天自動抓中鋼官網盤價新聞稿（權威，優先使用）
+    - data/static/csc_price_changes.json：官網列表抓不到的較早月份，人工整理自媒體報導
+    同一個月份兩邊都有時，以官網為準。
+    """
+    static = load_json(config.STATIC_DIR / "csc_price_changes.json")
+    official = load_json(config.CSC_OFFICIAL_FILE)
+    by_month = {c["month"]: dict(c, official=False) for c in static.get("changes", [])}
+    for month, r in official.items():
+        if r.get("hrc") is None:
+            continue
+        merged = dict(by_month.get(month, {}))
+        merged.update({k: r[k] for k in ("month", "hrc", "crc", "source", "official", "published",
+                                          "decision_zh", "market_zh", "macro_zh", "monthly_items", "quarterly_items")
+                       if k in r})
+        by_month[month] = merged
+    return {"_meta": static.get("_meta", {}), "changes": [by_month[m] for m in sorted(by_month)]}
 
 
 @lru_cache(maxsize=4)

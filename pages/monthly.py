@@ -15,7 +15,7 @@ from core.cache import cached
 from core.config import COLORS
 from core.i18n import pick, t
 
-from .common import SERIES, card, source_line, stat, theme
+from .common import GRAPH_CONFIG, SERIES, card, source_line, stat, theme
 
 GOOD, BAD = SERIES[0], SERIES[7]  # 發散配色：藍 = 增加，紅 = 減少
 
@@ -67,7 +67,7 @@ def _exports_block(lang: str):
         stat("2015", f"{annual.get(2015, {}).get('mt', 0):.1f} Mt", pick(annual.get(2015, {}), "note", lang)),
     ], className="stat-row")
     ctx = " · ".join(f"{c['date']}: {pick(c, '', lang)}" for c in ex.get("context", []))
-    return card(t("cn_exports_title", lang), stats, dcc.Graph(figure=fig, config={"displayModeBar": False}),
+    return card(t("cn_exports_title", lang), stats, dcc.Graph(figure=fig, config=GRAPH_CONFIG),
                 note=f"{t('cn_exports_note', lang)} {ctx}. {pick(ex['_meta'], 'derived_note', lang)}")
 
 
@@ -116,9 +116,9 @@ def _production_block(lang: str):
         stat(t("china", lang), f"{w['china']:.1f} Mt", f"{w['china'] / w['world'] * 100:.0f}% {t('of_world', lang)}"),
     ], className="stat-row")
     return card(t("ws_monthly_title", lang), stats,
-                html.Div([html.Div(dcc.Graph(figure=fig, config={"displayModeBar": False})),
+                html.Div([html.Div(dcc.Graph(figure=fig, config=GRAPH_CONFIG)),
                           html.Div([html.H3(f"{t('top10_yoy', lang)} ({latest})", className="card-title"),
-                                    dcc.Graph(figure=bar, config={"displayModeBar": False})])],
+                                    dcc.Graph(figure=bar, config=GRAPH_CONFIG)])],
                          className="grid-2"),
                 note=t("ws_monthly_note", lang))
 
@@ -133,7 +133,9 @@ def _csc_block(lang: str):
         return card(t("csc_title", lang), html.P(t("no_data", lang)))
     df["month_dt"] = pd.to_datetime(df["month"])
     df["cum"] = df["hrc"].cumsum()
-    notes = [pick(r, "note", lang) for _, r in df.iterrows()]
+    # 滑鼠提示：備註＋來源（官網／媒體）
+    notes = [f"{pick(r, 'note', lang) or ''}<br>{t('src_official', lang) if r.get('official') else t('src_media', lang)}"
+             for _, r in df.iterrows()]
 
     fig = go.Figure()
     fig.add_trace(go.Bar(x=df["month_dt"], y=df["hrc"], name=t("monthly_change", lang),
@@ -156,8 +158,22 @@ def _csc_block(lang: str):
         stat(t("ups_downs", lang), f"{(df['hrc'] > 0).sum()} / {(df['hrc'] < 0).sum()}",
              t("months_up_down", lang)),
     ], className="stat-row")
-    return card(t("csc_title", lang), stats, dcc.Graph(figure=fig, config={"displayModeBar": False}),
-                note=pick(raw["_meta"], "", lang))
+    # 中鋼官方觀點：最新一期官網新聞稿的「鋼鐵市場」與「決議」（官方原文，只有中文）
+    view = None
+    off = [c for c in raw["changes"] if c.get("official") and c.get("decision_zh")]
+    if off:
+        r = off[-1]
+        view = html.Div([
+            html.H3(f"{t('csc_view', lang)}（{r['month']}，{t('published', lang)} {r.get('published', '')}）",
+                    className="card-title"),
+            html.P([html.B(t("csc_market", lang) + "："), r.get("market_zh", "")], className="small"),
+            html.P([html.B(t("csc_decision", lang) + "："), r.get("decision_zh", "")], className="small"),
+            html.P([html.A(t("csc_original", lang) + " ↗", href=r["source"], target="_blank", className="link"),
+                    html.Span(" · " + t("csc_zh_only", lang), className="muted small") if lang == "en" else None]),
+        ], className="csc-view")
+    src = t("csc_src_note", lang)
+    return card(t("csc_title", lang), stats, dcc.Graph(figure=fig, config=GRAPH_CONFIG), view,
+                note=f"{pick(raw['_meta'], '', lang)} {src}")
 
 
 @cached()

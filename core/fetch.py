@@ -204,3 +204,96 @@ def fetch_worldsteel_month(url: str, month: str) -> pd.DataFrame:
     df = pd.concat(out, ignore_index=True)
     df["month"] = month
     return df
+
+
+# ---------------------------------------------------------------------------
+# 中鋼官網盤價新聞稿（官方來源，含調幅表與市場評論）
+# ---------------------------------------------------------------------------
+_CSC_NEWS = "https://www.csc.com.tw/CS/CSC/NC/neli/"
+_ZH_DIGIT = {"〇": 0, "零": 0, "一": 1, "二": 2, "三": 3, "四": 4, "五": 5, "六": 6, "七": 7, "八": 8, "九": 9}
+
+
+def _zh_year(s: str) -> int:
+    """民國年中文數字逐字轉換：「一一五」-> 115 -> 西元 2026。"""
+    return int("".join(str(_ZH_DIGIT[c]) for c in s)) + 1911
+
+
+def _zh_month(s: str) -> int:
+    """中文月份：「十二」-> 12、「十」-> 10、「三」-> 3。"""
+    if s == "十":
+        return 10
+    if s.startswith("十"):
+        return 10 + _ZH_DIGIT[s[1]]
+    return _ZH_DIGIT[s]
+
+
+def _csc_sections(lines: list[str]) -> dict[str, str]:
+    """新聞稿內文分段：總體經濟／鋼鐵市場／決議。"""
+    out, key = {}, None
+    for line in lines:
+        if line in ("總體經濟", "鋼鐵市場", "決議"):
+            key = line
+            continue
+        if key and line.startswith("中鋼公司") and "調幅表" in line:
+            break
+        if key:
+            out[key] = (out.get(key, "") + line).strip()
+    return out
+
+
+def _csc_table(lines: list[str], header: str) -> dict[str, int]:
+    """解析調幅表某一段（「月盤產品」或「季盤產品」）：品項 -> 每公噸調整金額。"""
+    import re
+
+    if header not in lines:
+        return {}
+    i = lines.index(header) + 1
+    items: dict[str, int] = {}
+    while i < len(lines) - 1:
+        name, val = lines[i], lines[i + 1]
+        # 遇到下一段表頭或表格底下的註解（例如「* 自115年第四季起…」）就停
+        if name in ("月盤產品", "季盤產品") or name.startswith("* "):
+            break
+        if re.fullmatch(r"[+\-−]?\d[\d,]*", val.replace(" ", "")):
+            items[name.lstrip("*")] = int(val.replace(",", "").replace("−", "-").replace("+", ""))
+            i += 2
+        else:
+            i += 1  # 表頭（項目、調整金額…）跳過
+    return items
+
+
+def fetch_csc_price_releases() -> list[dict]:
+    """抓中鋼新聞中心最新一頁中的盤價新聞稿（約涵蓋最近 3 個月）。"""
+    import re
+
+    import requests
+
+    r = _retry(lambda: requests.get(_CSC_NEWS + "neli.aspx", headers=_UA, timeout=60))
+    r.encoding = "utf-8"
+    links = re.findall(r'href=["\'](neli_content\.aspx\?newid=[0-9A-F]+)["\'][^>]*>(.*?)</a>', r.text, re.S)
+    out = []
+    for href, label in links:
+        label = re.sub(r"<[^>]+>|\s+", "", label)
+        m = re.search(r"中鋼(.{3})年(十二|十一|十|[一二三四五六七八九])月盤", label)
+        if not m:
+            continue
+        url = _CSC_NEWS + href
+        page = _retry(lambda: requests.get(url, headers=_UA, timeout=60))
+        page.encoding = "utf-8"
+        text = re.sub(r"<script.*?</script>|<style.*?</style>", " ", page.text, flags=re.S)
+        lines = [s.strip() for s in re.sub(r"<[^>]+>", "\n", text).splitlines()]
+        lines = [s.replace("\xa0", "").strip() for s in lines if s.strip() and s.strip() != "\xa0"]
+        pub = re.search(r"發佈日期：(\d{4}/\d{2}/\d{2})", text)
+        monthly = _csc_table(lines, "月盤產品")
+        hrc = monthly.get("熱軋鋼板、鋼捲(一般料)", monthly.get("熱軋鋼捲(軋延料)"))
+        crc = monthly.get("冷軋鋼捲(一般料)")
+        sec = _csc_sections(lines)
+        out.append({
+            "month": f"{_zh_year(m.group(1))}-{_zh_month(m.group(2)):02d}",
+            "published": pub.group(1).replace("/", "-") if pub else None,
+            "hrc": hrc, "crc": crc,
+            "monthly_items": monthly, "quarterly_items": _csc_table(lines, "季盤產品"),
+            "macro_zh": sec.get("總體經濟", ""), "market_zh": sec.get("鋼鐵市場", ""), "decision_zh": sec.get("決議", ""),
+            "source": url, "official": True,
+        })
+    return out

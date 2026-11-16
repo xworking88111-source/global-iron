@@ -155,11 +155,27 @@ def update_worldsteel_monthly() -> int:
     return new["month"].nunique()
 
 
+def update_csc_prices() -> int:
+    """中鋼官網盤價新聞稿 -> data/cache/csc_official.json（依月份合併，官網列表只保留最近幾則，所以要累積）。"""
+    try:
+        new = fetch.fetch_csc_price_releases()
+    except Exception as e:  # noqa: BLE001
+        log.error("csc prices failed: %s", e)
+        return 0
+    old = json.loads(config.CSC_OFFICIAL_FILE.read_text(encoding="utf-8")) if config.CSC_OFFICIAL_FILE.exists() else {}
+    for r in new:
+        old[r["month"]] = r
+        log.info("csc %s: HRC %s CRC %s", r["month"], r["hrc"], r["crc"])
+    config.CSC_OFFICIAL_FILE.write_text(json.dumps(dict(sorted(old.items())), ensure_ascii=False, indent=1),
+                                        encoding="utf-8")
+    return len(old)
+
+
 def main(which: list[str]) -> None:
     """執行指定的更新工作（沒指定就全部跑），並記錄成功的時間。"""
     meta = data.meta() or {}
     jobs = {"prices": update_prices, "stocks": update_stocks, "fundamentals": update_fundamentals,
-            "quarterly": update_quarterly, "worldsteel": update_worldsteel_monthly}
+            "quarterly": update_quarterly, "worldsteel": update_worldsteel_monthly, "csc": update_csc_prices}
     for name in which or jobs:
         n = jobs[name]()
         log.info("== %s: %d items", name, n)

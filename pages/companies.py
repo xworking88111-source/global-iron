@@ -15,7 +15,7 @@ from core.cache import cached
 from core.config import COLORS
 from core.i18n import pick, t
 
-from .common import RANGES, SERIES, card, empty_fig, peers, source_line, stat, theme
+from .common import GRAPH_CONFIG, RANGES, SERIES, card, empty_fig, peers, source_line, stat, theme
 
 DEFAULT_COMPANY = "csc"
 DEFAULT_PEERS = ["posco", "nippon", "jfe", "hyundai", "baowu", "hoaphat"]
@@ -56,13 +56,13 @@ def _layout(lang: str, sel: str):
         ], className="controls"),
         html.Div(profile, id="co-profile"),
         html.Div([
-            card(t("scores_title", lang), dcc.Graph(id="co-scores", figure=scores, config={"displayModeBar": False}),
+            card(t("scores_title", lang), dcc.Graph(id="co-scores", figure=scores, config=GRAPH_CONFIG),
                  note=t("scores_note", lang)),
             card(t("perf_title", lang),
                  dcc.RadioItems(id="co-range", options=[{"label": k, "value": k} for k in ("1Y", "3Y", "5Y")],
                                 value="3Y", inline=True, className="seg"),
                  dcc.Graph(id="co-perf", figure=_perf_fig((sel,) + peer_ids, "3Y", lang),
-                           config={"displayModeBar": False}),
+                           config=GRAPH_CONFIG),
                  note=t("rebased_note", lang)),
         ], className="grid-2"),
         card(t("quarterly_title", lang),
@@ -70,7 +70,7 @@ def _layout(lang: str, sel: str):
                             options=[{"label": t(k, lang), "value": k}
                                      for k in ("ebitda_margin", "operating_margin", "net_margin")]),
              dcc.Graph(id="co-quarterly", figure=_quarterly_fig((sel,) + peer_ids, "ebitda_margin", lang),
-                       config={"displayModeBar": False}),
+                       config=GRAPH_CONFIG),
              note=t("quarterly_note", lang)),
         card(t("peer_table", lang), html.Div(table, id="co-table"), note=t("ebitda_t_note", lang)),
         source_line(lang, "worldsteel 2024 (output); Yahoo Finance (prices, fundamentals snapshot)"),

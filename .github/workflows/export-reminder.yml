@@ -1,0 +1,46 @@
+# 中國鋼材出口：每月提醒更新。
+#
+# 為什麼不是全自動？中國海關網站有反爬蟲防護，沒有免費 API；新聞標題格式也不一致，
+# 自動抓到的數字不可靠。所以改成：每月 12 日（海關通常 7–10 日公布）檢查
+# data/static/china_steel_exports.json 有沒有上個月的資料，沒有就自動開一張 GitHub Issue 提醒，
+# 附上查找連結。已經有同名的提醒單就不重複開。
+name: export-reminder
+
+on:
+  schedule:
+    - cron: "0 2 12 * *"   # 每月 12 日 UTC 02:00（台北 10:00）
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  remind:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check latest month and open an issue if missing
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          EXPECTED=$(date -u -d "$(date -u +%Y-%m-01) -1 month" +%Y-%m)
+          LATEST=$(python3 -c "import json;print(json.load(open('data/static/china_steel_exports.json'))['monthly'][-1]['month'])")
+          echo "expected=$EXPECTED latest=$LATEST"
+          if [ "$LATEST" \< "$EXPECTED" ]; then
+            TITLE="更新中國鋼材出口：$EXPECTED / Update China steel exports: $EXPECTED"
+            if gh issue list --state open --search "$TITLE in:title" --json number --jq 'length' | grep -q '^0$'; then
+              gh issue create --title "$TITLE" --body "海關應已公布 $EXPECTED 的鋼材出口數字。請在 \`data/static/china_steel_exports.json\` 的 \`monthly\` 加一筆，並更新 \`ytd\`。
+
+          查找（任選兩個來源互相核對）：
+          - https://www.steelorbis.com/steel-news/latest-news/ （搜尋 China steel exports）
+          - https://news.metal.com/ （搜尋 steel exports）
+          - https://gmk.center/en/news/ （搜尋 China steel exports）
+
+          The customs figure for $EXPECTED should be out. Add a row to \`monthly\` and update \`ytd\` in \`data/static/china_steel_exports.json\`, cross-checking two sources."
+            else
+              echo "reminder already open"
+            fi
+          else
+            echo "up to date"
+          fi

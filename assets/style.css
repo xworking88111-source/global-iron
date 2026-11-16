@@ -215,3 +215,29 @@ table.kv td.v { color: var(--text); text-align: right; font-variant-numeric: tab
 /* 資料表裡的 Markdown 連結（官方公告） */
 .dash-cell .dash-cell-value p { margin: 0; }
 .dash-cell a { color: var(--accent); }
+
+/* 中鋼官方觀點 */
+.csc-view { margin-top: 12px; padding: 12px 14px; background: var(--surface-2); border-radius: 8px; }
+.csc-view p { margin: 6px 0; }
+
+.unit-ctl { margin-bottom: 10px; }
+.kpi-extra { color: var(--muted); font-size: 11px; margin-top: 4px; }
+
+/* 圖表的「還原」按鈕：常駐顯示、深色底 */
+.gi-card .modebar { opacity: 1 !important; }
+.gi-card .modebar-group { background: rgba(35,35,34,0.85) !important; border-radius: 6px; }
+.gi-card .modebar-btn path { fill: var(--text-2) !important; }
+
+/* 方法論文件：程式碼區塊與標題 */
+.md pre { background: var(--surface-2); color: var(--text); padding: 12px 14px; border-radius: 8px; overflow-x: auto; font-size: 12.5px; line-height: 1.5; }
+.md pre code { background: none; padding: 0; color: var(--text); white-space: pre; }
+.md h1 { font-size: 22px; color: var(--text); margin-top: 4px; }
+.md h2 { font-size: 17px; color: var(--text); margin-top: 26px; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+.md h3 { font-size: 14.5px; }
+.md table { display: block; overflow-x: auto; }
+.md blockquote { border-left: 3px solid var(--accent); margin: 10px 0; padding: 4px 12px; color: var(--text-2); }
+@media (max-width: 760px) {
+  /* 手機：文件表格保持可讀寬度，改為左右滑動 */
+  .md th, .md td { min-width: 120px; }
+  .md td code { white-space: nowrap; }
+}

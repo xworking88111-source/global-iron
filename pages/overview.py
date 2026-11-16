@@ -15,7 +15,7 @@ from core import config, data, highlights
 from core.cache import cached
 from core.i18n import t
 
-from .common import RANGES, SERIES, add_end_labels, add_events, card, empty_fig, kpi_tile, source_line, theme
+from .common import GRAPH_CONFIG, RANGES, SERIES, add_end_labels, add_events, card, empty_fig, kpi_tile, source_line, theme
 
 
 DEFAULT_RANGE = "3Y"
@@ -37,22 +37,14 @@ def layout(lang: str):
     regime = an.regime_label(s_spread["pctl_10y"])
     as_of = s_spread["date"]
 
-    def tile(sid, label_key, unit, nd=0, conv=None):
-        """用價格序列 id 產生一張指標卡；conv 可選擇先換算單位。"""
-        s = px[sid] if sid in px else pd.Series(dtype=float)
-        if conv is not None:
-            s = conv(s)
-        summ = an.series_summary(s)
-        return kpi_tile(t(label_key, lang), an.fmt(summ["value"], nd), unit, summ, lang)
-
-    tiles = html.Div([
-        tile("cn_hrc", "kpi_cn_hrc", "CNY/t"),
-        tile("us_hrc", "kpi_us_hrc", "USD/st"),
-        tile("ore_62", "kpi_ore", "USD/t", nd=1),
-        tile("cn_coke", "kpi_coke", "CNY/t"),
-        kpi_tile(t("kpi_spread", lang), an.fmt(s_spread["value"], 0), "CNY/t", s_spread, lang),
-        tile("dry_bulk", "kpi_freight", "USD", nd=2),
-    ], className="kpi-row")
+    # 單位切換：原幣原單位（交易員習慣）或統一美元／公噸（跨市場比較）
+    unit_ctl = html.Div([
+        html.Span(t("unit_label", lang), className="ctl-label"),
+        dcc.RadioItems(id="ov-unit", value="local", inline=True, className="seg",
+                       options=[{"label": t("unit_local", lang), "value": "local"},
+                                {"label": t("unit_usd", lang), "value": "usd_t"}]),
+    ], className="controls unit-ctl")
+    tiles = html.Div(build_tiles("local", lang), id="ov-tiles", className="kpi-row")
 
     # 市場狀態的燈號顏色（狀態色）
     regime_cls = {"regime_squeezed": "critical", "regime_weak": "warning",
@@ -90,16 +82,17 @@ def layout(lang: str):
                   html.Span(f"{t('data_as_of', lang)} {as_of:%Y-%m-%d}" if as_of is not None else "",
                             className="asof")], className="page-head"),
         hl_box,
+        unit_ctl,
         tiles,
         regime_box,
         controls,
         html.Div([
-            card(t("chart_spread", lang), dcc.Graph(id="ov-spread", figure=f1, config={"displayModeBar": False}),
+            card(t("chart_spread", lang), dcc.Graph(id="ov-spread", figure=f1, config=GRAPH_CONFIG),
                  note=t("chart_spread_note", lang)),
-            card(t("chart_gap", lang), dcc.Graph(id="ov-gap", figure=f2, config={"displayModeBar": False}),
+            card(t("chart_gap", lang), dcc.Graph(id="ov-gap", figure=f2, config=GRAPH_CONFIG),
                  note=t("chart_gap_note", lang)),
         ], className="grid-2"),
-        card(t("chart_prices", lang), dcc.Graph(id="ov-prices", figure=f3, config={"displayModeBar": False}),
+        card(t("chart_prices", lang), dcc.Graph(id="ov-prices", figure=f3, config=GRAPH_CONFIG),
              note=t("rebased_note", lang)),
         source_line(lang, "SHFE / DCE via Sina Finance; CME HRC, SGX/CME iron ore, BDRY via Yahoo Finance"),
     ])
@@ -108,6 +101,45 @@ def layout(lang: str):
 def _start(px: pd.DataFrame, rng: str) -> pd.Timestamp:
     """區間選項（例如 3Y）換成起始日期。"""
     return px.index.max() - pd.DateOffset(years=RANGES.get(rng, 3))
+
+
+# 指標卡定義：(序列 id, 標籤 key, 原始單位, 小數位, 換算成美元／公噸的方式)
+#   "cny" = 人民幣／噸 ÷ 匯率；"st" = 美元／短噸 ÷ 0.907；None = 不是每噸價格，不換算
+TILES = [
+    ("cn_hrc", "kpi_cn_hrc", "CNY/t", 0, "cny"),
+    ("us_hrc", "kpi_us_hrc", "USD/st", 0, "st"),
+    ("ore_62", "kpi_ore", "USD/t", 1, "usd"),
+    ("cn_coke", "kpi_coke", "CNY/t", 0, "cny"),
+    ("spread", "kpi_spread", "CNY/t", 0, "cny"),
+    ("dry_bulk", "kpi_freight", "USD", 2, None),
+]
+
+
+def _to_usd_t(s: pd.Series, how: str | None, px: pd.DataFrame) -> pd.Series:
+    """把整條序列換成美元／公噸（用每天的匯率，所以漲跌幅與分位也是美元口徑）。"""
+    if how == "cny":
+        return (s / px["fx_cny"].ffill().reindex(s.index, method="ffill")).dropna()
+    if how == "st":
+        return s / config.SHORT_TON_IN_TONNES
+    return s
+
+
+@cached()
+def build_tiles(unit: str, lang: str) -> list:
+    """六張指標卡。unit = "local"（原幣原單位）或 "usd_t"（統一美元／公噸）。"""
+    px = data.prices()
+    out = []
+    for sid, key, raw_unit, nd, how in TILES:
+        s = an.china_bf_spread(px) if sid == "spread" else (px[sid] if sid in px else pd.Series(dtype=float))
+        shown_unit = raw_unit
+        if unit == "usd_t" and how is not None:
+            s = _to_usd_t(s, how, px)
+            shown_unit = "USD/t"
+            nd = 0 if how != "usd" else nd
+        summ = an.series_summary(s)
+        extra = t("not_per_tonne", lang) if unit == "usd_t" and how is None else None
+        out.append(kpi_tile(t(key, lang), an.fmt(summ["value"], nd), shown_unit, summ, lang, extra=extra))
+    return out
 
 
 @cached()
@@ -173,6 +205,11 @@ def build_charts(rng: str, show_ev: bool, lang: str):
 
 
 def register(app):
+    @app.callback(Output("ov-tiles", "children"), Input("ov-unit", "value"), State("lang", "data"),
+                  prevent_initial_call=True)
+    def tiles(unit, lang):
+        return build_tiles(unit, lang)
+
     # 只有使用者改了區間或事件開關才觸發（初始圖已在 layout 畫好）；語言改變時整頁會重畫
     @app.callback(Output("ov-spread", "figure"), Output("ov-gap", "figure"), Output("ov-prices", "figure"),
                   Input("ov-range", "value"), Input("ov-events", "value"), State("lang", "data"),

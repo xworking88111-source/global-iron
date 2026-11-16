@@ -22,6 +22,7 @@ AIS_FILE = CACHE_DIR / "ais_snapshot.json"
 META_FILE = CACHE_DIR / "meta.json"               # 各類資料最後更新時間
 QUARTERLY_FILE = CACHE_DIR / "quarterly.csv"      # 各公司季報重點（當地幣別）
 WS_MONTHLY_FILE = CACHE_DIR / "worldsteel_monthly.csv"  # worldsteel 每月產量（區域＋前 10 大國）
+CSC_OFFICIAL_FILE = CACHE_DIR / "csc_official.json"     # 中鋼官網盤價新聞稿（自動抓取）
 
 # ---------------------------------------------------------------------------
 # 價格序列

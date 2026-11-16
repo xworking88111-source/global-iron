@@ -11,7 +11,7 @@ from core.cache import cached
 from core.config import COLORS
 from core.i18n import pick, t
 
-from .common import SERIES, card, source_line, stat, theme
+from .common import GRAPH_CONFIG, SERIES, card, source_line, stat, theme
 
 # 熱力圖用的單一藍色深淺色階（數值越大越亮）
 SEQ_BLUE = [[0, "#1a1a19"], [0.15, "#184f95"], [0.5, "#2a78d6"], [1, "#9ec5f4"]]
@@ -35,13 +35,13 @@ def layout(lang: str):
         html.Div([
             card(t("trade_matrix", lang),
                  # 矩陣有 10 欄，手機上壓縮會擠成一團：給最小寬度，窄螢幕改為左右滑動
-                 html.Div(dcc.Graph(id="rk-matrix", figure=_matrix_fig(lang), config={"displayModeBar": False}, style={"minWidth": "560px"}),
+                 html.Div(dcc.Graph(id="rk-matrix", figure=_matrix_fig(lang), config=GRAPH_CONFIG, style={"minWidth": "560px"}),
                           className="scroll-x")),
-            card(t("net_exports", lang), dcc.Graph(id="rk-net", figure=_net_fig(lang), config={"displayModeBar": False})),
+            card(t("net_exports", lang), dcc.Graph(id="rk-net", figure=_net_fig(lang), config=GRAPH_CONFIG)),
         ], className="grid-2"),
         html.Div([
-            card(t("ore_trade", lang), dcc.Graph(id="rk-ore", figure=_ore_fig(lang), config={"displayModeBar": False})),
-            card(t("country_output", lang), dcc.Graph(id="rk-country", figure=_country_fig(lang), config={"displayModeBar": False})),
+            card(t("ore_trade", lang), dcc.Graph(id="rk-ore", figure=_ore_fig(lang), config=GRAPH_CONFIG)),
+            card(t("country_output", lang), dcc.Graph(id="rk-country", figure=_country_fig(lang), config=GRAPH_CONFIG)),
         ], className="grid-2"),
         card(t("chokepoint_table", lang), html.Div(_choke_table(lang), id="rk-choke"), note=t("risk_review_note", lang)),
         card(t("timeline", lang), html.Div(_timeline_table(lang), id="rk-timeline")),

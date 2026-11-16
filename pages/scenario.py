@@ -12,7 +12,7 @@ from core.cache import cached
 from core.config import COLORS
 from core.i18n import pick, t
 
-from .common import SERIES, card, empty_fig, stat, theme
+from .common import GRAPH_CONFIG, SERIES, card, empty_fig, stat, theme
 
 DEFAULT_OTHER_COST = 100  # 美元/噸：一貫作業鋼廠原料以外的加工成本粗估
 
@@ -56,8 +56,8 @@ def layout(lang: str):
             html.Div([
                 html.Div(stats, id="scn-stats"),
                 html.Div([
-                    card(None, dcc.Graph(id="scn-waterfall", figure=wf, config={"displayModeBar": False})),
-                    card(t("scn_sens", lang), dcc.Graph(id="scn-sens", figure=sb, config={"displayModeBar": False})),
+                    card(None, dcc.Graph(id="scn-waterfall", figure=wf, config=GRAPH_CONFIG)),
+                    card(t("scn_sens", lang), dcc.Graph(id="scn-sens", figure=sb, config=GRAPH_CONFIG)),
                 ], className="grid-2"),
             ], className="scn-out"),
         ], className="scn-wrap"),

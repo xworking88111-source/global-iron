@@ -10,7 +10,7 @@
 
 一個免費、中英雙語的全球鋼鐵市場觀測網站：一眼掌握鋼價、全球鋼廠、貿易流向與航運風險。
 
-**目標使用者：**全球股票投資人、地緣政治研究者、航運與海上保險從業者。
+**目標使用者**：全球股票投資人、地緣政治研究者、航運與海上保險從業者。
 
 ### 功能
 
@@ -26,6 +26,8 @@
 
 所有頁面都可中英切換（選擇會記在瀏覽器），電腦與手機都有調整過版面。
 
+> 📘 **完整方法論（每個數字怎麼來、怎麼算、怎麼解讀）：[docs/METHODOLOGY.zh.md](docs/METHODOLOGY.zh.md)**，網站「資料與方法」頁顯示的也是這份。
+
 ### 資料來源（全部免費）
 
 | 資料 | 來源 | 更新頻率 |
@@ -38,14 +40,14 @@
 | 38 家上市公司股價與基本面 | Yahoo Finance（`yfinance`） | 每個平日 |
 | 各公司季報損益 | Yahoo Finance（`yfinance`） | 每個平日 |
 | 每月全球粗鋼產量 | worldsteel 每月新聞稿（自動抓取） | 每月 |
-| 中國每月成品鋼材出口 | 海關總署數字，經產業媒體轉載（`data/static/china_steel_exports.json`） | 每月手動 |
-| 中鋼月盤調整 | 中鋼盤價公告的媒體報導（`data/static/csc_price_changes.json`） | 每月手動 |
+| 中國每月成品鋼材出口 | 海關總署數字，經產業媒體轉載（`data/static/china_steel_exports.json`）；海關網站擋程式抓取，改為每月 12 日自動開提醒 | 每月手動 |
+| 中鋼月盤調整 | **中鋼官網新聞稿（自動）**；較早月份來自媒體報導（`data/static/csc_price_changes.json`） | 每個平日 |
 | 公司與各國粗鋼產量、鋼材與鐵礦貿易 | worldsteel《World Steel in Figures 2025》（2024 資料） | 每年 |
 | 船舶位置（AIS） | AISStream.io（免費岸基 AIS） | 每天 4 次 |
 | 中鋼運通船隊名單 | 中鋼運通官網船隊頁 | 手動 |
 | 咽喉要道、航線、港口、政策事件 | 人工整理（`data/static/*.json`），事件日期已對照法規與新聞查核 | 手動 |
 
-**已知限制：**沒有 Platts／Argus 現貨價、歐洲熱軋、廢鋼（需付費授權）；免費 AIS 在歐洲、日本涵蓋好，中國、台灣、澳洲稀疏；未上市集團與受制裁的俄、伊鋼廠沒有財務資料。
+**已知限制**：沒有 Platts／Argus 現貨價、歐洲熱軋、廢鋼（需付費授權）；免費 AIS 在歐洲、日本涵蓋好，中國、台灣、澳洲稀疏；未上市集團與受制裁的俄、伊鋼廠沒有財務資料。
 
 ### 技術架構
 
@@ -97,7 +99,8 @@ scripts/
   collect_ais.py        AIS 快照與船隊 MMSI 探索
 data/static/            人工整理資料（直接編輯 JSON，不用改程式）
 data/cache/             自動抓的資料（排程 commit）
-.github/workflows/      update-data.yml（市場）、update-ais.yml（船位）
+docs/                   方法論文件（中英）
+.github/workflows/      update-data.yml（市場）、update-ais.yml（船位）、export-reminder.yml（出口提醒）
 ```
 
 ### 本機執行
@@ -113,8 +116,9 @@ AIS（選用）：到 https://aisstream.io 用 GitHub 登入取得免費金鑰�
 
 ### 每月手動更新（約 5 分鐘）
 
-1. 海關約每月 7–10 日公布上月出口：在 `data/static/china_steel_exports.json` 的 `monthly` 加一筆，並更新 `ytd`
-2. 中鋼約每月中公布下月盤價：在 `data/static/csc_price_changes.json` 的 `changes` 加一筆
+中鋼盤價已改為自動抓官網，只剩中國出口需要手動：
+1. 每月 12 日若還沒有上個月的資料，GitHub 會自動開一張提醒 Issue
+2. 在 `data/static/china_steel_exports.json` 的 `monthly` 加一筆並更新 `ytd`（兩個來源互相核對）
 3. commit 並 push，Render 會自動更新網站
 
 ### 部署
@@ -147,6 +151,8 @@ A free, bilingual (Traditional Chinese / English) monitor of the global steel ma
 
 Every page switches language (remembered in the browser) and is laid out for both desktop and mobile.
 
+> 📘 **Full methodology (where each number comes from, how it is calculated, how to read it): [docs/METHODOLOGY.en.md](docs/METHODOLOGY.en.md)**. The site's Data & Method page shows the same document.
+
 ### Data sources (all free)
 
 | Data | Source | Refresh |
@@ -159,8 +165,8 @@ Every page switches language (remembered in the browser) and is laid out for bot
 | Share prices and fundamentals for 38 listed companies | Yahoo Finance (`yfinance`) | Weekdays |
 | Quarterly income statements | Yahoo Finance (`yfinance`) | Weekdays |
 | Monthly global crude steel production | worldsteel monthly press releases (scraped) | Monthly |
-| China's monthly finished-steel exports | GACC figures via trade press (`data/static/china_steel_exports.json`) | Monthly, manual |
-| China Steel list-price changes | CSC announcements via Taiwanese media (`data/static/csc_price_changes.json`) | Monthly, manual |
+| China's monthly finished-steel exports | GACC figures via trade press (`data/static/china_steel_exports.json`); the customs site blocks automated access, so a reminder issue opens on the 12th | Monthly, manual |
+| China Steel list-price changes | **CSC official press releases (automatic)**; earlier months from media (`data/static/csc_price_changes.json`) | Weekdays |
 | Company and country crude-steel output, steel and ore trade | worldsteel *World Steel in Figures 2025* (2024 data) | Yearly |
 | Vessel positions (AIS) | AISStream.io (free terrestrial AIS) | 4× daily |
 | China Steel Express fleet list | China Steel Express website fleet page | Manual |
@@ -218,7 +224,8 @@ scripts/
   collect_ais.py        AIS snapshot and fleet MMSI discovery
 data/static/            Curated data (edit the JSON, no code change needed)
 data/cache/             Fetched data (committed by the schedules)
-.github/workflows/      update-data.yml (market), update-ais.yml (vessels)
+docs/                   Methodology (zh / en)
+.github/workflows/      update-data.yml (market), update-ais.yml (vessels), export-reminder.yml (exports reminder)
 ```
 
 ### Run locally
@@ -234,8 +241,9 @@ AIS (optional): get a free key at https://aisstream.io (GitHub sign-in), `export
 
 ### Monthly manual update (about 5 minutes)
 
-1. China Customs publishes last month's exports around the 7th–10th: add a row to `monthly` in `data/static/china_steel_exports.json` and update `ytd`
-2. China Steel announces next month's list prices mid-month: add a row to `changes` in `data/static/csc_price_changes.json`
+China Steel prices are now fetched automatically from CSC's website; only China's exports remain manual:
+1. If last month's figure is missing on the 12th, GitHub opens a reminder issue automatically
+2. Add a row to `monthly` and update `ytd` in `data/static/china_steel_exports.json` (cross-check two sources)
 3. Commit and push; Render redeploys automatically
 
 ### Deploy
