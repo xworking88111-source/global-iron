@@ -11,7 +11,7 @@ import plotly.graph_objects as go
 from dash import Input, Output, State, dcc, html
 
 from core import analytics as an
-from core import config, data
+from core import config, data, highlights
 from core.cache import cached
 from core.i18n import t
 
@@ -73,10 +73,23 @@ def layout(lang: str):
 
     f1, f2, f3 = build_charts(DEFAULT_RANGE, True, lang)
 
+    # 本週重點：箭頭／圖示表示方向，不只靠顏色
+    icons = {"up": "▲", "down": "▼", "warn": "⚠", "info": "•"}
+    hl = highlights.build()
+    hl_box = html.Div([
+        html.Div([html.H3(t("highlights_title", lang), className="card-title"),
+                  dcc.Link(t("highlights_more", lang) + " →", href="/monthly", className="link small")],
+                 className="hl-head"),
+        html.Ul([html.Li([html.Span(icons[tone], className=f"hl-icon {tone}"),
+                          html.Span(zh if lang == "zh" else en)]) for tone, zh, en in hl],
+                className="hl-list"),
+    ], className="gi-card highlights") if hl else None
+
     return html.Div([
         html.Div([html.H2(t("nav_overview", lang)),
                   html.Span(f"{t('data_as_of', lang)} {as_of:%Y-%m-%d}" if as_of is not None else "",
                             className="asof")], className="page-head"),
+        hl_box,
         tiles,
         regime_box,
         controls,

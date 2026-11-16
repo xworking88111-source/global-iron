@@ -119,6 +119,41 @@ def meta() -> dict:
 # 任何資料檔一更新，版本就變，舊的快取自動失效。
 # ---------------------------------------------------------------------------
 def version() -> tuple:
-    files = [config.PRICES_FILE, config.STOCKS_FILE, config.FUNDAMENTALS_FILE, config.AIS_FILE, config.META_FILE]
+    files = [config.PRICES_FILE, config.STOCKS_FILE, config.FUNDAMENTALS_FILE, config.AIS_FILE, config.META_FILE,
+             config.QUARTERLY_FILE, config.WS_MONTHLY_FILE]
     files += sorted(config.STATIC_DIR.glob("*.json"))
     return tuple(_mtime(p) for p in files)
+
+
+# ---------------------------------------------------------------------------
+# 月度與季度資料
+# ---------------------------------------------------------------------------
+def china_exports() -> dict:
+    """中國成品鋼材出口（人工整理自海關數字）。"""
+    return load_json(config.STATIC_DIR / "china_steel_exports.json")
+
+
+def csc_prices() -> dict:
+    """中鋼月盤熱軋／冷軋調整幅度（人工整理自媒體報導）。"""
+    return load_json(config.STATIC_DIR / "csc_price_changes.json")
+
+
+@lru_cache(maxsize=4)
+def _load_csv(path: str, mtime: float, parse_dates: tuple = ()) -> pd.DataFrame:
+    return pd.read_csv(path, parse_dates=list(parse_dates))
+
+
+def quarterly() -> pd.DataFrame:
+    """各公司季報重點：ticker, quarter_end, revenue, ebitda, operating_income, net_income（當地幣別）。"""
+    p = config.QUARTERLY_FILE
+    return _load_csv(str(p), _mtime(p), ("quarter_end",)) if p.exists() else pd.DataFrame()
+
+
+def worldsteel_monthly() -> pd.DataFrame:
+    """worldsteel 每月產量：month, kind(region/country), entity, mt, yoy_pct, ytd_mt, ytd_yoy_pct。"""
+    p = config.WS_MONTHLY_FILE
+    if not p.exists():
+        return pd.DataFrame()
+    df = _load_csv(str(p), _mtime(p)).copy()
+    df["month"] = df["month"].astype(str)
+    return df

@@ -1,0 +1,438 @@
+entity,mt,yoy_pct,ytd_mt,ytd_yoy_pct,kind,month
+Brazil,2.8,1.9,31.2,5.6,country,2024-11
+China,78.4,2.5,929.2,-2.7,country,2024-11
+Germany,2.9,8.6,34.5,5.3,country,2024-11
+India,12.4,4.5,135.9,5.9,country,2024-11
+Iran,3.1,0.1,28.0,0.5,country,2024-11
+Japan,6.9,-3.1,77.1,-3.6,country,2024-11
+Russia,5.5,-9.2,64.9,-7.0,country,2024-11
+South Korea,5.2,-3.6,58.3,-4.9,country,2024-11
+Türkiye,3.0,0.7,33.9,11.2,country,2024-11
+United States,6.4,-2.8,72.9,-2.2,country,2024-11
+Africa,1.8,-5.0,20.4,1.3,region,2024-11
+Asia and Oceania,107.4,2.0,1251.5,-1.8,region,2024-11
+EU (27),10.7,3.9,119.9,2.2,region,2024-11
+"Europe, Other",3.4,-5.5,39.9,5.2,region,2024-11
+Middle East,5.1,2.7,49.2,1.4,region,2024-11
+North America,8.5,-5.2,97.1,-4.1,region,2024-11
+Russia & other CIS + Ukraine,6.5,-7.8,77.9,-4.1,region,2024-11
+South America,3.4,-3.4,38.8,0.9,region,2024-11
+Total 71 countries,146.8,0.8,1694.6,-1.4,region,2024-11
+Brazil,2.6,1.8,33.7,5.3,country,2024-12
+China,76.0,11.8,1005.1,-1.7,country,2024-12
+Germany,2.7,4.1,37.2,5.2,country,2024-12
+India,13.6,9.5,149.6,6.3,country,2024-12
+Iran,2.6,-8.2,31.0,0.8,country,2024-12
+Japan,6.9,-1.1,84.0,-3.4,country,2024-12
+Russia,5.7,-8.6,70.7,-7.0,country,2024-12
+South Korea,5.2,-3.2,63.5,-4.7,country,2024-12
+Türkiye,3.0,-7.6,36.9,9.4,country,2024-12
+United States,6.7,-2.4,79.5,-2.4,country,2024-12
+Africa,1.9,-1.0,22.3,1.0,region,2024-12
+Asia and Oceania,106.3,9.0,1357.8,-1.0,region,2024-12
+EU (27),9.6,7.2,129.5,2.6,region,2024-12
+"Europe, Other",3.3,-14.3,43.2,3.4,region,2024-12
+Middle East,4.6,-4.5,54.1,0.5,region,2024-12
+North America,8.8,-4.3,105.9,-4.2,region,2024-12
+Russia & other CIS + Ukraine,6.8,-6.8,84.8,-4.2,region,2024-12
+South America,3.1,-3.8,41.9,0.6,region,2024-12
+Total 71 countries,144.5,5.6,1839.4,-0.9,region,2024-12
+Brazil,2.6,-4.5,2.6,-4.5,country,2025-01
+China,81.9,-5.6,81.9,-5.6,country,2025-01
+Germany,2.8,-8.8,2.8,-8.8,country,2025-01
+India,13.6,6.8,13.6,6.8,country,2025-01
+Iran,2.2,-24.1,2.2,-24.1,country,2025-01
+Japan,6.8,-6.6,6.8,-6.6,country,2025-01
+Russia,6.0,-0.6,6.0,-0.6,country,2025-01
+South Korea,5.2,-8.8,5.2,-8.8,country,2025-01
+Türkiye,3.2,-1.4,3.2,-1.4,country,2025-01
+United States,6.6,1.2,6.6,1.2,country,2025-01
+Africa,1.9,-3.5,1.9,-3.5,region,2025-01
+Asia and Oceania,112.3,-4.5,112.3,-4.5,region,2025-01
+EU (27),10.3,-3.3,10.3,-3.3,region,2025-01
+"Europe, Other",3.5,-6.8,3.5,-6.8,region,2025-01
+Middle East,4.2,-15.3,4.2,-15.3,region,2025-01
+North America,9.0,-0.5,9.0,-0.5,region,2025-01
+Russia & other CIS + Ukraine,7.0,1.4,7.0,1.4,region,2025-01
+South America,3.2,-9.8,3.2,-9.8,region,2025-01
+Total 69 countries,151.4,-4.4,151.4,-4.4,region,2025-01
+Brazil,2.7,-1.6,5.5,0.9,country,2025-02
+China,78.9,-3.3,166.3,-1.5,country,2025-02
+Germany,2.7,-13.5,5.4,-13.1,country,2025-02
+India,12.7,6.3,26.4,6.8,country,2025-02
+Iran,1.7,-21.8,4.0,-23.1,country,2025-02
+Japan,6.4,-8.5,13.2,-7.5,country,2025-02
+Russia,5.8,-3.4,11.7,-2.5,country,2025-02
+South Korea,5.2,0.7,10.5,-2.8,country,2025-02
+Türkiye,2.9,-5.6,6.1,-3.7,country,2025-02
+United States,6.0,-7.0,12.9,-1.3,country,2025-02
+Africa,1.9,7.6,3.9,1.7,region,2025-02
+Asia and Oceania,107.3,-2.6,225.0,-1.4,region,2025-02
+EU (27),10.1,-7.1,20.4,-5.1,region,2025-02
+"Europe, Other",3.3,-9.7,6.9,-8.6,region,2025-02
+Middle East,3.7,-11.5,7.9,-13.5,region,2025-02
+North America,8.2,-6.3,17.5,-1.9,region,2025-02
+Russia & other CIS + Ukraine,6.7,-1.9,13.6,-0.7,region,2025-02
+South America,3.4,-3.2,6.9,-2.5,region,2025-02
+Total 69 countries,144.7,-3.4,302.0,-2.2,region,2025-02
+Brazil,2.9,6.6,8.5,2.8,country,2025-03
+China,92.8,4.6,259.3,0.6,country,2025-03
+Germany,3.1,-11.7,8.5,-12.6,country,2025-03
+India,13.8,7.0,40.1,6.8,country,2025-03
+Iran,3.3,3.7,7.3,-12.8,country,2025-03
+Japan,7.2,0.2,20.4,-4.9,country,2025-03
+Russia,6.2,-3.2,17.7,-3.8,country,2025-03
+South Korea,5.0,-5.3,15.5,-3.6,country,2025-03
+Türkiye,3.1,-2.8,9.3,-3.4,country,2025-03
+United States,6.7,-1.5,19.7,-0.6,country,2025-03
+Africa,1.9,0.6,5.7,1.4,region,2025-03
+Asia and Oceania,123.6,3.9,348.8,0.5,region,2025-03
+EU (27),11.7,0.2,32.4,-2.5,region,2025-03
+"Europe, Other",3.6,-7.2,10.5,-8.1,region,2025-03
+Middle East,5.3,1.9,13.3,-8.0,region,2025-03
+North America,9.2,1.4,26.9,0.0,region,2025-03
+Russia & other CIS + Ukraine,7.1,-3.5,20.5,-2.6,region,2025-03
+South America,3.7,6.5,10.5,0.5,region,2025-03
+Total 69 countries,166.1,2.9,468.6,-0.4,region,2025-03
+Brazil,2.6,-3.1,11.0,-0.3,country,2025-04
+China,86.0,0.0,345.4,0.4,country,2025-04
+Germany,3.0,-10.1,11.4,-11.9,country,2025-04
+India,12.9,5.6,53.2,6.9,country,2025-04
+Iran,3.3,4.6,10.6,-8.0,country,2025-04
+Japan,6.6,-6.4,27.0,-5.3,country,2025-04
+Russia,5.8,-5.1,23.4,-4.5,country,2025-04
+South Korea,5.0,-2.5,20.5,-3.4,country,2025-04
+Türkiye,3.0,7.0,12.3,-1.0,country,2025-04
+United States,6.6,-0.3,26.4,0.0,country,2025-04
+Africa,1.9,6.3,7.7,4.0,region,2025-04
+Asia and Oceania,115.0,0.1,463.9,0.3,region,2025-04
+EU (27),11.1,-2.6,43.5,-2.4,region,2025-04
+"Europe, Other",3.4,-0.5,13.9,-6.2,region,2025-04
+Middle East,5.2,2.2,18.4,-5.7,region,2025-04
+North America,9.0,0.2,35.9,0.3,region,2025-04
+Russia & other CIS + Ukraine,6.9,-4.4,27.3,-3.4,region,2025-04
+South America,3.3,-2.4,13.7,-1.5,region,2025-04
+Total 69 countries,155.7,-0.3,624.4,-0.4,region,2025-04
+Brazil,2.7,5.0,13.7,0.7,country,2025-05
+China,86.6,-6.9,431.6,-1.7,country,2025-05
+Germany,3.0,-6.4,14.4,-10.8,country,2025-05
+India,13.5,9.7,67.2,8.2,country,2025-05
+Iran,3.4,4.5,14.0,-5.3,country,2025-05
+Japan,6.8,-4.7,33.8,-5.2,country,2025-05
+Russia,5.8,-6.9,29.2,-5.2,country,2025-05
+South Korea,5.1,-1.7,25.6,-3.0,country,2025-05
+Türkiye,3.1,-2.8,15.4,-1.4,country,2025-05
+United States,7.0,1.7,33.4,0.3,country,2025-05
+Africa,1.9,5.5,9.7,4.3,region,2025-05
+Asia and Oceania,116.6,-4.7,580.7,-1.0,region,2025-05
+EU (27),11.4,-3.1,54.9,-2.5,region,2025-05
+"Europe, Other",3.6,-8.8,17.5,-6.7,region,2025-05
+Middle East,5.4,5.3,23.8,-3.4,region,2025-05
+North America,9.5,3.4,45.4,0.9,region,2025-05
+Russia & other CIS + Ukraine,7.0,-8.1,34.8,-4.7,region,2025-05
+South America,3.4,4.2,17.0,-0.7,region,2025-05
+Total 70 countries,158.8,-3.8,784.0,-1.3,region,2025-05
+Brazil,2.8,-0.5,16.5,0.5,country,2025-06
+China,83.2,-9.2,514.8,-3.0,country,2025-06
+Germany,2.7,-15.9,17.1,-11.6,country,2025-06
+India,13.6,13.3,80.9,9.2,country,2025-06
+Iran,2.2,-15.5,15.6,-10.3,country,2025-06
+Japan,6.7,-4.4,40.6,-5.0,country,2025-06
+Russia,5.6,-7.4,34.8,-5.6,country,2025-06
+South Korea,5.0,-1.8,30.6,-2.8,country,2025-06
+Türkiye,2.9,-3.5,18.3,-1.7,country,2025-06
+United States,6.9,4.6,40.2,0.8,country,2025-06
+Africa,1.7,3.0,11.4,4.1,region,2025-06
+Asia and Oceania,112.9,-6.2,693.9,-1.9,region,2025-06
+EU (27),10.4,-8.2,65.4,-3.3,region,2025-06
+"Europe, Other",3.3,-8.4,20.8,-7.1,region,2025-06
+Middle East,4.3,-4.9,27.5,-5.4,region,2025-06
+North America,8.7,1.2,53.2,-0.6,region,2025-06
+Russia & other CIS + Ukraine,6.7,-8.8,41.6,-5.4,region,2025-06
+South America,3.5,1.3,20.5,-0.4,region,2025-06
+Total 70 countries,151.4,-5.8,934.3,-2.2,region,2025-06
+Brazil,2.9,-5.5,19.4,-0.5,country,2025-07
+China,79.7,-4.0,594.5,-3.1,country,2025-07
+Germany,2.7,-13.7,19.8,-12.1,country,2025-07
+India,14.0,14.0,94.9,9.8,country,2025-07
+Iran,2.2,29.7,18.2,-5.2,country,2025-07
+Japan,6.9,-2.5,47.5,-4.7,country,2025-07
+Russia,5.7,-2.4,40.8,-4.4,country,2025-07
+South Korea,5.3,-4.7,35.9,-3.1,country,2025-07
+Türkiye,3.2,4.2,21.5,-0.9,country,2025-07
+United States,7.1,4.8,47.4,1.5,country,2025-07
+Africa,1.9,-2.0,13.4,4.0,region,2025-07
+Asia and Oceania,110.4,-1.9,804.8,-1.8,region,2025-07
+EU (27),10.2,-7.0,75.6,-3.8,region,2025-07
+"Europe, Other",3.6,2.6,24.5,-5.4,region,2025-07
+Middle East,4.4,27.7,32.3,-0.9,region,2025-07
+North America,9.4,5.8,63.0,1.0,region,2025-07
+Russia & other CIS + Ukraine,6.7,-5.1,48.6,-4.8,region,2025-07
+South America,3.6,-4.5,24.1,-1.0,region,2025-07
+Total 70 countries,150.1,-1.3,1086.2,-1.9,region,2025-07
+Brazil,2.9,-4.6,22.2,-1.5,country,2025-08
+China,77.4,-0.7,671.8,-2.8,country,2025-08
+Germany,2.6,-10.5,22.4,-11.9,country,2025-08
+India,14.1,13.2,108.9,10.2,country,2025-08
+Iran,1.6,17.9,19.8,-3.6,country,2025-08
+Japan,6.6,-3.4,54.1,-4.5,country,2025-08
+Russia,5.5,-4.6,46.1,-4.8,country,2025-08
+South Korea,5.2,-6.1,41.1,-3.5,country,2025-08
+Türkiye,3.4,7.9,24.9,0.2,country,2025-08
+United States,7.2,3.2,54.6,1.6,country,2025-08
+Africa,1.8,-3.8,15.2,3.0,region,2025-08
+Asia and Oceania,107.7,0.4,912.4,-1.5,region,2025-08
+EU (27),8.8,-2.8,84.5,-3.7,region,2025-08
+"Europe, Other",3.7,2.1,28.1,-4.9,region,2025-08
+Middle East,3.8,21.5,36.1,1.1,region,2025-08
+North America,9.1,1.6,71.8,0.6,region,2025-08
+Russia & other CIS + Ukraine,6.7,-4.9,55.1,-5.1,region,2025-08
+South America,3.6,-5.0,27.5,-2.0,region,2025-08
+Total 70 countries,145.3,0.3,1230.6,-1.7,region,2025-08
+Brazil,2.8,-3.2,25.0,-1.7,country,2025-09
+China,73.5,-4.6,746.3,-2.9,country,2025-09
+Germany,3.0,-0.6,25.4,-10.7,country,2025-09
+India,13.6,13.2,122.4,10.5,country,2025-09
+Iran,2.3,6.0,22.1,-2.7,country,2025-09
+Japan,6.4,-3.7,60.5,-4.5,country,2025-09
+Russia,5.2,-3.8,51.3,-4.7,country,2025-09
+South Korea,5.0,-2.4,46.1,-3.4,country,2025-09
+Türkiye,3.2,3.3,28.1,0.6,country,2025-09
+United States,6.9,6.7,61.4,2.1,country,2025-09
+Africa,2.0,8.2,17.3,4.2,region,2025-09
+Asia and Oceania,102.9,-2.1,1016.5,-1.5,region,2025-09
+EU (27),10.1,-4.5,94.6,-3.7,region,2025-09
+"Europe, Other",3.6,1.4,31.7,-4.2,region,2025-09
+Middle East,4.6,9.3,40.7,2.0,region,2025-09
+North America,8.8,1.8,80.5,0.1,region,2025-09
+Russia & other CIS + Ukraine,6.2,-5.3,61.3,-5.1,region,2025-09
+South America,3.5,-2.7,31.1,-1.9,region,2025-09
+Total 70 countries,141.8,-1.6,1373.8,-1.6,region,2025-09
+Brazil,3.0,-2.7,28.0,-1.8,country,2025-10
+China,72.0,-12.1,817.9,-3.9,country,2025-10
+Germany,3.1,-3.0,28.5,-9.9,country,2025-10
+India,13.6,5.9,136.0,10.0,country,2025-10
+Iran,3.3,12.0,25.4,-1.0,country,2025-10
+Japan,6.9,-1.0,67.3,-4.1,country,2025-10
+Russia,5.3,-6.2,56.5,-4.9,country,2025-10
+South Korea,5.1,-5.8,51.1,-3.6,country,2025-10
+Türkiye,3.2,3.1,31.3,1.2,country,2025-10
+United States,7.0,9.4,68.4,2.8,country,2025-10
+Africa,2.0,0.8,19.3,3.8,region,2025-10
+Asia and Oceania,102.4,-8.2,1119.0,-2.2,region,2025-10
+EU (27),10.8,-3.5,105.7,-3.4,region,2025-10
+"Europe, Other",3.6,3.8,35.3,-3.2,region,2025-10
+Middle East,5.4,9.2,46.1,2.8,region,2025-10
+North America,9.1,4.7,89.7,0.7,region,2025-10
+Russia & other CIS + Ukraine,6.4,-5.1,67.7,-5.1,region,2025-10
+South America,3.7,-1.1,34.7,-1.8,region,2025-10
+Total 70 countries,143.3,-5.9,1517.6,-2.1,region,2025-10
+Brazil,2.8,0.7,30.8,-1.5,country,2025-11
+China,69.9,-10.9,891.7,-4.0,country,2025-11
+Germany,2.8,-2.6,31.3,-9.3,country,2025-11
+India,13.7,10.8,150.1,10.3,country,2025-11
+Iran,3.4,9.2,28.8,0.1,country,2025-11
+Japan,6.8,-1.6,74.1,-3.9,country,2025-11
+Russia,5.2,-6.6,61.8,-5.0,country,2025-11
+South Korea,5.0,-4.8,56.1,-3.7,country,2025-11
+Türkiye,3.3,10.0,34.6,2.0,country,2025-11
+United States,6.8,8.5,75.1,3.2,country,2025-11
+Africa,2.0,7.4,21.3,4.2,region,2025-11
+Asia and Oceania,99.9,-7.1,1223.1,-2.2,region,2025-11
+EU (27),10.2,-3.5,116.1,-3.3,region,2025-11
+"Europe, Other",3.7,9.8,39.1,-2.1,region,2025-11
+Middle East,5.5,8.2,51.6,3.4,region,2025-11
+North America,9.0,5.4,98.7,1.2,region,2025-11
+Russia & other CIS + Ukraine,6.3,-3.9,74.1,-5.0,region,2025-11
+South America,3.5,2.4,38.3,-1.4,region,2025-11
+Total 70 countries,140.1,-4.6,1662.2,-2.0,region,2025-11
+Brazil,2.6,-1.9,33.3,-1.6,country,2025-12
+China,68.2,-10.3,960.8,-4.4,country,2025-12
+Germany,2.7,-0.2,34.1,-8.6,country,2025-12
+India,14.8,10.1,164.9,10.4,country,2025-12
+Iran,3.0,16.2,31.8,1.4,country,2025-12
+Japan,6.6,-4.8,80.7,-4.0,country,2025-12
+Russia,5.8,-4.4,67.8,-4.5,country,2025-12
+South Korea,5.2,-2.4,61.9,-2.8,country,2025-12
+Türkiye,3.5,18.5,38.1,3.3,country,2025-12
+United States,6.9,3.6,82.0,3.1,country,2025-12
+Africa,1.9,-0.3,23.2,3.8,region,2025-12
+Asia and Oceania,99.7,-6.3,1324.5,-2.4,region,2025-12
+EU (27),9.9,3.9,126.2,-2.6,region,2025-12
+"Europe, Other",3.8,13.8,42.8,-0.9,region,2025-12
+Middle East,5.3,13.9,56.9,4.3,region,2025-12
+North America,9.0,-0.4,107.4,0.7,region,2025-12
+Russia & other CIS + Ukraine,6.9,-2.7,81.3,-4.4,region,2025-12
+South America,3.2,1.2,41.5,-1.2,region,2025-12
+Total 70 countries,139.6,-3.7,1803.8,-2.0,region,2025-12
+Brazil,2.7,-1.4,2.7,-1.4,country,2026-01
+China,75.3,-13.9,75.3,-13.9,country,2026-01
+Germany,3.1,15.0,3.1,15.0,country,2026-01
+India,15.1,10.5,15.1,10.5,country,2026-01
+Iran,2.6,15.1,2.6,15.1,country,2026-01
+Japan,6.8,-0.5,6.8,-0.5,country,2026-01
+Russia,5.5,-7.4,5.5,-7.4,country,2026-01
+South Korea,5.6,5.0,5.6,5.0,country,2026-01
+Türkiye,3.4,5.8,3.4,5.8,country,2026-01
+United States,7.1,3.3,7.1,3.3,country,2026-01
+Africa,2.0,5.8,2.0,5.8,region,2026-01
+Asia and Oceania,107.6,-8.6,107.6,-8.6,region,2026-01
+EU (27),10.3,-2.3,10.3,-2.3,region,2026-01
+"Europe, Other",3.7,4.4,3.7,4.4,region,2026-01
+Middle East,4.8,12.6,4.8,12.6,region,2026-01
+North America,9.2,-0.6,9.2,-0.6,region,2026-01
+Russia & other CIS + Ukraine,6.5,-8.6,6.5,-8.6,region,2026-01
+South America,3.4,-1.2,3.4,-1.2,region,2026-01
+Total 69 countries,147.3,-6.5,147.3,-6.5,region,2026-01
+Brazil,2.5,-5.7,5.3,-3.4,country,2026-02
+China,76.1,-3.6,160.3,-3.6,country,2026-02
+Germany,2.8,4.8,5.9,9.9,country,2026-02
+India,13.6,7.7,28.9,9.7,country,2026-02
+Iran,1.7,-1.3,4.3,7.9,country,2026-02
+Japan,6.4,0.0,13.1,-0.3,country,2026-02
+Russia,5.0,-10.2,10.5,-9.0,country,2026-02
+South Korea,4.8,0.2,10.4,2.5,country,2026-02
+Türkiye,3.0,3.4,6.4,4.7,country,2026-02
+United States,6.5,5.8,13.7,4.9,country,2026-02
+Africa,2.0,4.7,4.1,5.3,region,2026-02
+Asia and Oceania,105.3,-1.9,222.0,-1.4,region,2026-02
+EU (27),9.8,-3.6,20.1,-3.1,region,2026-02
+"Europe, Other",3.4,3.1,7.1,3.4,region,2026-02
+Middle East,3.7,0.1,8.5,6.8,region,2026-02
+North America,8.5,0.5,17.6,-0.1,region,2026-02
+Russia & other CIS + Ukraine,6.0,-10.5,12.4,-9.7,region,2026-02
+South America,3.1,-7.7,6.5,-4.3,region,2026-02
+Total 69 countries,141.8,-2.2,298.2,-1.5,region,2026-02
+Brazil,2.8,-2.5,8.1,-3.1,country,2026-03
+China,87.0,-6.3,247.6,-4.6,country,2026-03
+Germany,3.3,7.5,9.3,9.0,country,2026-03
+India,15.3,9.4,44.7,10.8,country,2026-03
+Japan,6.9,-4.1,20.1,-1.7,country,2026-03
+Russia,5.4,-11.4,15.8,-10.7,country,2026-03
+South Korea,5.4,1.5,15.8,1.8,country,2026-03
+Türkiye,3.3,6.4,9.7,5.3,country,2026-03
+United States,7.2,5.2,21.0,5.7,country,2026-03
+Viet Nam,2.2,5.7,6.4,10.0,country,2026-03
+Africa,2.2,11.6,6.3,7.4,region,2026-03
+Asia and Oceania,119.3,-3.9,341.7,-2.2,region,2026-03
+EU (27),11.4,-4.6,31.7,-2.6,region,2026-03
+"Europe, Other",3.8,4.9,10.9,3.9,region,2026-03
+Middle East,3.5,-33.5,12.0,-9.3,region,2026-03
+North America,9.5,3.5,27.5,2.3,region,2026-03
+Russia & other CIS + Ukraine,6.6,-7.9,18.9,-9.8,region,2026-03
+South America,3.6,-0.5,10.2,-1.9,region,2026-03
+Total 69 countries,159.9,-4.2,459.2,-2.3,region,2026-03
+Brazil,2.7,2.8,10.8,-1.6,country,2026-04
+China,83.6,-2.8,331.1,-4.1,country,2026-04
+Germany,3.2,9.5,12.5,9.1,country,2026-04
+India,13.8,3.9,58.7,9.4,country,2026-04
+Japan,6.6,0.3,26.7,-1.2,country,2026-04
+Russia,5.0,-12.4,20.6,-12.0,country,2026-04
+South Korea,5.2,4.8,21.0,2.5,country,2026-04
+Türkiye,3.3,9.4,13.0,6.3,country,2026-04
+United States,7.2,9.4,28.1,6.6,country,2026-04
+Viet Nam,2.1,4.0,8.5,8.4,country,2026-04
+Africa,2.1,11.5,8.4,8.7,region,2026-04
+Asia and Oceania,114.2,-1.3,456.4,-1.8,region,2026-04
+EU (27),11.0,-1.8,42.8,-2.2,region,2026-04
+"Europe, Other",3.6,4.2,14.5,4.3,region,2026-04
+Middle East,3.7,-27.6,16.0,-12.8,region,2026-04
+North America,9.4,6.9,37.0,3.5,region,2026-04
+Russia & other CIS + Ukraine,6.0,-13.4,24.7,-11.5,region,2026-04
+South America,3.4,3.1,13.5,-0.9,region,2026-04
+Total 69 countries,153.4,-1.9,613.3,-2.0,region,2026-04
+Brazil,2.8,2.4,13.4,-1.9,country,2026-05
+China,84.4,-2.7,415.5,-3.9,country,2026-05
+Germany,3.2,7.3,15.7,8.8,country,2026-05
+India,14.1,1.9,72.9,7.8,country,2026-05
+Japan,7.0,1.7,33.6,-0.7,country,2026-05
+Russia,5.6,-5.4,26.4,-10.0,country,2026-05
+South Korea,5.4,3.3,26.4,2.7,country,2026-05
+Türkiye,3.4,8.9,16.5,6.8,country,2026-05
+United States,7.5,9.2,35.6,6.8,country,2026-05
+Viet Nam,2.6,27.2,12.6,26.8,country,2026-05
+Africa,2.1,10.3,10.5,8.2,region,2026-05
+Asia and Oceania,116.2,-0.9,574.4,-1.5,region,2026-05
+EU (27),11.4,-0.4,54.4,-1.5,region,2026-05
+"Europe, Other",3.8,4.9,18.4,4.6,region,2026-05
+Middle East,3.9,-19.4,19.9,-14.6,region,2026-05
+North America,10.1,15.6,47.0,5.9,region,2026-05
+Russia & other CIS + Ukraine,6.7,-4.8,31.6,-9.6,region,2026-05
+South America,3.5,3.7,17.0,-0.7,region,2026-05
+Total 70 countries,157.9,-0.3,773.1,-1.5,region,2026-05
+Brazil,2.8,0.1,16.3,-1.5,country,2026-06
+China,83.7,0.4,500.0,-3.0,country,2026-06
+Germany,2.9,9.5,18.6,8.9,country,2026-06
+India,14.1,4.5,87.0,7.1,country,2026-06
+Japan,6.8,1.3,40.4,-0.4,country,2026-06
+Russia,5.6,-3.4,32.1,-8.4,country,2026-06
+South Korea,5.3,-0.9,31.7,2.1,country,2026-06
+Türkiye,3.3,14.7,19.8,8.1,country,2026-06
+United States,7.2,3.5,42.8,6.3,country,2026-06
+Viet Nam,2.6,27.5,15.2,26.9,country,2026-06
+Africa,2.2,20.0,12.6,10.0,region,2026-06
+Asia and Oceania,115.2,1.5,690.1,-0.9,region,2026-06
+EU (27),10.8,4.6,65.4,-0.3,region,2026-06
+"Europe, Other",3.7,10.4,22.1,5.6,region,2026-06
+Middle East,4.0,-13.4,25.9,-7.3,region,2026-06
+North America,9.5,5.0,56.5,5.7,region,2026-06
+Russia & other CIS + Ukraine,6.8,-2.2,38.6,-8.0,region,2026-06
+South America,3.5,-0.3,20.5,-0.8,region,2026-06
+Total 70 countries,155.7,1.7,931.5,-0.7,region,2026-06
+Brazil,2.8,0.1,19.1,-1.2,country,2026-07
+China,76.9,-3.6,577.0,-3.1,country,2026-07
+Germany,2.8,3.0,21.4,8.1,country,2026-07
+India,14.4,1.9,101.1,6.1,country,2026-07
+Japan,6.9,0.4,47.3,-0.3,country,2026-07
+Russia,5.7,3.3,38.1,-6.1,country,2026-07
+South Korea,5.7,6.4,37.4,2.7,country,2026-07
+Türkiye,3.4,7.0,23.2,7.9,country,2026-07
+United States,7.4,4.4,50.2,6.0,country,2026-07
+Viet Nam,2.7,34.7,17.9,28.0,country,2026-07
+Africa,2.0,6.1,14.6,9.5,region,2026-07
+Asia and Oceania,109.4,-1.2,799.6,-0.9,region,2026-07
+EU (27),10.5,3.8,76.0,0.4,region,2026-07
+"Europe, Other",3.7,5.8,25.7,5.5,region,2026-07
+Middle East,3.8,-13.4,29.6,-8.1,region,2026-07
+North America,9.6,4.9,65.9,5.4,region,2026-07
+Russia & other CIS + Ukraine,6.7,2.2,45.5,-6.0,region,2026-07
+South America,3.6,2.8,24.1,0.0,region,2026-07
+Total 70 countries,149.2,-0.3,1081.2,-0.6,region,2026-07
+Brazil,2.7,-6.2,21.8,-1.8,country,2026-08
+China,74.6,-3.7,651.9,-3.1,country,2026-08
+Germany,2.6,1.7,23.9,6.3,country,2026-08
+India,14.8,4.6,115.9,6.0,country,2026-08
+Japan,6.7,0.4,54.0,-0.2,country,2026-08
+Russia,5.5,-0.3,43.8,-5.1,country,2026-08
+South Korea,5.4,2.6,42.8,2.8,country,2026-08
+Türkiye,3.4,-0.4,26.6,6.8,country,2026-08
+United States,7.3,3.0,57.5,5.5,country,2026-08
+Viet Nam,2.7,36.4,20.6,29.1,country,2026-08
+Africa,2.1,8.8,16.7,9.4,region,2026-08
+Asia and Oceania,106.7,-1.4,906.4,-0.9,region,2026-08
+EU (27),8.9,-1.0,84.5,-0.3,region,2026-08
+"Europe, Other",3.8,1.2,29.5,4.8,region,2026-08
+Middle East,3.7,-4.6,33.3,-7.8,region,2026-08
+North America,9.4,3.9,75.3,5.2,region,2026-08
+Russia & other CIS + Ukraine,6.3,-5.6,52.0,-5.7,region,2026-08
+South America,3.4,-4.9,27.5,-0.7,region,2026-08
+Total 70 countries,144.2,-1.2,1225.2,-0.7,region,2026-08
+Brazil,2.8,-0.8,24.6,-1.7,country,2026-09
+China,73.6,0.1,724.8,-2.9,country,2026-09
+Germany,2.6,-13.0,26.5,4.0,country,2026-09
+India,13.9,1.9,130.0,5.6,country,2026-09
+Japan,6.3,-0.6,60.3,-0.3,country,2026-09
+Russia,5.5,6.2,49.4,-3.6,country,2026-09
+South Korea,5.2,3.6,48.0,2.9,country,2026-09
+Türkiye,3.2,0.8,29.8,6.1,country,2026-09
+United States,7.2,4.3,64.9,5.8,country,2026-09
+Viet Nam,2.6,29.1,23.2,29.1,country,2026-09
+Africa,2.2,10.6,19.0,9.7,region,2026-09
+Asia and Oceania,104.0,0.7,1009.8,-0.9,region,2026-09
+EU (27),10.1,-5.0,94.5,-0.8,region,2026-09
+"Europe, Other",3.6,-1.4,33.0,4.1,region,2026-09
+Middle East,3.6,-20.4,36.9,-9.2,region,2026-09
+North America,9.3,3.4,84.7,4.7,region,2026-09
+Russia & other CIS + Ukraine,6.1,-1.9,58.2,-5.0,region,2026-09
+South America,3.5,0.2,31.2,-0.2,region,2026-09
+Total 70 countries,142.4,-0.2,1367.5,-0.7,region,2026-09

@@ -1,0 +1,44 @@
+{
+  "_meta": {
+    "en": "China finished-steel exports (million tonnes), General Administration of Customs (GACC) figures as reported by trade press. No free API exists; update manually each month (GACC releases around the 7th-10th).",
+    "zh": "中國成品鋼材出口量（百萬噸），海關總署數字，經產業媒體轉載。沒有免費 API，每月手動更新（海關約每月 7–10 日公布）。",
+    "unit": "Mt",
+    "derived_note_en": "Derived = calculated from reported year-to-date totals or month-on-month changes, not a directly reported monthly figure.",
+    "derived_note_zh": "推算值 = 由公布的年初至今累計或月增率推算，非直接公布的單月數字。",
+    "checked": "2026-11-16"
+  },
+  "annual": [
+    {"year": 2015, "mt": 112.4, "note_en": "Previous record", "note_zh": "前一次紀錄"},
+    {"year": 2024, "mt": 110.7},
+    {"year": 2025, "mt": 119.02, "note_en": "All-time record (+7.5% y/y)", "note_zh": "歷史新高（年增 7.5%）",
+     "source": "https://www.mysteel.net/news/5110103-gacc-chinas-steel-exports-in-25-hit-record-high-of-119-million-t"}
+  ],
+  "ytd": {"period": "2026-01..2026-10", "mt": 95.495, "yoy_pct": -2.3,
+          "source": "https://www.steelorbis.com/steel-news/latest-news/chinas-steel-exports-down-23-in-jan-oct-down-61-in-oct-from-sept-2026-1489467.htm"},
+  "monthly": [
+    {"month": "2025-04", "mt": 10.46, "derived": true},
+    {"month": "2025-05", "mt": 10.58, "derived": true},
+    {"month": "2025-06", "mt": 9.68, "source": "https://www.sunsirs.com/uk/detail_news-25314.html"},
+    {"month": "2025-07", "mt": 9.836, "source": "https://gmk.center/en/news/china-increased-steel-exports-by/"},
+    {"month": "2025-08", "mt": 9.51, "source": "https://www.sunsirs.com/uk/detail_news-26389.html"},
+    {"month": "2025-09", "mt": 10.465, "source": "https://www.sunsirs.com/uk/detail_news-27636.html"},
+    {"month": "2025-10", "mt": 9.782, "derived": true},
+    {"month": "2025-11", "mt": 9.98, "source": "https://news.metal.com/en/newscontent/103659927-Chinas-Nov-2025-Steel-Exports-Up-Imports-of-Steel-Iron-Ore-Coal-Mixed-MoM"},
+    {"month": "2025-12", "mt": 11.301, "source": "https://news.metal.com/newscontent/103720117-smm-hot-topic-exports-soar-to-a-new-high-can-the-good-start-in-january-continue"},
+    {"month": "2026-01", "mt": 7.796, "derived": true, "combined_with": "2026-02",
+     "note_en": "China reports Jan+Feb together (15.591 Mt); split evenly", "note_zh": "中國 1、2 月合併公布（1,559.1 萬噸），此處平均拆分"},
+    {"month": "2026-02", "mt": 7.795, "derived": true, "combined_with": "2026-01",
+     "source": "https://www.steelorbis.com/steel-news/latest-news/chinas-finished-steel-exports-decrease-to-15591-million-mt-in-jan-feb-1440369.htm"},
+    {"month": "2026-03", "mt": 9.135, "source": "https://www.steelorbis.com/steel-news/latest-news/chinas-steel-exports-down-99-in-q1-still-exceed-9-million-mt-in-mar-1447614.htm"},
+    {"month": "2026-04", "mt": 9.498, "source": "https://news.metal.com/api-guide/newscontent/103892508-Chinas-Steel-Exports-Up-4-in-April-Imports-Down-92-Month-on-Month"},
+    {"month": "2026-05", "mt": 10.34, "derived": true},
+    {"month": "2026-06", "mt": 10.32, "source": "https://www.steelorbis.com/steel-news/latest-news/chinas-finished-steel-exports-down-56-in-h1-2026-but-rather-firm-in-june-1464448.htm"},
+    {"month": "2026-07", "mt": 10.12, "source": "https://gmk.center/en/news/china-s-steel-exports-fell-by-4-4-y-y-in-january-july/"},
+    {"month": "2026-08", "mt": 10.157, "derived": true},
+    {"month": "2026-09", "mt": 10.492, "source": "https://www.steelorbis.com/steel-news/latest-news/chinas-finished-steel-exports-down-26-in-jan-sept-up-33-in-sept-from-aug-1483606.htm"},
+    {"month": "2026-10", "mt": 9.854, "source": "https://www.steelorbis.com/steel-news/latest-news/chinas-steel-exports-down-23-in-jan-oct-down-61-in-oct-from-sept-2026-1489467.htm"}
+  ],
+  "context": [
+    {"date": "2026-01", "en": "Export licence requirement for steel products takes effect", "zh": "鋼材出口許可證制度上路"}
+  ]
+}

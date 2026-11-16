@@ -1,0 +1,33 @@
+{
+  "_meta": {
+    "en": "China Steel Corporation (CSC) monthly domestic list-price changes for hot-rolled (HRC) and cold-rolled (CRC) products, NT$ per tonne. CSC does not publish absolute list prices; changes come from its monthly price announcements as reported by Taiwanese media. Update monthly (CSC usually announces mid-month for the following month).",
+    "zh": "中鋼內銷月盤熱軋、冷軋每公噸調整幅度（新台幣）。中鋼不公開絕對盤價，數字來自每月盤價會議的媒體報導。每月更新（通常在月中公布下個月盤價）。",
+    "unit": "TWD/t",
+    "checked": "2026-11-16"
+  },
+  "changes": [
+    {"month": "2026-01", "hrc": 300, "crc": 300, "note_zh": "Q1 季盤：僅汽車料 +500，其餘平盤", "note_en": "Q1 quarterly: auto steel +500, others flat",
+     "source": "https://wantrich.chinatimes.com/news/20251218900453-420101"},
+    {"month": "2026-02", "hrc": 300, "crc": 300, "source": "https://www.ctee.com.tw/news/20260112701062-430201"},
+    {"month": "2026-03", "hrc": 500, "crc": 500, "note_zh": "全線產品 +500", "note_en": "All products +500",
+     "source": "https://uanalyze.com.tw/articles/3894447121"},
+    {"month": "2026-04", "hrc": 1200, "crc": 1200, "note_zh": "月盤 +1,000–1,200；Q2 季盤 +1,000", "note_en": "Monthly +1,000–1,200; Q2 quarterly +1,000",
+     "source": "https://uanalyze.com.tw/articles/9294449302"},
+    {"month": "2026-05", "hrc": 1200, "crc": 1200, "note_zh": "原料與能源成本墊高", "note_en": "Higher raw-material and energy costs",
+     "source": "https://udn.com/news/story/7241/9443717"},
+    {"month": "2026-06", "hrc": 1200, "crc": 1200, "note_zh": "連六漲", "note_en": "Sixth straight increase",
+     "source": "https://udn.com/news/story/7241/9497997"},
+    {"month": "2026-07", "hrc": -300, "crc": -300, "note_zh": "今年首次調降；Q3 季盤 +1,000（汽車料 +500）", "note_en": "First cut of the year; Q3 quarterly +1,000 (auto +500)",
+     "source": "https://wantrich.chinatimes.com/news/20260616900411-420101"},
+    {"month": "2026-08", "hrc": -800, "crc": -800, "note_zh": "亞洲鋼價走弱、需求低迷", "note_en": "Weaker Asian prices, soft demand",
+     "source": "https://www.storm.mg/keyword/盤價"},
+    {"month": "2026-09", "hrc": 0, "crc": 0, "note_zh": "全數平盤", "note_en": "Flat",
+     "source": "https://www.storm.mg/keyword/盤價"},
+    {"month": "2026-10", "hrc": 600, "crc": 600, "note_zh": "Q4 季盤平高盤", "note_en": "Q4 quarterly flat-to-higher",
+     "source": "https://www.storm.mg/keyword/鋼價"},
+    {"month": "2026-11", "hrc": 900, "crc": 900, "note_zh": "熱軋、冷軋、鍍鋅齊漲", "note_en": "HRC, CRC and galvanized all up",
+     "source": "https://www.storm.mg/keyword/盤價"},
+    {"month": "2026-12", "hrc": 300, "crc": 300, "note_zh": "小幅調漲", "note_en": "Small increase",
+     "source": "https://uanalyze.com.tw/articles/1044658443"}
+  ]
+}

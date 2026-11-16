@@ -1,100 +1,874 @@
 {
   "_meta": {
     "note": "Stylised layers for situational awareness. Routes are simplified waypoint polylines, not navigation tracks. Chokepoint risk notes describe structural exposure, not live status: always check current advisories (e.g. JWC Listed Areas, UKMTO, national maritime authorities).",
-    "reviewed": "2026-11-16"
+    "reviewed": "2026-11-16",
+    "advisories_note": "Official sources for current status: UKMTO (Indian Ocean / Red Sea / Gulf incidents), JWC Listed Areas (Lloyd's Market war-risk areas), ReCAAP ISC (Asian piracy/armed robbery), Taiwan MPB navigation warnings, Panama Canal Authority advisories."
   },
   "chokepoints": [
-    {"id": "malacca", "en": "Strait of Malacca", "zh": "麻六甲海峽", "lat": 2.5, "lon": 101.2, "box": [[1.0, 99.5], [4.5, 103.8]],
-     "relevance_en": "Main lane for Asian steel exports to India, Middle East and Europe; Brazilian ore can bypass it via Lombok.",
-     "relevance_zh": "亞洲鋼材出口到印度、中東、歐洲的主航道；巴西鐵礦可改走龍目海峽繞開。",
-     "risks_en": "Congestion, draft limit (~20.5 m excludes largest ore carriers), piracy/armed robbery incidents in Singapore Strait.",
-     "risks_zh": "壅塞、吃水限制（約 20.5 公尺，最大型礦砂船無法通過）、新加坡海峽搶劫事件。"},
-    {"id": "lombok", "en": "Lombok / Makassar Straits", "zh": "龍目／望加錫海峽", "lat": -8.7, "lon": 115.8, "box": [[-9.5, 115.0], [-7.5, 116.5]],
-     "relevance_en": "Deep-water route used by Valemax / Capesize ore carriers from Brazil and Australia into East Asia.",
-     "relevance_zh": "巴西與澳洲大型礦砂船（Valemax／海岬型）進入東亞的深水航道。",
-     "risks_en": "Low conflict risk; a key alternative if Malacca or South China Sea lanes are disrupted.",
-     "risks_zh": "衝突風險低；麻六甲或南海航道受阻時的關鍵替代。"},
-    {"id": "taiwan", "en": "Taiwan Strait", "zh": "台灣海峽", "lat": 24.2, "lon": 119.6, "box": [[22.5, 118.0], [25.8, 121.0]],
-     "relevance_en": "Coastal lane between South and North China ports; adjacent to Kaohsiung and Taichung steel ports.",
-     "relevance_zh": "華南與華北港口之間的沿海航道；緊鄰高雄、台中鋼鐵港口。",
-     "risks_en": "Geopolitical tail risk: military exercises can trigger navigation warnings, rerouting east of Taiwan, and war-risk premium repricing.",
-     "risks_zh": "地緣政治尾部風險：軍演可能引發航行警告、改走台灣以東、戰爭險保費重新定價。"},
-    {"id": "korea", "en": "Korea Strait", "zh": "對馬／朝鮮海峽", "lat": 34.4, "lon": 129.3, "box": [[33.5, 128.5], [35.3, 130.3]],
-     "relevance_en": "Access to Pohang, Busan and Japan Sea steel ports.",
-     "relevance_zh": "進出浦項、釜山與日本海側鋼鐵港口的要道。",
-     "risks_en": "Low; weather (typhoons) seasonal.", "risks_zh": "低；季節性颱風。"},
-    {"id": "hormuz", "en": "Strait of Hormuz", "zh": "荷莫茲海峽", "lat": 26.6, "lon": 56.3, "box": [[25.5, 55.5], [27.2, 57.2]],
-     "relevance_en": "Gulf steel (UAE, Saudi, Iran DRI-EAF) and imports of ore/pellets into the Gulf; energy price driver for all steelmakers.",
-     "relevance_zh": "波灣鋼鐵（阿聯、沙烏地、伊朗天然氣直接還原鐵）與鐵礦／球團進口；也是所有鋼廠能源成本的驅動因子。",
-     "risks_en": "State conflict, vessel seizures, GNSS interference; frequently inside war-risk listed areas.",
-     "risks_zh": "國家衝突、扣船、衛星導航干擾；經常列入戰爭險指定區域。"},
-    {"id": "babelmandeb", "en": "Bab el-Mandeb / Red Sea", "zh": "曼德海峽／紅海", "lat": 12.6, "lon": 43.4, "box": [[11.5, 42.5], [14.0, 44.5]],
-     "relevance_en": "Asia–Europe steel trade via Suez. Attacks since late 2023 pushed much traffic around the Cape, adding ~10–14 days.",
-     "relevance_zh": "亞歐鋼材經蘇伊士的通道。2023 年底起的攻擊使大量船隻改繞好望角，航程多 10–14 天。",
-     "risks_en": "Missile/drone attacks on merchant ships, war-risk additional premiums, crew refusal clauses.",
-     "risks_zh": "商船遭飛彈／無人機攻擊、戰爭險附加保費、船員拒航條款。"},
-    {"id": "suez", "en": "Suez Canal", "zh": "蘇伊士運河", "lat": 30.5, "lon": 32.35, "box": [[29.8, 32.2], [31.4, 32.7]],
-     "relevance_en": "Shortest Asia–Europe route; volumes tied to Red Sea security.",
-     "relevance_zh": "亞歐最短航線；運量取決於紅海安全。",
-     "risks_en": "Grounding/blockage (Ever Given 2021), transit fee changes, regional conflict spillover.",
-     "risks_zh": "擱淺堵塞（2021 長賜輪）、過路費調整、區域衝突外溢。"},
-    {"id": "cape", "en": "Cape of Good Hope", "zh": "好望角", "lat": -34.8, "lon": 19.5, "box": [[-36.5, 17.5], [-33.5, 21.5]],
-     "relevance_en": "Brazil→China ore route and Red Sea diversion route.",
-     "relevance_zh": "巴西→中國鐵礦航線，以及紅海改道航線。",
-     "risks_en": "Heavy weather; longer voyages raise fuel and charter costs and tighten vessel supply.",
-     "risks_zh": "惡劣海象；航程拉長推高燃油與租船成本，並吃緊船舶供給。"},
-    {"id": "panama", "en": "Panama Canal", "zh": "巴拿馬運河", "lat": 9.1, "lon": -79.7, "box": [[8.5, -80.2], [9.6, -79.3]],
-     "relevance_en": "US Gulf/East Coast ↔ Asia (coal, scrap, some steel). Capesizes cannot transit.",
-     "relevance_zh": "美國墨灣／東岸 ↔ 亞洲（煤、廢鋼、部分鋼材）。海岬型船無法通過。",
-     "risks_en": "Drought-driven draft and transit restrictions (2023–24), political pressure over canal control.",
-     "risks_zh": "乾旱造成吃水與通行限制（2023–24）、運河控制權的政治壓力。"},
-    {"id": "gibraltar", "en": "Strait of Gibraltar", "zh": "直布羅陀海峽", "lat": 35.95, "lon": -5.6, "box": [[35.6, -6.2], [36.3, -5.0]],
-     "relevance_en": "Mediterranean (Türkiye, Italy, North Africa) ↔ Atlantic steel and scrap flows.",
-     "relevance_zh": "地中海（土耳其、義大利、北非）↔ 大西洋的鋼材與廢鋼流。",
-     "risks_en": "Low.", "risks_zh": "低。"},
-    {"id": "bosporus", "en": "Turkish Straits (Bosporus)", "zh": "土耳其海峽（博斯普魯斯）", "lat": 41.1, "lon": 29.05, "box": [[40.9, 28.8], [41.3, 29.3]],
-     "relevance_en": "Black Sea exports: Ukrainian/Russian semi-finished steel and ore pellets.",
-     "relevance_zh": "黑海出口：烏克蘭／俄羅斯半成品鋼與球團礦。",
-     "risks_en": "War risk in the Black Sea, sanctions screening on Russian-origin cargo.",
-     "risks_zh": "黑海戰爭風險、俄國原產貨物的制裁審查。"}
+    {
+      "id": "malacca",
+      "en": "Strait of Malacca",
+      "zh": "麻六甲海峽",
+      "lat": 2.5,
+      "lon": 101.2,
+      "box": [
+        [
+          1.0,
+          99.5
+        ],
+        [
+          4.5,
+          103.8
+        ]
+      ],
+      "relevance_en": "Main lane for Asian steel exports to India, Middle East and Europe; Brazilian ore can bypass it via Lombok.",
+      "relevance_zh": "亞洲鋼材出口到印度、中東、歐洲的主航道；巴西鐵礦可改走龍目海峽繞開。",
+      "risks_en": "Congestion, draft limit (~20.5 m excludes largest ore carriers), piracy/armed robbery incidents in Singapore Strait.",
+      "risks_zh": "壅塞、吃水限制（約 20.5 公尺，最大型礦砂船無法通過）、新加坡海峽搶劫事件。",
+      "advisories": [
+        {
+          "name": "ReCAAP ISC",
+          "url": "https://www.recaap.org/"
+        }
+      ]
+    },
+    {
+      "id": "lombok",
+      "en": "Lombok / Makassar Straits",
+      "zh": "龍目／望加錫海峽",
+      "lat": -8.7,
+      "lon": 115.8,
+      "box": [
+        [
+          -9.5,
+          115.0
+        ],
+        [
+          -7.5,
+          116.5
+        ]
+      ],
+      "relevance_en": "Deep-water route used by Valemax / Capesize ore carriers from Brazil and Australia into East Asia.",
+      "relevance_zh": "巴西與澳洲大型礦砂船（Valemax／海岬型）進入東亞的深水航道。",
+      "risks_en": "Low conflict risk; a key alternative if Malacca or South China Sea lanes are disrupted.",
+      "risks_zh": "衝突風險低；麻六甲或南海航道受阻時的關鍵替代。",
+      "advisories": [
+        {
+          "name": "ReCAAP ISC",
+          "url": "https://www.recaap.org/"
+        }
+      ]
+    },
+    {
+      "id": "taiwan",
+      "en": "Taiwan Strait",
+      "zh": "台灣海峽",
+      "lat": 24.2,
+      "lon": 119.6,
+      "box": [
+        [
+          22.5,
+          118.0
+        ],
+        [
+          25.8,
+          121.0
+        ]
+      ],
+      "relevance_en": "Coastal lane between South and North China ports; adjacent to Kaohsiung and Taichung steel ports.",
+      "relevance_zh": "華南與華北港口之間的沿海航道；緊鄰高雄、台中鋼鐵港口。",
+      "risks_en": "Geopolitical tail risk: military exercises can trigger navigation warnings, rerouting east of Taiwan, and war-risk premium repricing.",
+      "risks_zh": "地緣政治尾部風險：軍演可能引發航行警告、改走台灣以東、戰爭險保費重新定價。",
+      "advisories": [
+        {
+          "name": "航港局 MPB",
+          "url": "https://www.motcmpb.gov.tw/"
+        }
+      ]
+    },
+    {
+      "id": "korea",
+      "en": "Korea Strait",
+      "zh": "對馬／朝鮮海峽",
+      "lat": 34.4,
+      "lon": 129.3,
+      "box": [
+        [
+          33.5,
+          128.5
+        ],
+        [
+          35.3,
+          130.3
+        ]
+      ],
+      "relevance_en": "Access to Pohang, Busan and Japan Sea steel ports.",
+      "relevance_zh": "進出浦項、釜山與日本海側鋼鐵港口的要道。",
+      "risks_en": "Low; weather (typhoons) seasonal.",
+      "risks_zh": "低；季節性颱風。",
+      "advisories": []
+    },
+    {
+      "id": "hormuz",
+      "en": "Strait of Hormuz",
+      "zh": "荷莫茲海峽",
+      "lat": 26.6,
+      "lon": 56.3,
+      "box": [
+        [
+          25.5,
+          55.5
+        ],
+        [
+          27.2,
+          57.2
+        ]
+      ],
+      "relevance_en": "Gulf steel (UAE, Saudi, Iran DRI-EAF) and imports of ore/pellets into the Gulf; energy price driver for all steelmakers.",
+      "relevance_zh": "波灣鋼鐵（阿聯、沙烏地、伊朗天然氣直接還原鐵）與鐵礦／球團進口；也是所有鋼廠能源成本的驅動因子。",
+      "risks_en": "State conflict, vessel seizures, GNSS interference; frequently inside war-risk listed areas.",
+      "risks_zh": "國家衝突、扣船、衛星導航干擾；經常列入戰爭險指定區域。",
+      "advisories": [
+        {
+          "name": "UKMTO",
+          "url": "https://www.ukmto.org/recent-incidents"
+        },
+        {
+          "name": "JWC Listed Areas",
+          "url": "https://www.lmalloyds.com/LMA/Underwriting/Marine/JWLA/JWC_Listed_Areas.aspx"
+        }
+      ]
+    },
+    {
+      "id": "babelmandeb",
+      "en": "Bab el-Mandeb / Red Sea",
+      "zh": "曼德海峽／紅海",
+      "lat": 12.6,
+      "lon": 43.4,
+      "box": [
+        [
+          11.5,
+          42.5
+        ],
+        [
+          14.0,
+          44.5
+        ]
+      ],
+      "relevance_en": "Asia–Europe steel trade via Suez. Attacks since late 2023 pushed much traffic around the Cape, adding ~10–14 days.",
+      "relevance_zh": "亞歐鋼材經蘇伊士的通道。2023 年底起的攻擊使大量船隻改繞好望角，航程多 10–14 天。",
+      "risks_en": "Missile/drone attacks on merchant ships, war-risk additional premiums, crew refusal clauses.",
+      "risks_zh": "商船遭飛彈／無人機攻擊、戰爭險附加保費、船員拒航條款。",
+      "advisories": [
+        {
+          "name": "UKMTO",
+          "url": "https://www.ukmto.org/recent-incidents"
+        },
+        {
+          "name": "JWC Listed Areas",
+          "url": "https://www.lmalloyds.com/LMA/Underwriting/Marine/JWLA/JWC_Listed_Areas.aspx"
+        }
+      ]
+    },
+    {
+      "id": "suez",
+      "en": "Suez Canal",
+      "zh": "蘇伊士運河",
+      "lat": 30.5,
+      "lon": 32.35,
+      "box": [
+        [
+          29.8,
+          32.2
+        ],
+        [
+          31.4,
+          32.7
+        ]
+      ],
+      "relevance_en": "Shortest Asia–Europe route; volumes tied to Red Sea security.",
+      "relevance_zh": "亞歐最短航線；運量取決於紅海安全。",
+      "risks_en": "Grounding/blockage (Ever Given 2021), transit fee changes, regional conflict spillover.",
+      "risks_zh": "擱淺堵塞（2021 長賜輪）、過路費調整、區域衝突外溢。",
+      "advisories": [
+        {
+          "name": "UKMTO",
+          "url": "https://www.ukmto.org/recent-incidents"
+        }
+      ]
+    },
+    {
+      "id": "cape",
+      "en": "Cape of Good Hope",
+      "zh": "好望角",
+      "lat": -34.8,
+      "lon": 19.5,
+      "box": [
+        [
+          -36.5,
+          17.5
+        ],
+        [
+          -33.5,
+          21.5
+        ]
+      ],
+      "relevance_en": "Brazil→China ore route and Red Sea diversion route.",
+      "relevance_zh": "巴西→中國鐵礦航線，以及紅海改道航線。",
+      "risks_en": "Heavy weather; longer voyages raise fuel and charter costs and tighten vessel supply.",
+      "risks_zh": "惡劣海象；航程拉長推高燃油與租船成本，並吃緊船舶供給。",
+      "advisories": []
+    },
+    {
+      "id": "panama",
+      "en": "Panama Canal",
+      "zh": "巴拿馬運河",
+      "lat": 9.1,
+      "lon": -79.7,
+      "box": [
+        [
+          8.5,
+          -80.2
+        ],
+        [
+          9.6,
+          -79.3
+        ]
+      ],
+      "relevance_en": "US Gulf/East Coast ↔ Asia (coal, scrap, some steel). Capesizes cannot transit.",
+      "relevance_zh": "美國墨灣／東岸 ↔ 亞洲（煤、廢鋼、部分鋼材）。海岬型船無法通過。",
+      "risks_en": "Drought-driven draft and transit restrictions (2023–24), political pressure over canal control.",
+      "risks_zh": "乾旱造成吃水與通行限制（2023–24）、運河控制權的政治壓力。",
+      "advisories": [
+        {
+          "name": "Panama Canal Authority",
+          "url": "https://pancanal.com/en/maritime-services/"
+        }
+      ]
+    },
+    {
+      "id": "gibraltar",
+      "en": "Strait of Gibraltar",
+      "zh": "直布羅陀海峽",
+      "lat": 35.95,
+      "lon": -5.6,
+      "box": [
+        [
+          35.6,
+          -6.2
+        ],
+        [
+          36.3,
+          -5.0
+        ]
+      ],
+      "relevance_en": "Mediterranean (Türkiye, Italy, North Africa) ↔ Atlantic steel and scrap flows.",
+      "relevance_zh": "地中海（土耳其、義大利、北非）↔ 大西洋的鋼材與廢鋼流。",
+      "risks_en": "Low.",
+      "risks_zh": "低。",
+      "advisories": []
+    },
+    {
+      "id": "bosporus",
+      "en": "Turkish Straits (Bosporus)",
+      "zh": "土耳其海峽（博斯普魯斯）",
+      "lat": 41.1,
+      "lon": 29.05,
+      "box": [
+        [
+          40.9,
+          28.8
+        ],
+        [
+          41.3,
+          29.3
+        ]
+      ],
+      "relevance_en": "Black Sea exports: Ukrainian/Russian semi-finished steel and ore pellets.",
+      "relevance_zh": "黑海出口：烏克蘭／俄羅斯半成品鋼與球團礦。",
+      "risks_en": "War risk in the Black Sea, sanctions screening on Russian-origin cargo.",
+      "risks_zh": "黑海戰爭風險、俄國原產貨物的制裁審查。",
+      "advisories": [
+        {
+          "name": "JWC Listed Areas",
+          "url": "https://www.lmalloyds.com/LMA/Underwriting/Marine/JWLA/JWC_Listed_Areas.aspx"
+        }
+      ]
+    }
   ],
   "ports": [
-    {"id": "porthedland", "en": "Port Hedland", "zh": "黑德蘭港", "lat": -20.31, "lon": 118.58, "kind": "ore_export", "country": "AUS"},
-    {"id": "dampier", "en": "Dampier / Cape Lambert", "zh": "丹皮爾／蘭伯特角", "lat": -20.62, "lon": 116.95, "kind": "ore_export", "country": "AUS"},
-    {"id": "tubarao", "en": "Tubarão (Vitória)", "zh": "圖巴朗港", "lat": -20.29, "lon": -40.24, "kind": "ore_export", "country": "BRA"},
-    {"id": "pontamadeira", "en": "Ponta da Madeira", "zh": "馬德拉角港", "lat": -2.57, "lon": -44.37, "kind": "ore_export", "country": "BRA"},
-    {"id": "saldanha", "en": "Saldanha Bay", "zh": "薩爾達尼亞灣", "lat": -33.03, "lon": 17.94, "kind": "ore_export", "country": "ZAF"},
-    {"id": "haypoint", "en": "Hay Point / Dalrymple Bay", "zh": "海波因特／達爾林普灣", "lat": -21.28, "lon": 149.30, "kind": "coal_export", "country": "AUS"},
-    {"id": "gladstone", "en": "Gladstone", "zh": "格拉德斯通", "lat": -23.83, "lon": 151.25, "kind": "coal_export", "country": "AUS"},
-    {"id": "qingdao", "en": "Qingdao", "zh": "青島港", "lat": 36.07, "lon": 120.32, "kind": "ore_import", "country": "CHN"},
-    {"id": "rizhao", "en": "Rizhao", "zh": "日照港", "lat": 35.38, "lon": 119.55, "kind": "ore_import", "country": "CHN"},
-    {"id": "caofeidian", "en": "Caofeidian (Tangshan)", "zh": "曹妃甸（唐山）", "lat": 38.93, "lon": 118.50, "kind": "ore_import", "country": "CHN"},
-    {"id": "ningbo", "en": "Ningbo-Zhoushan", "zh": "寧波舟山港", "lat": 29.93, "lon": 122.05, "kind": "ore_import", "country": "CHN"},
-    {"id": "kaohsiung", "en": "Kaohsiung (CSC wharf)", "zh": "高雄港（中鋼專用碼頭）", "lat": 22.54, "lon": 120.33, "kind": "ore_import", "country": "TWN"},
-    {"id": "taichung", "en": "Taichung (Dragon Steel)", "zh": "台中港（中龍）", "lat": 24.28, "lon": 120.50, "kind": "ore_import", "country": "TWN"},
-    {"id": "gwangyang", "en": "Gwangyang", "zh": "光陽港", "lat": 34.90, "lon": 127.70, "kind": "ore_import", "country": "KOR"},
-    {"id": "pohang", "en": "Pohang", "zh": "浦項港", "lat": 36.02, "lon": 129.40, "kind": "ore_import", "country": "KOR"},
-    {"id": "kimitsu", "en": "Kimitsu (Tokyo Bay)", "zh": "君津（東京灣）", "lat": 35.33, "lon": 139.88, "kind": "ore_import", "country": "JPN"},
-    {"id": "rotterdam", "en": "Rotterdam", "zh": "鹿特丹", "lat": 51.95, "lon": 4.05, "kind": "ore_import", "country": "NLD"},
-    {"id": "dungquat", "en": "Dung Quat", "zh": "榕橘港", "lat": 15.40, "lon": 108.80, "kind": "ore_import", "country": "VNM"},
-    {"id": "sonduong", "en": "Son Duong (Ha Tinh)", "zh": "山陽港（河靜）", "lat": 18.06, "lon": 106.42, "kind": "ore_import", "country": "VNM"}
+    {
+      "id": "porthedland",
+      "en": "Port Hedland",
+      "zh": "黑德蘭港",
+      "lat": -20.31,
+      "lon": 118.58,
+      "kind": "ore_export",
+      "country": "AUS"
+    },
+    {
+      "id": "dampier",
+      "en": "Dampier / Cape Lambert",
+      "zh": "丹皮爾／蘭伯特角",
+      "lat": -20.62,
+      "lon": 116.95,
+      "kind": "ore_export",
+      "country": "AUS"
+    },
+    {
+      "id": "tubarao",
+      "en": "Tubarão (Vitória)",
+      "zh": "圖巴朗港",
+      "lat": -20.29,
+      "lon": -40.24,
+      "kind": "ore_export",
+      "country": "BRA"
+    },
+    {
+      "id": "pontamadeira",
+      "en": "Ponta da Madeira",
+      "zh": "馬德拉角港",
+      "lat": -2.57,
+      "lon": -44.37,
+      "kind": "ore_export",
+      "country": "BRA"
+    },
+    {
+      "id": "saldanha",
+      "en": "Saldanha Bay",
+      "zh": "薩爾達尼亞灣",
+      "lat": -33.03,
+      "lon": 17.94,
+      "kind": "ore_export",
+      "country": "ZAF"
+    },
+    {
+      "id": "haypoint",
+      "en": "Hay Point / Dalrymple Bay",
+      "zh": "海波因特／達爾林普灣",
+      "lat": -21.28,
+      "lon": 149.3,
+      "kind": "coal_export",
+      "country": "AUS"
+    },
+    {
+      "id": "gladstone",
+      "en": "Gladstone",
+      "zh": "格拉德斯通",
+      "lat": -23.83,
+      "lon": 151.25,
+      "kind": "coal_export",
+      "country": "AUS"
+    },
+    {
+      "id": "qingdao",
+      "en": "Qingdao",
+      "zh": "青島港",
+      "lat": 36.07,
+      "lon": 120.32,
+      "kind": "ore_import",
+      "country": "CHN"
+    },
+    {
+      "id": "rizhao",
+      "en": "Rizhao",
+      "zh": "日照港",
+      "lat": 35.38,
+      "lon": 119.55,
+      "kind": "ore_import",
+      "country": "CHN"
+    },
+    {
+      "id": "caofeidian",
+      "en": "Caofeidian (Tangshan)",
+      "zh": "曹妃甸（唐山）",
+      "lat": 38.93,
+      "lon": 118.5,
+      "kind": "ore_import",
+      "country": "CHN"
+    },
+    {
+      "id": "ningbo",
+      "en": "Ningbo-Zhoushan",
+      "zh": "寧波舟山港",
+      "lat": 29.93,
+      "lon": 122.05,
+      "kind": "ore_import",
+      "country": "CHN"
+    },
+    {
+      "id": "kaohsiung",
+      "en": "Kaohsiung (CSC wharf)",
+      "zh": "高雄港（中鋼專用碼頭）",
+      "lat": 22.54,
+      "lon": 120.33,
+      "kind": "ore_import",
+      "country": "TWN"
+    },
+    {
+      "id": "taichung",
+      "en": "Taichung (Dragon Steel)",
+      "zh": "台中港（中龍）",
+      "lat": 24.28,
+      "lon": 120.5,
+      "kind": "ore_import",
+      "country": "TWN"
+    },
+    {
+      "id": "gwangyang",
+      "en": "Gwangyang",
+      "zh": "光陽港",
+      "lat": 34.9,
+      "lon": 127.7,
+      "kind": "ore_import",
+      "country": "KOR"
+    },
+    {
+      "id": "pohang",
+      "en": "Pohang",
+      "zh": "浦項港",
+      "lat": 36.02,
+      "lon": 129.4,
+      "kind": "ore_import",
+      "country": "KOR"
+    },
+    {
+      "id": "kimitsu",
+      "en": "Kimitsu (Tokyo Bay)",
+      "zh": "君津（東京灣）",
+      "lat": 35.33,
+      "lon": 139.88,
+      "kind": "ore_import",
+      "country": "JPN"
+    },
+    {
+      "id": "rotterdam",
+      "en": "Rotterdam",
+      "zh": "鹿特丹",
+      "lat": 51.95,
+      "lon": 4.05,
+      "kind": "ore_import",
+      "country": "NLD"
+    },
+    {
+      "id": "dungquat",
+      "en": "Dung Quat",
+      "zh": "榕橘港",
+      "lat": 15.4,
+      "lon": 108.8,
+      "kind": "ore_import",
+      "country": "VNM"
+    },
+    {
+      "id": "sonduong",
+      "en": "Son Duong (Ha Tinh)",
+      "zh": "山陽港（河靜）",
+      "lat": 18.06,
+      "lon": 106.42,
+      "kind": "ore_import",
+      "country": "VNM"
+    }
   ],
   "routes": [
-    {"id": "aus_china", "en": "Australia → China (iron ore)", "zh": "澳洲 → 中國（鐵礦）", "kind": "ore",
-     "points": [[-20.3, 118.6], [-13.0, 117.0], [-8.8, 115.8], [-3.0, 117.8], [2.0, 119.5], [6.0, 120.5], [12.5, 120.6], [19.5, 119.8], [23.5, 121.8], [30.0, 123.5], [36.0, 120.4]]},
-    {"id": "aus_taiwan", "en": "Australia → Taiwan / Korea / Japan (ore)", "zh": "澳洲 → 台灣／韓國／日本（鐵礦）", "kind": "ore",
-     "points": [[-20.3, 118.6], [-13.0, 117.0], [-8.8, 115.8], [-3.0, 117.8], [2.0, 119.5], [6.0, 120.5], [12.5, 120.6], [19.5, 119.8], [22.5, 120.3], [27.0, 124.5], [33.5, 128.5], [35.3, 139.8]]},
-    {"id": "bra_china", "en": "Brazil → China (iron ore, via Cape)", "zh": "巴西 → 中國（鐵礦，經好望角）", "kind": "ore",
-     "points": [[-20.3, -40.2], [-28.0, -20.0], [-36.0, 19.5], [-32.0, 60.0], [-15.0, 98.0], [-8.8, 115.8], [-3.0, 117.8], [2.0, 119.5], [6.0, 120.5], [12.5, 120.6], [19.5, 119.8], [30.0, 123.5], [36.0, 120.4]]},
-    {"id": "qld_asia", "en": "Queensland → NE Asia (coking coal)", "zh": "昆士蘭 → 東北亞（冶金煤）", "kind": "coal",
-     "points": [[-21.3, 149.3], [-14.0, 153.5], [-2.0, 148.0], [12.0, 134.0], [25.0, 129.5], [33.5, 129.0], [35.3, 139.8]]},
-    {"id": "asia_europe", "en": "Asia → Europe (steel products, via Suez)", "zh": "亞洲 → 歐洲（鋼材，經蘇伊士）", "kind": "steel",
-     "points": [[31.0, 122.0], [22.5, 116.0], [10.0, 109.5], [1.2, 104.0], [5.5, 97.0], [6.0, 80.0], [12.8, 52.0], [12.6, 43.4], [20.0, 38.5], [29.9, 32.55], [33.5, 28.0], [37.2, 12.0], [36.0, -5.6], [43.5, -9.6], [51.9, 4.0]]},
-    {"id": "asia_europe_cape", "en": "Asia → Europe (Red Sea diversion, via Cape)", "zh": "亞洲 → 歐洲（紅海改道，經好望角）", "kind": "diversion",
-     "points": [[1.2, 104.0], [-8.0, 92.0], [-25.0, 45.0], [-35.5, 20.0], [-20.0, 5.0], [5.0, -15.0], [28.0, -16.0], [43.5, -9.6], [51.9, 4.0]]},
-    {"id": "asia_americas", "en": "Asia → Mexico / US West Coast (steel)", "zh": "亞洲 → 墨西哥／美西（鋼材）", "kind": "steel",
-     "points": [[31.0, 122.0], [34.0, 145.0], [40.0, 175.0], [38.0, -150.0], [26.0, -118.0], [19.05, -104.3]]},
-    {"id": "guinea_china", "en": "Guinea (Simandou) → China (ore)", "zh": "幾內亞（Simandou）→ 中國（鐵礦）", "kind": "ore",
-     "points": [[9.5, -13.7], [-5.0, -5.0], [-36.0, 19.5], [-32.0, 60.0], [-15.0, 98.0], [-8.8, 115.8], [-3.0, 117.8], [2.0, 119.5], [12.5, 120.6], [30.0, 123.5], [36.0, 120.4]]}
+    {
+      "id": "aus_china",
+      "en": "Australia → China (iron ore)",
+      "zh": "澳洲 → 中國（鐵礦）",
+      "kind": "ore",
+      "points": [
+        [
+          -20.3,
+          118.6
+        ],
+        [
+          -13.0,
+          117.0
+        ],
+        [
+          -8.8,
+          115.8
+        ],
+        [
+          -3.0,
+          117.8
+        ],
+        [
+          2.0,
+          119.5
+        ],
+        [
+          6.0,
+          120.5
+        ],
+        [
+          12.5,
+          120.6
+        ],
+        [
+          19.5,
+          119.8
+        ],
+        [
+          23.5,
+          121.8
+        ],
+        [
+          30.0,
+          123.5
+        ],
+        [
+          36.0,
+          120.4
+        ]
+      ]
+    },
+    {
+      "id": "aus_taiwan",
+      "en": "Australia → Taiwan / Korea / Japan (ore)",
+      "zh": "澳洲 → 台灣／韓國／日本（鐵礦）",
+      "kind": "ore",
+      "points": [
+        [
+          -20.3,
+          118.6
+        ],
+        [
+          -13.0,
+          117.0
+        ],
+        [
+          -8.8,
+          115.8
+        ],
+        [
+          -3.0,
+          117.8
+        ],
+        [
+          2.0,
+          119.5
+        ],
+        [
+          6.0,
+          120.5
+        ],
+        [
+          12.5,
+          120.6
+        ],
+        [
+          19.5,
+          119.8
+        ],
+        [
+          22.5,
+          120.3
+        ],
+        [
+          27.0,
+          124.5
+        ],
+        [
+          33.5,
+          128.5
+        ],
+        [
+          35.3,
+          139.8
+        ]
+      ]
+    },
+    {
+      "id": "bra_china",
+      "en": "Brazil → China (iron ore, via Cape)",
+      "zh": "巴西 → 中國（鐵礦，經好望角）",
+      "kind": "ore",
+      "points": [
+        [
+          -20.3,
+          -40.2
+        ],
+        [
+          -28.0,
+          -20.0
+        ],
+        [
+          -36.0,
+          19.5
+        ],
+        [
+          -32.0,
+          60.0
+        ],
+        [
+          -15.0,
+          98.0
+        ],
+        [
+          -8.8,
+          115.8
+        ],
+        [
+          -3.0,
+          117.8
+        ],
+        [
+          2.0,
+          119.5
+        ],
+        [
+          6.0,
+          120.5
+        ],
+        [
+          12.5,
+          120.6
+        ],
+        [
+          19.5,
+          119.8
+        ],
+        [
+          30.0,
+          123.5
+        ],
+        [
+          36.0,
+          120.4
+        ]
+      ]
+    },
+    {
+      "id": "qld_asia",
+      "en": "Queensland → NE Asia (coking coal)",
+      "zh": "昆士蘭 → 東北亞（冶金煤）",
+      "kind": "coal",
+      "points": [
+        [
+          -21.3,
+          149.3
+        ],
+        [
+          -14.0,
+          153.5
+        ],
+        [
+          -2.0,
+          148.0
+        ],
+        [
+          12.0,
+          134.0
+        ],
+        [
+          25.0,
+          129.5
+        ],
+        [
+          33.5,
+          129.0
+        ],
+        [
+          35.3,
+          139.8
+        ]
+      ]
+    },
+    {
+      "id": "asia_europe",
+      "en": "Asia → Europe (steel products, via Suez)",
+      "zh": "亞洲 → 歐洲（鋼材，經蘇伊士）",
+      "kind": "steel",
+      "points": [
+        [
+          31.0,
+          122.0
+        ],
+        [
+          22.5,
+          116.0
+        ],
+        [
+          10.0,
+          109.5
+        ],
+        [
+          1.2,
+          104.0
+        ],
+        [
+          5.5,
+          97.0
+        ],
+        [
+          6.0,
+          80.0
+        ],
+        [
+          12.8,
+          52.0
+        ],
+        [
+          12.6,
+          43.4
+        ],
+        [
+          20.0,
+          38.5
+        ],
+        [
+          29.9,
+          32.55
+        ],
+        [
+          33.5,
+          28.0
+        ],
+        [
+          37.2,
+          12.0
+        ],
+        [
+          36.0,
+          -5.6
+        ],
+        [
+          43.5,
+          -9.6
+        ],
+        [
+          51.9,
+          4.0
+        ]
+      ]
+    },
+    {
+      "id": "asia_europe_cape",
+      "en": "Asia → Europe (Red Sea diversion, via Cape)",
+      "zh": "亞洲 → 歐洲（紅海改道，經好望角）",
+      "kind": "diversion",
+      "points": [
+        [
+          1.2,
+          104.0
+        ],
+        [
+          -8.0,
+          92.0
+        ],
+        [
+          -25.0,
+          45.0
+        ],
+        [
+          -35.5,
+          20.0
+        ],
+        [
+          -20.0,
+          5.0
+        ],
+        [
+          5.0,
+          -15.0
+        ],
+        [
+          28.0,
+          -16.0
+        ],
+        [
+          43.5,
+          -9.6
+        ],
+        [
+          51.9,
+          4.0
+        ]
+      ]
+    },
+    {
+      "id": "asia_americas",
+      "en": "Asia → Mexico / US West Coast (steel)",
+      "zh": "亞洲 → 墨西哥／美西（鋼材）",
+      "kind": "steel",
+      "points": [
+        [
+          31.0,
+          122.0
+        ],
+        [
+          34.0,
+          145.0
+        ],
+        [
+          40.0,
+          175.0
+        ],
+        [
+          38.0,
+          -150.0
+        ],
+        [
+          26.0,
+          -118.0
+        ],
+        [
+          19.05,
+          -104.3
+        ]
+      ]
+    },
+    {
+      "id": "guinea_china",
+      "en": "Guinea (Simandou) → China (ore)",
+      "zh": "幾內亞（Simandou）→ 中國（鐵礦）",
+      "kind": "ore",
+      "points": [
+        [
+          9.5,
+          -13.7
+        ],
+        [
+          -5.0,
+          -5.0
+        ],
+        [
+          -36.0,
+          19.5
+        ],
+        [
+          -32.0,
+          60.0
+        ],
+        [
+          -15.0,
+          98.0
+        ],
+        [
+          -8.8,
+          115.8
+        ],
+        [
+          -3.0,
+          117.8
+        ],
+        [
+          2.0,
+          119.5
+        ],
+        [
+          12.5,
+          120.6
+        ],
+        [
+          30.0,
+          123.5
+        ],
+        [
+          36.0,
+          120.4
+        ]
+      ]
+    }
   ]
 }

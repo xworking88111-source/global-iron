@@ -177,17 +177,32 @@ table.kv td.v { color: var(--text); text-align: right; font-variant-numeric: tab
 .map-main .modebar-group { background: rgba(35,35,34,0.85) !important; border-radius: 6px; }
 .map-main .modebar-btn path { fill: var(--text-2) !important; }
 
+/* 本週重點 */
+.highlights { border-left: 3px solid var(--accent); }
+.hl-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.hl-list { list-style: none; margin: 4px 0 0; padding: 0; columns: 2; column-gap: 28px; }
+.hl-list li { display: flex; gap: 8px; break-inside: avoid; padding: 5px 0; color: var(--text); font-size: 13.5px; line-height: 1.5; }
+.hl-icon { flex: 0 0 auto; width: 14px; text-align: center; color: var(--muted); }
+.hl-icon.up { color: #4fc24f; }
+.hl-icon.down { color: #e66767; }
+.hl-icon.warn { color: var(--warning); }
+@media (max-width: 900px) { .hl-list { columns: 1; } }
+
 /* 內容太寬時可左右滑動（手機上的大型矩陣圖） */
 .scroll-x { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 
 /* ---- 手機版（寬度 760px 以下）-------------------------------------------- */
-@media (max-width: 760px) {
-  /* 導覽列換到第二行，可左右滑動，不再壓到 logo */
-  .topbar { flex-wrap: wrap; gap: 8px; padding: 8px 12px; }
+/* 中等寬度（平板、窄視窗）：導覽列換到第二行、可左右滑動，避免 7 個選項擠成兩行 */
+@media (max-width: 1100px) {
+  .topbar { flex-wrap: wrap; gap: 8px; padding: 8px 16px; }
   .brand { flex: 1; }
   .nav { order: 3; width: 100%; margin-left: 0; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
   .nav::-webkit-scrollbar { display: none; }
   .nav-link { white-space: nowrap; padding: 6px 10px; }
+}
+
+@media (max-width: 760px) {
+  .topbar { padding: 8px 12px; }
   .page { padding: 14px 12px 32px; }
   .page-head { flex-wrap: wrap; gap: 6px; }
   .kpi-value { font-size: 20px; }
@@ -196,3 +211,7 @@ table.kv td.v { color: var(--text); text-align: right; font-variant-numeric: tab
   .gi-card { padding: 12px; }
   #map-graph { height: 46vh !important; }  /* 手機上地圖較扁，容器縮短避免大片空白 */
 }
+
+/* 資料表裡的 Markdown 連結（官方公告） */
+.dash-cell .dash-cell-value p { margin: 0; }
+.dash-cell a { color: var(--accent); }

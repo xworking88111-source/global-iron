@@ -115,3 +115,92 @@ def fetch_fx_to_usd(currencies: set[str]) -> dict[str, float]:
         if col is not None and col.dropna().size:
             out[c] = float(col.dropna().iloc[-1])
     return out
+
+
+# ---------------------------------------------------------------------------
+# 季報（每季營收、EBITDA、營業利益、淨利）
+# ---------------------------------------------------------------------------
+_QUARTER_ROWS = {"Total Revenue": "revenue", "EBITDA": "ebitda",
+                 "Operating Income": "operating_income", "Net Income": "net_income"}
+
+
+def fetch_yf_quarterly(ticker: str) -> pd.DataFrame:
+    """近幾季的損益表重點（當地幣別）。Yahoo 免費版通常給 5–6 季。"""
+    import yfinance as yf
+
+    q = _retry(lambda: yf.Ticker(ticker).quarterly_income_stmt, tries=2)
+    if q is None or q.empty:
+        return pd.DataFrame()
+    rows = [r for r in _QUARTER_ROWS if r in q.index]
+    df = q.loc[rows].T.rename(columns=_QUARTER_ROWS)
+    df.index = pd.to_datetime(df.index)
+    df.index.name = "quarter_end"
+    return df.reset_index().assign(ticker=ticker)
+
+
+# ---------------------------------------------------------------------------
+# worldsteel 每月粗鋼產量新聞稿（官方免費公布：8 大區域＋前 10 大生產國）
+# ---------------------------------------------------------------------------
+_WS_LIST = "https://worldsteel.org/media/press-releases/page/{page}/"
+_UA = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
+                     "(KHTML, like Gecko) Chrome/120 Safari/537.36"}
+_MONTHS = {m: i for i, m in enumerate(["january", "february", "march", "april", "may", "june", "july",
+                                       "august", "september", "october", "november", "december"], 1)}
+
+
+def list_worldsteel_monthly(pages: int = 3) -> dict[str, str]:
+    """新聞稿列表 -> {"2026-09": 網址}。網址格式像 .../2026/september-2026-crude-steel-production/"""
+    import re
+
+    import requests
+
+    found: dict[str, str] = {}
+    for page in range(1, pages + 1):
+        url = "https://worldsteel.org/media/press-releases/" if page == 1 else _WS_LIST.format(page=page)
+        r = _retry(lambda: requests.get(url, headers=_UA, timeout=60))
+        for link in re.findall(r'href=["\']?(https://worldsteel\.org/media/press-releases/[^\s"\'>]+)', r.text):
+            m = re.search(r"/([a-z]+)-(\d{4})-crude-steel-production", link)
+            if m and m.group(1) in _MONTHS:
+                found[f"{m.group(2)}-{_MONTHS[m.group(1)]:02d}"] = link
+    return found
+
+
+def guess_worldsteel_url(month: str) -> str:
+    """列表頁只列最近幾則；較舊的月份依固定網址格式推測（例如 2025/june-2025-crude-steel-production）。
+    注意：每年 12 月的新聞稿在隔年 1 月發布，網址放在隔年的資料夾下。"""
+    y, m = month.split("-")
+    name = [k for k, v in _MONTHS.items() if v == int(m)][0]
+    folder = int(y) + 1 if int(m) == 12 else int(y)
+    return f"https://worldsteel.org/media/press-releases/{folder}/{name}-{y}-crude-steel-production/"
+
+
+def fetch_worldsteel_month(url: str, month: str) -> pd.DataFrame:
+    """解析單月新聞稿的兩張表：區域表與前 10 大國家表。"""
+    import io
+
+    import requests
+
+    r = _retry(lambda: requests.get(url, headers=_UA, timeout=60))
+    tables = pd.read_html(io.StringIO(r.text))  # 需要 lxml
+    out = []
+    for kind, t in zip(("region", "country"), tables[:2]):
+        # 依「欄位標題」辨認欄位，而不是依位置：舊新聞稿的表格中間可能多一個空白欄
+        cols = {"entity": t.columns[0]}
+        for c in t.columns[1:]:
+            name = str(c)
+            ytd = "Jan" in name and "-" in name      # 例如 "Jan-Sep 2026 (Mt)"
+            if "(Mt)" in name:
+                cols["ytd_mt" if ytd else "mt"] = c
+            elif "%" in name:
+                cols["ytd_yoy_pct" if ytd else "yoy_pct"] = c
+        t = t[list(cols.values())].copy()
+        t.columns = list(cols.keys())
+        for c in t.columns[1:]:
+            # 數字可能用空格當千分位（例如 "1 016.5"），先清掉再轉成數字
+            t[c] = pd.to_numeric(t[c].astype(str).str.replace(r"[\s\u00a0]", "", regex=True), errors="coerce")
+        t["entity"] = t["entity"].astype(str).str.replace(r"\s*\(e\)", "", regex=True).str.strip()
+        t["kind"] = kind
+        out.append(t)
+    df = pd.concat(out, ignore_index=True)
+    df["month"] = month
+    return df

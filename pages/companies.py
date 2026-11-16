@@ -65,6 +65,13 @@ def _layout(lang: str, sel: str):
                            config={"displayModeBar": False}),
                  note=t("rebased_note", lang)),
         ], className="grid-2"),
+        card(t("quarterly_title", lang),
+             dcc.RadioItems(id="co-qmetric", value="ebitda_margin", inline=True, className="seg",
+                            options=[{"label": t(k, lang), "value": k}
+                                     for k in ("ebitda_margin", "operating_margin", "net_margin")]),
+             dcc.Graph(id="co-quarterly", figure=_quarterly_fig((sel,) + peer_ids, "ebitda_margin", lang),
+                       config={"displayModeBar": False}),
+             note=t("quarterly_note", lang)),
         card(t("peer_table", lang), html.Div(table, id="co-table"), note=t("ebitda_t_note", lang)),
         source_line(lang, "worldsteel 2024 (output); Yahoo Finance (prices, fundamentals snapshot)"),
     ])
@@ -191,6 +198,33 @@ def _table(sel: str, pt: pd.DataFrame, lang: str):
 
 
 @cached()
+def _quarterly_fig(ids: tuple, metric: str, lang: str) -> go.Figure:
+    """各公司每季利潤率（%）。利潤率不受幣別影響，可以直接跨國比較。"""
+    q = data.quarterly()
+    if q.empty:
+        return empty_fig(t("no_data", lang))
+    num = {"ebitda_margin": "ebitda", "operating_margin": "operating_income", "net_margin": "net_income"}[metric]
+    fig = go.Figure()
+    for n, cid in enumerate(ids):
+        c = data.company(cid)
+        g = q[q["ticker"] == c.get("ticker")].sort_values("quarter_end")
+        g = g[g["revenue"] > 0]
+        if g.empty:
+            continue
+        margin = (g[num] / g["revenue"] * 100).round(1)
+        fig.add_trace(go.Scatter(
+            x=g["quarter_end"], y=margin, mode="lines+markers", name=pick(c, "name", lang),
+            line=dict(color=SERIES[n % len(SERIES)], width=2.4 if n == 0 else 1.6), marker=dict(size=7),
+            hovertemplate="%{x|%Y-Q%q}: %{y:.1f}%"))
+    if not fig.data:
+        return empty_fig(t("no_data", lang))
+    fig.add_hline(y=0, line=dict(color=COLORS["muted"], width=1))
+    theme(fig, height=340)
+    fig.update_layout(yaxis=dict(ticksuffix="%"))
+    return fig
+
+
+@cached()
 def _main(sel: str, peer_ids: tuple, lang: str):
     """公司檔案卡、同業分數圖、比較表（依選擇快取）。"""
     pt = peers()
@@ -215,3 +249,9 @@ def register(app):
                   State("lang", "data"), prevent_initial_call=True)
     def perf(sel, chosen, rng, lang):
         return _perf_fig((sel,) + _ids(sel, chosen), rng, lang)
+
+    @app.callback(Output("co-quarterly", "figure"),
+                  Input("co-select", "value"), Input("co-peers", "value"), Input("co-qmetric", "value"),
+                  State("lang", "data"), prevent_initial_call=True)
+    def quarterly(sel, chosen, metric, lang):
+        return _quarterly_fig((sel,) + _ids(sel, chosen), metric, lang)

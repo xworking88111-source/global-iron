@@ -103,10 +103,63 @@ def update_fundamentals() -> int:
     return len(out) - 2
 
 
+def update_quarterly() -> int:
+    """各上市公司近幾季損益重點 -> data/cache/quarterly.csv（和舊資料合併，季數會越累積越多）。"""
+    tickers = sorted(t for t in data.companies()["ticker"].dropna().unique())
+    frames = []
+    for t in tickers:
+        try:
+            df = fetch.fetch_yf_quarterly(t)
+            if not df.empty:
+                frames.append(df)
+        except Exception as e:  # noqa: BLE001
+            log.warning("quarterly %s failed: %s", t, e)
+    if not frames:
+        return 0
+    new = pd.concat(frames, ignore_index=True)
+    if config.QUARTERLY_FILE.exists():
+        old = pd.read_csv(config.QUARTERLY_FILE, parse_dates=["quarter_end"])
+        new = pd.concat([old, new], ignore_index=True)
+    # 同一季以最新抓到的為準（公司可能修正數字），全空的列丟掉
+    new = new.dropna(subset=["revenue", "ebitda", "operating_income", "net_income"], how="all")
+    new = new.drop_duplicates(["ticker", "quarter_end"], keep="last").sort_values(["ticker", "quarter_end"])
+    new.to_csv(config.QUARTERLY_FILE, index=False)
+    return new["ticker"].nunique()
+
+
+def update_worldsteel_monthly() -> int:
+    """worldsteel 每月產量新聞稿 -> data/cache/worldsteel_monthly.csv（只抓還沒有的月份）。"""
+    have = set()
+    if config.WS_MONTHLY_FILE.exists():
+        old = pd.read_csv(config.WS_MONTHLY_FILE, dtype={"month": str})
+        have = set(old["month"])
+    else:
+        old = pd.DataFrame()
+    urls = fetch.list_worldsteel_monthly(pages=1)
+    # 補回最近 24 個月中列表頁沒列到的月份（用網址格式推測）
+    for m in pd.period_range(end=pd.Timestamp.today().to_period("M") - 1, periods=24, freq="M"):
+        urls.setdefault(str(m), fetch.guess_worldsteel_url(str(m)))
+    frames = []
+    for month, url in sorted(urls.items()):
+        if month in have:
+            continue
+        try:
+            frames.append(fetch.fetch_worldsteel_month(url, month))
+            log.info("worldsteel %s ok", month)
+        except Exception as e:  # noqa: BLE001 - 還沒發布或網址不同就跳過
+            log.info("worldsteel %s skipped (%s)", month, str(e)[:80])
+    if not frames:
+        return len(have)
+    new = pd.concat([old] + frames, ignore_index=True).drop_duplicates(["month", "kind", "entity"], keep="last")
+    new.sort_values(["month", "kind", "entity"]).to_csv(config.WS_MONTHLY_FILE, index=False)
+    return new["month"].nunique()
+
+
 def main(which: list[str]) -> None:
     """執行指定的更新工作（沒指定就全部跑），並記錄成功的時間。"""
     meta = data.meta() or {}
-    jobs = {"prices": update_prices, "stocks": update_stocks, "fundamentals": update_fundamentals}
+    jobs = {"prices": update_prices, "stocks": update_stocks, "fundamentals": update_fundamentals,
+            "quarterly": update_quarterly, "worldsteel": update_worldsteel_monthly}
     for name in which or jobs:
         n = jobs[name]()
         log.info("== %s: %d items", name, n)

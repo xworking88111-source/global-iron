@@ -16,11 +16,12 @@
 
 | 頁面 | 內容 | 主要回答的問題 |
 |---|---|---|
-| 市場總覽 `/` | 6 個指標卡（最新價、週／月／年漲跌、10 年分位）、市場狀態判斷、高爐利潤代理、美中熱軋價差、原料走勢＋政策事件標註 | 鋼市現在處於景氣循環的哪裡？ |
+| 市場總覽 `/` | **本週重點**自動摘要、6 個指標卡（最新價、週／月／年漲跌、10 年分位）、市場狀態判斷、高爐利潤代理、美中熱軋價差、原料走勢＋政策事件標註 | 鋼市現在處於景氣循環的哪裡？ |
+| 月度數據 `/monthly` | 中國每月鋼材出口、worldsteel 每月全球產量（中國 vs 其他、前 10 大國年增率）、中鋼月盤調整與累計 | 供需面最近有沒有變化？ |
 | 全球地圖 `/map` | 49 家鋼廠與礦商（45 家鋼廠、4 家鐵礦商）（泡泡 = 產量、顏色 = 製程）、各國產量、鐵礦／煤／鋼材航線、11 個咽喉要道、港口、2024 貿易流、AIS 船位、中鋼運通船隊 | 誰在哪裡生產？貨怎麼運？風險在哪？ |
-| 公司分析 `/companies` | 公司檔案、同業相對分數（體質／價值／動能）、股價比較、可排序比較表。支援 `?c=posco` 直接連結 | 這家公司跟同業比起來狀況如何？ |
+| 公司分析 `/companies` | 公司檔案、同業相對分數（體質／價值／動能）、股價比較、**季度利潤率趨勢**、可排序比較表。支援 `?c=posco` 直接連結 | 這家公司跟同業比起來狀況如何？ |
 | 情境模擬 `/scenario` | 調整熱軋／鐵礦／焦炭價格，看每噸利潤瀑布圖、年度影響、敏感度 | 原料漲 10%，鋼廠會少賺多少？ |
-| 貿易與風險 `/risk` | 區域貿易矩陣、淨出口國、鐵礦供需、各國產量、咽喉要道風險表、政策時間軸 | 誰依賴誰？哪些航道有風險？ |
+| 貿易與風險 `/risk` | 區域貿易矩陣、淨出口國、鐵礦供需、各國產量、咽喉要道風險表（附官方即時公告連結）、政策時間軸 | 誰依賴誰？哪些航道有風險？ |
 | 資料與方法 `/about` | 所有資料來源、計算方法、已知限制、最近更新時間 | 這些數字可以信嗎？ |
 
 所有頁面都可中英切換（選擇會記在瀏覽器），電腦與手機都有調整過版面。
@@ -35,6 +36,10 @@
 | 乾散貨運價代理 | BDRY ETF（Yahoo Finance） | 每個平日 |
 | 匯率、布蘭特原油 | Yahoo Finance | 每個平日 |
 | 38 家上市公司股價與基本面 | Yahoo Finance（`yfinance`） | 每個平日 |
+| 各公司季報損益 | Yahoo Finance（`yfinance`） | 每個平日 |
+| 每月全球粗鋼產量 | worldsteel 每月新聞稿（自動抓取） | 每月 |
+| 中國每月成品鋼材出口 | 海關總署數字，經產業媒體轉載（`data/static/china_steel_exports.json`） | 每月手動 |
+| 中鋼月盤調整 | 中鋼盤價公告的媒體報導（`data/static/csc_price_changes.json`） | 每月手動 |
 | 公司與各國粗鋼產量、鋼材與鐵礦貿易 | worldsteel《World Steel in Figures 2025》（2024 資料） | 每年 |
 | 船舶位置（AIS） | AISStream.io（免費岸基 AIS） | 每天 4 次 |
 | 中鋼運通船隊名單 | 中鋼運通官網船隊頁 | 手動 |
@@ -86,6 +91,7 @@ core/                   與介面無關的邏輯（未來可直接給 FastAPI �
   cache.py              計算結果快取（資料更新自動失效）
   i18n.py               中英文字串
 pages/                  每頁一個模組：layout(lang) + register(app)
+core/highlights.py      「本週重點」規則式摘要
 scripts/
   update_data.py        更新價格、股價、基本面
   collect_ais.py        AIS 快照與船隊 MMSI 探索
@@ -104,6 +110,12 @@ python3 -m venv .venv
 ```
 
 AIS（選用）：到 https://aisstream.io 用 GitHub 登入取得免費金鑰，`export AISSTREAM_API_KEY=...` 後執行 `.venv/bin/python scripts/collect_ais.py --seconds 300`。線上排程則把金鑰存成 GitHub Secret `AISSTREAM_API_KEY`。
+
+### 每月手動更新（約 5 分鐘）
+
+1. 海關約每月 7–10 日公布上月出口：在 `data/static/china_steel_exports.json` 的 `monthly` 加一筆，並更新 `ytd`
+2. 中鋼約每月中公布下月盤價：在 `data/static/csc_price_changes.json` 的 `changes` 加一筆
+3. commit 並 push，Render 會自動更新網站
 
 ### 部署
 
@@ -125,11 +137,12 @@ A free, bilingual (Traditional Chinese / English) monitor of the global steel ma
 
 | Page | What it shows | Question it answers |
 |---|---|---|
-| Market `/` | 6 KPI tiles (latest price, 1W/1M/1Y change, 10-year percentile), market-regime call, blast-furnace margin proxy, US vs China HRC gap, raw-material trends with policy-event overlay | Where is steel in the cycle right now? |
+| Market `/` | **This week at a glance** auto-summary, 6 KPI tiles (latest price, 1W/1M/1Y change, 10-year percentile), market-regime call, blast-furnace margin proxy, US vs China HRC gap, raw-material trends with policy-event overlay | Where is steel in the cycle right now? |
+| Monthly `/monthly` | China's monthly steel exports, worldsteel monthly production (China vs rest of world, top-10 YoY), China Steel list-price changes and cumulative | Has supply / demand shifted lately? |
 | Global Map `/map` | 49 companies (45 steelmakers, 4 iron-ore miners) (bubble = output, colour = process route), country output, ore/coal/steel sea lanes, 11 chokepoints, ports, 2024 trade flows, AIS vessels, China Steel Express fleet | Who produces where, how does it move, where is the risk? |
-| Companies `/companies` | Company profile, peer-relative scores (health / value / momentum), share-price comparison, sortable peer table. Deep links like `?c=posco` | How is this company doing versus peers? |
+| Companies `/companies` | Company profile, peer-relative scores (health / value / momentum), share-price comparison, **quarterly margin trend**, sortable peer table. Deep links like `?c=posco` | How is this company doing versus peers? |
 | Scenario `/scenario` | Shock HRC / ore / coke prices; per-tonne margin waterfall, annual impact, sensitivities | If ore rises 10%, how much margin does a mill lose? |
-| Trade & Risk `/risk` | Regional trade matrix, net exporters, iron-ore supply/demand, country output, chokepoint register, policy timeline | Who depends on whom, which lanes are exposed? |
+| Trade & Risk `/risk` | Regional trade matrix, net exporters, iron-ore supply/demand, country output, chokepoint register (with official live-advisory links), policy timeline | Who depends on whom, which lanes are exposed? |
 | Data & Method `/about` | Every source, method, known limit and last refresh time | Can I trust these numbers? |
 
 Every page switches language (remembered in the browser) and is laid out for both desktop and mobile.
@@ -144,6 +157,10 @@ Every page switches language (remembered in the browser) and is laid out for bot
 | Dry-bulk freight proxy | BDRY ETF (Yahoo Finance) | Weekdays |
 | FX, Brent crude | Yahoo Finance | Weekdays |
 | Share prices and fundamentals for 38 listed companies | Yahoo Finance (`yfinance`) | Weekdays |
+| Quarterly income statements | Yahoo Finance (`yfinance`) | Weekdays |
+| Monthly global crude steel production | worldsteel monthly press releases (scraped) | Monthly |
+| China's monthly finished-steel exports | GACC figures via trade press (`data/static/china_steel_exports.json`) | Monthly, manual |
+| China Steel list-price changes | CSC announcements via Taiwanese media (`data/static/csc_price_changes.json`) | Monthly, manual |
 | Company and country crude-steel output, steel and ore trade | worldsteel *World Steel in Figures 2025* (2024 data) | Yearly |
 | Vessel positions (AIS) | AISStream.io (free terrestrial AIS) | 4× daily |
 | China Steel Express fleet list | China Steel Express website fleet page | Manual |
@@ -195,6 +212,7 @@ core/                   UI-independent logic (reusable from a future FastAPI bac
   cache.py              Result cache, invalidated when data files change
   i18n.py               UI strings in both languages
 pages/                  One module per page: layout(lang) + register(app)
+core/highlights.py      Rule-based 'this week at a glance' summary
 scripts/
   update_data.py        Refresh prices, equities, fundamentals
   collect_ais.py        AIS snapshot and fleet MMSI discovery
@@ -213,6 +231,12 @@ python3 -m venv .venv
 ```
 
 AIS (optional): get a free key at https://aisstream.io (GitHub sign-in), `export AISSTREAM_API_KEY=...`, then run `.venv/bin/python scripts/collect_ais.py --seconds 300`. For the online schedule, store the key as the GitHub secret `AISSTREAM_API_KEY`.
+
+### Monthly manual update (about 5 minutes)
+
+1. China Customs publishes last month's exports around the 7th–10th: add a row to `monthly` in `data/static/china_steel_exports.json` and update `ytd`
+2. China Steel announces next month's list prices mid-month: add a row to `changes` in `data/static/csc_price_changes.json`
+3. Commit and push; Render redeploys automatically
 
 ### Deploy
 

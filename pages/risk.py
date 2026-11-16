@@ -122,10 +122,12 @@ def _country_fig(lang):
     return fig
 
 
-def _table(rows, cols, labels, wrap=True):
-    """深色樣式的資料表（可排序、長文字自動換行）。"""
+def _table(rows, cols, labels, wrap=True, markdown=()):
+    """深色樣式的資料表（可排序、長文字自動換行）。markdown 欄位可以放連結。"""
     return dash_table.DataTable(
-        data=rows, columns=[{"name": labels[c], "id": c} for c in cols], style_as_list_view=True,
+        data=rows, style_as_list_view=True, markdown_options={"link_target": "_blank"},
+        columns=[{"name": labels[c], "id": c, **({"presentation": "markdown"} if c in markdown else {})}
+                 for c in cols],
         sort_action="native", page_size=20,
         style_header={"backgroundColor": COLORS["surface_2"], "color": COLORS["text_2"], "fontWeight": 600, "border": "none"},
         style_cell={"backgroundColor": COLORS["surface"], "color": COLORS["text"], "border": "none",
@@ -138,10 +140,13 @@ def _table(rows, cols, labels, wrap=True):
 def _choke_table(lang):
     """咽喉要道表。"""
     geo = data.geo_layers()
-    chokes = [{"name": pick(c, "", lang), "relevance": pick(c, "relevance", lang), "risks": pick(c, "risks", lang)}
+    chokes = [{"name": pick(c, "", lang), "relevance": pick(c, "relevance", lang), "risks": pick(c, "risks", lang),
+               # 官方即時公告連結（點開看最新狀態；本站不轉載內容）
+               "advisories": " · ".join(f"[{a['name']}]({a['url']})" for a in c.get("advisories", [])) or "—"}
               for c in geo.get("chokepoints", [])]
-    return _table(chokes, ["name", "relevance", "risks"],
-                  {"name": t("layer_chokepoints", lang), "relevance": t("relevance", lang), "risks": t("risks", lang)})
+    return _table(chokes, ["name", "relevance", "risks", "advisories"],
+                  {"name": t("layer_chokepoints", lang), "relevance": t("relevance", lang), "risks": t("risks", lang),
+                   "advisories": t("advisories", lang)}, markdown=("advisories",))
 
 
 def _timeline_table(lang):
