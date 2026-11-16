@@ -1,6 +1,5 @@
-# 用免費的 GitHub Actions 定時更新資料。
-# 抓價格／股價／基本面（有設定金鑰的話也抓 AIS），再把更新後的快取檔 commit 回 repo。
-# Render 偵測到 push 會自動重新部署。
+# 市場資料：每個平日更新一次（價格／股價／基本面），再把快取檔 commit 回 repo。
+# Render 偵測到 push 會自動重新部署。AIS 船位另見 update-ais.yml（每天 4 次）。
 name: update-data
 
 on:
@@ -11,10 +10,15 @@ on:
 permissions:
   contents: write
 
+# 和 AIS 排程共用同一個群組：兩者不會同時 push，避免互相衝突
+concurrency:
+  group: data-commit
+  cancel-in-progress: false
+
 jobs:
   update:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -26,22 +30,11 @@ jobs:
       - name: Market data
         run: python scripts/update_data.py
 
-      - name: AIS snapshot (only if secret AISSTREAM_API_KEY is set)  # 有設定金鑰才執行
-        if: ${{ env.AISSTREAM_API_KEY != '' }}
-        env:
-          AISSTREAM_API_KEY: ${{ secrets.AISSTREAM_API_KEY }}
-        run: |
-          # 先補找船隊中還沒有 MMSI 的船（全部找到後這步會立刻結束），再收集快照
-          python scripts/collect_ais.py --discover-fleet --seconds 360 || true
-          python scripts/collect_ais.py --seconds 420
-        continue-on-error: true
-
       - name: Commit cache
         run: |
           git config user.name "data-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add data/cache data/static/fleet.json
-          git diff --cached --quiet || git commit -m "data: refresh $(date -u +%F)"
-          git push
-    env:
-      AISSTREAM_API_KEY: ${{ secrets.AISSTREAM_API_KEY }}
+          git add data/cache
+          git diff --cached --quiet && exit 0
+          git commit -m "data: refresh $(date -u +%F)"
+          git pull --rebase && git push

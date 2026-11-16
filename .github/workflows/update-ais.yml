@@ -1,0 +1,51 @@
+# AIS 船位：每天 4 次（每 6 小時），週末也跑，因為船不會休息。
+# 收集越頻繁，遠洋船隊經過有接收站的區域時被抓到的機會越大。
+#
+# 免費額度估算（私人 repo 每月 2,000 分鐘）：
+#   每次約 9 分鐘 × 4 次 × 30 天 ≈ 1,080 分鐘，加上市場資料約 90 分鐘，仍在額度內。
+name: update-ais
+
+on:
+  schedule:
+    - cron: "15 0,6,12,18 * * *"   # UTC 00:15 / 06:15 / 12:15 / 18:15（台北 08:15 / 14:15 / 20:15 / 02:15）
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: data-commit
+  cancel-in-progress: false
+
+jobs:
+  ais:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      AISSTREAM_API_KEY: ${{ secrets.AISSTREAM_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      # AIS 只需要 websockets 和 pandas，不裝 yfinance 等套件，省時間
+      - run: pip install websockets pandas
+
+      - name: Discover fleet MMSIs (stops immediately once all are known)
+        if: ${{ env.AISSTREAM_API_KEY != '' }}
+        run: python scripts/collect_ais.py --discover-fleet --seconds 180 || true
+
+      - name: AIS snapshot
+        if: ${{ env.AISSTREAM_API_KEY != '' }}
+        run: python scripts/collect_ais.py --seconds 300
+
+      - name: Commit snapshot
+        if: ${{ env.AISSTREAM_API_KEY != '' }}
+        run: |
+          git config user.name "data-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/cache/ais_snapshot.json data/static/fleet.json
+          git diff --cached --quiet && exit 0
+          git commit -m "ais: snapshot $(date -u +'%F %H:%M')"
+          git pull --rebase && git push
