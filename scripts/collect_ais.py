@@ -82,23 +82,44 @@ def normalize_name(name: str | None) -> str:
 
 
 async def _listen(api_key: str, sub: dict, seconds: int, handle) -> int:
-    """開一條 WebSocket 連線，收聽 `seconds` 秒，每則訊息交給 handle(msg) 處理。回傳訊息數。"""
+    """收聽 `seconds` 秒，每則訊息交給 handle(msg)。回傳收到的訊息數。
+
+    伺服器偶爾會斷線：只要時間還沒到就自動重連（最多 5 次）。
+    若一連上就被斷線、一則訊息都沒收到，幾乎都是金鑰無效，直接報錯說明。
+    """
     import websockets  # pip install websockets
 
     deadline = time.monotonic() + seconds
     n = 0
-    async with websockets.connect(WS_URL, open_timeout=30, max_size=None) as ws:
-        await ws.send(json.dumps({"APIKey": api_key, **sub}))
-        while time.monotonic() < deadline:
-            try:
-                raw = await asyncio.wait_for(ws.recv(), timeout=max(1, deadline - time.monotonic()))
-            except asyncio.TimeoutError:
-                break
-            msg = json.loads(raw)
-            if "error" in msg:
-                raise RuntimeError(msg["error"])
-            n += 1
-            handle(msg)
+    for attempt in range(1, 6):
+        try:
+            async with websockets.connect(WS_URL, open_timeout=30, max_size=None, ping_interval=20) as ws:
+                await ws.send(json.dumps({"APIKey": api_key, **sub}))
+                while time.monotonic() < deadline:
+                    try:
+                        raw = await asyncio.wait_for(ws.recv(), timeout=max(1, deadline - time.monotonic()))
+                    except asyncio.TimeoutError:
+                        return n
+                    msg = json.loads(raw)
+                    if "error" in msg:
+                        raise RuntimeError(f"AISStream error: {msg['error']}")
+                    n += 1
+                    handle(msg)
+            return n
+        except websockets.ConnectionClosed as e:
+            code = e.rcvd.code if e.rcvd else None
+            reason = e.rcvd.reason if e.rcvd else ""
+            log.warning("connection closed (attempt %d, code=%s, reason=%r, messages so far=%d)",
+                        attempt, code, reason, n)
+            if n == 0:
+                raise RuntimeError(
+                    "AISStream closed the connection before sending any data. "
+                    "This almost always means the API key is invalid: check the key at "
+                    "https://aisstream.io/account and re-save the AISSTREAM_API_KEY secret."
+                ) from e
+            if time.monotonic() >= deadline:
+                return n
+            await asyncio.sleep(2 * attempt)  # 稍等再重連
     return n
 
 
