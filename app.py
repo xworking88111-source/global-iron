@@ -93,17 +93,26 @@ for _module, _ in ROUTES.values():
 
 
 def warm_up() -> None:
-    """預先算好兩種語言的所有頁面，放進快取。
+    """預先算好兩種語言的所有頁面與常用切換，放進快取。
 
-    Render 免費方案 CPU 很弱，重啟或休眠醒來後第一個訪客原本要等每頁現算；
-    預熱之後，第一位訪客也能直接拿到算好的結果。
+    Render 免費方案 CPU 很弱（實測首次切到 10 年要 2.7 秒、快取後 0.27 秒）；
+    啟動時先算好，休眠醒來後的第一位訪客也不用等。
     """
+    from pages.common import RANGES
+
+    peer_ids = tuple(p for p in companies.DEFAULT_PEERS if p != companies.DEFAULT_COMPANY)
     for lang in ("zh", "en"):
-        for module, _ in ROUTES.values():
+        jobs = [lambda m=m: m.layout(lang) for m, _ in ROUTES.values()]
+        # 首頁：四種區間 × 事件開關
+        jobs += [lambda r=r, ev=ev: overview.build_charts(r, ev, lang) for r in RANGES for ev in (True, False)]
+        # 公司頁：預設公司與比較對象的三種股價區間
+        jobs += [lambda r=r: companies._perf_fig((companies.DEFAULT_COMPANY,) + peer_ids, r, lang)
+                 for r in ("1Y", "3Y", "5Y")]
+        for job in jobs:
             try:
-                module.layout(lang)
+                job()
             except Exception as e:  # noqa: BLE001 - 預熱失敗不該讓網站起不來
-                print(f"warm-up failed for {module.__name__}/{lang}: {e}")
+                print(f"warm-up failed ({lang}): {e}")
 
 
 warm_up()
