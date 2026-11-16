@@ -28,6 +28,7 @@ How it works
 from __future__ import annotations
 
 import os
+import threading
 
 from dash import Dash, Input, Output, State, dcc, html
 
@@ -130,7 +131,11 @@ def warm_up() -> None:
                 print(f"warm-up failed ({lang}): {e}")
 
 
-warm_up()
+# 預熱放到背景執行緒：網站先開始接收請求（休眠喚醒時越快回應越好），預熱在背後慢慢算。
+# 首頁先算，其他頁面接著算；有人來訪時，算好的頁面直接用快取。
+# Warm-up runs in a background thread so the server starts answering immediately after a
+# cold start; pages computed so far are served from cache.
+threading.Thread(target=warm_up, name="warm-up", daemon=True).start()
 
 
 if __name__ == "__main__":
