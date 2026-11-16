@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "note": "Curated market-moving events for overlay on price charts. 'precision' = day | month. Verify against primary sources before citing; add new events here (no code change needed).",
+    "note": "Curated market-moving events for overlay on price charts. 'precision' = day | month. Dates checked against legal/press sources on 2026-11-16. Add new events here (no code change needed).",
     "categories": {
       "tariff":   {"en": "Trade measure", "zh": "貿易措施"},
       "conflict": {"en": "Conflict / security", "zh": "衝突與安全"},
@@ -31,9 +31,9 @@
     {"date": "2025-06-04", "precision": "day", "cat": "tariff", "region": "USA",
      "en": "US raises Section 232 steel tariff to 50%", "zh": "美國將 232 鋼鐵關稅提高至 50%"},
     {"date": "2025-06-18", "precision": "day", "cat": "corporate", "region": "USA",
-     "en": "Nippon Steel completes acquisition of U.S. Steel", "zh": "日本製鐵完成收購美國鋼鐵"},
+     "en": "Nippon Steel completes acquisition of U.S. Steel (US government holds a golden share)", "zh": "日本製鐵完成收購美國鋼鐵（美國政府持有黃金股）"},
     {"date": "2025-10-07", "precision": "day", "cat": "tariff", "region": "EU",
-     "en": "European Commission proposes new steel regime: ~47% lower quotas, 50% out-of-quota duty", "zh": "歐盟執委會提出新鋼鐵機制：配額削減約 47%、超額關稅 50%"},
+     "en": "European Commission proposes new steel regime: quotas cut 47% to 18.3 Mt/yr, 50% out-of-quota duty (from July 2026 if adopted)", "zh": "歐盟執委會提出新鋼鐵機制：免稅配額削減 47% 至每年 1,830 萬噸、超額關稅 50%（若通過，2026 年 7 月起實施）"},
     {"date": "2026-01-01", "precision": "day", "cat": "policy", "region": "EU",
      "en": "EU CBAM definitive phase begins (certificates for embedded emissions)", "zh": "歐盟 CBAM 正式階段開始（須依內含排放購買憑證）"}
   ]

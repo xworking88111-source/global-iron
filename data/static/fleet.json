@@ -1,8 +1,29 @@
 {
   "_meta": {
-    "note_en": "Vessels to track by MMSI (9-digit AIS identity). Look up a ship's MMSI on any public vessel-finder site by name or IMO number and add it here. The AIS collector will report their latest position.",
-    "note_zh": "要追蹤的船舶 MMSI（9 位數 AIS 識別碼）。可在公開船舶查詢網站用船名或 IMO 編號查到 MMSI 後填入，AIS 收集器會回報最新位置。",
-    "example": {"mmsi": 416000000, "name": "EXAMPLE VESSEL", "operator_en": "China Steel Express", "operator_zh": "中鋼運通", "linked_company": "csc"}
+    "source": "China Steel Express fleet page https://www.csebulk.com.tw/fleet (retrieved 2026-11-16)",
+    "note_en": "Vessels to track. 'name' must match the AIS ship name (upper case). 'mmsi' is filled automatically by `python scripts/collect_ais.py --discover-fleet`; once known, the ship is tracked worldwide.",
+    "note_zh": "要追蹤的船。name 需與 AIS 廣播的船名一致（大寫）。mmsi 會由 `python scripts/collect_ais.py --discover-fleet` 自動填入；有了 MMSI 之後就能在全球範圍追蹤。",
+    "types": {"BC": {"en": "Bulk carrier", "zh": "散裝船"}, "GC": {"en": "General cargo", "zh": "雜貨船"}}
   },
-  "vessels": []
+  "vessels": [
+    {"name": "CSC PREEMINENCE", "name_zh": "中鋼超群輪", "type": "BC", "dwt": 208000, "built": 2020, "mmsi": null, "operator_en": "China Steel Express", "operator_zh": "中鋼運通", "linked_company": "csc"},
+    {"name": "CSC VICTOR", "name_zh": "中鋼勝利輪", "type": "BC", "dwt": 208000, "built": 2020, "mmsi": null, "operator_en": "China Steel Express", "operator_zh": "中鋼運通", "linked_company": "csc"},
+    {"name": "CSC CREATOR", "name_zh": "中鋼創造輪", "type": "BC", "dwt": 208000, "built": 2020, "mmsi": null, "operator_en": "China Steel Express", "operator_zh": "中鋼運通", "linked_company": "csc"},
+    {"name": "CHINA STEEL PRESTIGE", "name_zh": "中鋼榮耀輪", "type": "BC", "dwt": 208000, "built": 2020, "mmsi": null, "operator_en": "China Steel Express", "operator_zh": "中鋼運通", "linked_company": "csc"},
+    {"name": "CSC LEADER", "name_zh": "中鋼領先輪", "type": "BC", "dwt": 208000, "built": 2019, "mmsi": null, "operator_en": "China Steel Express", "operator_zh": "中鋼運通", "linked_company": "csc"},
+    {"name": "CHINA STEEL BRILLIANCE", "name_zh": "中鋼光輝輪", "type": "BC", "dwt": 208000, "built": 2019, "mmsi": null, "operator_en": "China Steel Express", "operator_zh": "中鋼運通", "linked_company": "csc"},
+    {"name": "CHINA STEEL HARMONY", "name_zh": "中鋼和諧輪", "type": "BC", "dwt": 208000, "built": 2019, "mmsi": null, "operator_en": "China Steel Express", "operator_zh": "中鋼運通", "linked_company": "csc"},
+    {"name": "CHINA STEEL LIBERTY", "name_zh": "中鋼自由輪", "type": "BC", "dwt": 208000, "built": 2019, "mmsi": null, "operator_en": "China Steel Express", "operator_zh": "中鋼運通", "linked_company": "csc"},
+    {"name": "CHINA STEEL VISION", "name_zh": "中鋼遠見輪", "type": "BC", "dwt": 209000, "built": 2016, "mmsi": null, "operator_en": "China Steel Express", "operator_zh": "中鋼運通", "linked_company": "csc"},
+    {"name": "CHINA STEEL SUCCESS", "name_zh": "中鋼成功輪", "type": "BC", "dwt": 209000, "built": 2015, "mmsi": null, "operator_en": "China Steel Express", "operator_zh": "中鋼運通", "linked_company": "csc"},
+    {"name": "CHINA STEEL EXPLORATION", "name_zh": "中鋼探索輪", "type": "BC", "dwt": 209000, "built": 2015, "mmsi": null, "operator_en": "China Steel Express", "operator_zh": "中鋼運通", "linked_company": "csc"},
+    {"name": "CHINA STEEL ENDEAVOR", "name_zh": "中鋼奮進輪", "type": "BC", "dwt": 209000, "built": 2014, "mmsi": null, "operator_en": "China Steel Express", "operator_zh": "中鋼運通", "linked_company": "csc"},
+    {"name": "CSE WISDOM EXPRESS", "name_zh": "通智輪", "type": "GC", "dwt": 12000, "built": 2014, "mmsi": null, "operator_en": "China Steel Express", "operator_zh": "中鋼運通", "linked_company": "csc"},
+    {"name": "CSE BRAVERY EXPRESS", "name_zh": "通勇輪", "type": "GC", "dwt": 12000, "built": 2014, "mmsi": null, "operator_en": "China Steel Express", "operator_zh": "中鋼運通", "linked_company": "csc"},
+    {"name": "CSE FORTUNE EXPRESS", "name_zh": "通裕輪", "type": "BC", "dwt": 35000, "built": 2014, "mmsi": null, "operator_en": "China Steel Express", "operator_zh": "中鋼運通", "linked_company": "csc"},
+    {"name": "CSE GLORY EXPRESS", "name_zh": "通耀輪", "type": "BC", "dwt": 35000, "built": 2014, "mmsi": null, "operator_en": "China Steel Express", "operator_zh": "中鋼運通", "linked_company": "csc"},
+    {"name": "CHINA STEEL SUSTAINABILITY", "name_zh": "中鋼永續輪", "type": "BC", "dwt": 205000, "built": 2013, "mmsi": null, "operator_en": "China Steel Express", "operator_zh": "中鋼運通", "linked_company": "csc"},
+    {"name": "CHINA STEEL CHALLENGE", "name_zh": "中鋼挑戰輪", "type": "BC", "dwt": 205000, "built": 2013, "mmsi": null, "operator_en": "China Steel Express", "operator_zh": "中鋼運通", "linked_company": "csc"},
+    {"name": "CHINA STEEL INNOVATOR", "name_zh": "中鋼求新輪", "type": "BC", "dwt": 205000, "built": 2012, "mmsi": null, "operator_en": "China Steel Express", "operator_zh": "中鋼運通", "linked_company": "csc"}
+  ]
 }

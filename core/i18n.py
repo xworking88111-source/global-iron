@@ -84,6 +84,7 @@ STRINGS: dict[str, dict[str, str]] = {
     "click_hint": {"en": "Click a company bubble for details.", "zh": "點擊公司泡泡查看詳情。"},
     "ais_none": {"en": "No AIS snapshot yet. Get a free key at aisstream.io, set AISSTREAM_API_KEY, run scripts/collect_ais.py.",
                  "zh": "尚無 AIS 快照。請到 aisstream.io 免費申請金鑰，設定 AISSTREAM_API_KEY 後執行 scripts/collect_ais.py。"},
+    "layer_fleet": {"en": "Tracked fleet (China Steel Express)", "zh": "追蹤船隊（中鋼運通）"},
     "ais_summary": {"en": "AIS snapshot", "zh": "AIS 快照"},
     "ais_vessels": {"en": "cargo vessels seen", "zh": "艘貨船"},
     "zone": {"en": "Zone", "zh": "區域"},

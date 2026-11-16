@@ -30,7 +30,10 @@ def layout(lang: str):
             stat(t("china_net_exports", lang), f"+{china_net:,.1f} Mt" if china_net else "—", "2024"),
         ], className="stat-row"),
         html.Div([
-            card(t("trade_matrix", lang), dcc.Graph(id="rk-matrix", config={"displayModeBar": False})),
+            card(t("trade_matrix", lang),
+                 # 矩陣有 10 欄，手機上壓縮會擠成一團：給最小寬度，窄螢幕改為左右滑動
+                 html.Div(dcc.Graph(id="rk-matrix", config={"displayModeBar": False}, style={"minWidth": "560px"}),
+                          className="scroll-x")),
             card(t("net_exports", lang), dcc.Graph(id="rk-net", config={"displayModeBar": False})),
         ], className="grid-2"),
         html.Div([

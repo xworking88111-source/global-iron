@@ -166,17 +166,33 @@ def build_figure(layers: list[str], lang: str) -> go.Figure:
             hovertemplate="%{text}<extra></extra>",
         ))
 
-    # 8. 最新 AIS 快照中的船舶
+    # 8. 最新 AIS 快照中的船舶：一般貨船用小點，追蹤船隊（例如中鋼運通）用醒目的大標記
     if "ais" in layers:
         snap = data.ais_snapshot()
         ships = snap.get("vessels", [])
-        if ships:
+
+        def ship_text(s):
+            name = s.get("name") or s["mmsi"]
+            if s.get("tracked") and lang == "zh" and s.get("name_zh"):
+                name = f"{s['name_zh']}（{name}）"
+            op = s.get(f"operator_{lang}") or s.get("operator_en")
+            return (f"<b>{name}</b>" + (f"<br>{op}" if op else "")
+                    + f"<br>{s.get('zone') or '—'} · {s.get('sog', '—')} kn"
+                    + f"<br>→ {s.get('destination') or '—'}<br>{(s.get('time') or '')[:16]}")
+
+        others = [s for s in ships if not s.get("tracked")]
+        fleet = [s for s in ships if s.get("tracked")]
+        if others:
             fig.add_trace(go.Scattergeo(
-                lat=[s["lat"] for s in ships], lon=[s["lon"] for s in ships], mode="markers",
+                lat=[s["lat"] for s in others], lon=[s["lon"] for s in others], mode="markers",
                 marker=dict(size=4, color=SERIES[2], opacity=0.8), name=t("layer_ais", lang),
-                hoverinfo="text",
-                text=[f"{s.get('name') or s['mmsi']}<br>{s.get('zone', '')} · {s.get('sog', '—')} kn"
-                      f"<br>→ {s.get('destination') or '—'}<br>{s.get('time', '')[:16]}" for s in ships],
+                hoverinfo="text", text=[ship_text(s) for s in others],
+            ))
+        if fleet:
+            fig.add_trace(go.Scattergeo(
+                lat=[s["lat"] for s in fleet], lon=[s["lon"] for s in fleet], mode="markers",
+                marker=dict(size=12, symbol="star", color=COLORS["text"], line=dict(width=1.5, color=SERIES[0])),
+                name=t("layer_fleet", lang), hoverinfo="text", text=[ship_text(s) for s in fleet],
             ))
 
     fig.update_geos(
@@ -246,9 +262,15 @@ def ais_summary(lang: str):
         return card(t("ais_summary", lang), html.P(t("ais_none", lang), className="small muted"))
     zones = snap.get("zone_counts", {})
     rows = [html.Tr([html.Td(z), html.Td(n, className="v")]) for z, n in sorted(zones.items(), key=lambda x: -x[1])]
-    return card(f"{t('ais_summary', lang)} · {snap.get('collected_at', '')[:16]} UTC",
-                html.P(f"{len(snap.get('vessels', []))} {t('ais_vessels', lang)}", className="small"),
-                html.Table([html.Tr([html.Th(t("zone", lang)), html.Th(t("vessels", lang))])] + rows, className="kv"))
+    fleet = [s for s in snap.get("vessels", []) if s.get("tracked")]
+    fleet_rows = [html.Tr([html.Td(s.get("name_zh") if lang == "zh" and s.get("name_zh") else s.get("name")),
+                           html.Td(s.get("zone") or f"{s['lat']:.1f}, {s['lon']:.1f}", className="v")]) for s in fleet]
+    parts = [html.P(f"{len(snap.get('vessels', []))} {t('ais_vessels', lang)}", className="small"),
+             html.Table([html.Tr([html.Th(t("zone", lang)), html.Th(t("vessels", lang))])] + rows, className="kv")]
+    if fleet_rows:
+        parts += [html.H3(t("layer_fleet", lang), className="card-title"),
+                  html.Table(fleet_rows, className="kv")]
+    return card(f"{t('ais_summary', lang)} · {snap.get('collected_at', '')[:16]} UTC", *parts)
 
 
 def register(app):
