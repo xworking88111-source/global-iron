@@ -171,6 +171,12 @@ table.kv td.v { color: var(--text); text-align: right; font-variant-numeric: tab
 .md th { color: var(--text); }
 .md code { background: var(--surface-2); padding: 1px 5px; border-radius: 4px; }
 
+/* 地圖縮放按鈕：深色底、常駐顯示（手機沒有滑鼠停留，不能等 hover 才出現） */
+.map-main .modebar { opacity: 1 !important; }
+.modebar-btn[data-title="Share chart..."] { display: none !important; }  /* Plotly Cloud 分享按鈕，本站用不到 */
+.map-main .modebar-group { background: rgba(35,35,34,0.85) !important; border-radius: 6px; }
+.map-main .modebar-btn path { fill: var(--text-2) !important; }
+
 /* 內容太寬時可左右滑動（手機上的大型矩陣圖） */
 .scroll-x { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 

@@ -185,12 +185,35 @@ async def collect(api_key: str, seconds: int) -> dict:
                       "name_zh": f.get("name_zh"), "linked_company": f.get("linked_company")})
         out.append(s)
 
+    # 各區域船數：zone_counts = 全部（含尚未回報船型的船），cargo_counts = 已確認是貨船的
+    # 船型資料約 6 分鐘才廣播一次，收聽時間內很多船還沒回報，所以兩個數字都保留
     counts: dict[str, int] = {}
+    cargo: dict[str, int] = {}
     for s in out:
         if s["zone"]:
             counts[s["zone"]] = counts.get(s["zone"], 0) + 1
+            if s.get("type") in CARGO_TYPES:
+                cargo[s["zone"]] = cargo.get(s["zone"], 0) + 1
     return {"collected_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-            "listen_seconds": seconds, "messages": n_msgs, "zone_counts": counts, "vessels": out}
+            "listen_seconds": seconds, "messages": n_msgs, "zone_counts": counts, "cargo_counts": cargo,
+            "vessels": out}
+
+
+def save_fleet_mmsis(vessels: list[dict]) -> int:
+    """快照中靠「船名」比對到的船隊船舶，把 MMSI 寫回 fleet.json，下次就能全球追蹤。"""
+    path = config.STATIC_DIR / "fleet.json"
+    doc = json.loads(path.read_text(encoding="utf-8"))
+    by_name = {normalize_name(v["name"]): v for v in doc["vessels"] if not v.get("mmsi")}
+    added = 0
+    for s in vessels:
+        f = by_name.get(normalize_name(s.get("name"))) if s.get("tracked") else None
+        if f and not f.get("mmsi"):
+            f["mmsi"] = int(s["mmsi"])
+            added += 1
+            log.info("fleet: %s -> MMSI %s (matched by name)", f["name"], f["mmsi"])
+    if added:
+        path.write_text(json.dumps(doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    return added
 
 
 async def discover_fleet(api_key: str, seconds: int) -> int:
@@ -241,6 +264,7 @@ def main():
     snap = asyncio.run(collect(key, args.seconds))
     config.AIS_FILE.write_text(json.dumps(snap, ensure_ascii=False), encoding="utf-8")
     log.info("wrote %s (%d vessels, %d zones)", config.AIS_FILE, len(snap["vessels"]), len(snap["zone_counts"]))
+    save_fleet_mmsis(snap["vessels"])
 
 
 if __name__ == "__main__":

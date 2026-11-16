@@ -36,8 +36,11 @@ def layout(lang: str):
         html.Div([html.H2(t("map_title", lang))], className="page-head"),
         html.Div([
             html.Div([
-                dcc.Graph(id="map-graph", config={"displayModeBar": False, "scrollZoom": True},
-                          style={"height": "68vh"}),
+                # 關掉滾輪縮放：否則捲動頁面經過地圖時會誤觸縮放。改用右上角的放大／縮小／重設按鈕
+                dcc.Graph(id="map-graph", style={"height": "68vh"}, config={
+                    "scrollZoom": False, "displaylogo": False, "displayModeBar": True,
+                    "modeBarButtonsToRemove": ["toImage", "pan2d", "select2d", "lasso2d", "hoverClosestGeo"],
+                }),
             ], className="map-main"),
             html.Div([
                 card(t("layers", lang), dcc.Checklist(
@@ -261,12 +264,16 @@ def ais_summary(lang: str):
     if not snap:
         return card(t("ais_summary", lang), html.P(t("ais_none", lang), className="small muted"))
     zones = snap.get("zone_counts", {})
-    rows = [html.Tr([html.Td(z), html.Td(n, className="v")]) for z, n in sorted(zones.items(), key=lambda x: -x[1])]
+    cargo = snap.get("cargo_counts", {})
+    # 「已確認貨船 / 全部」：很多船在收聽期間還沒回報船型，所以全部數字會偏高
+    rows = [html.Tr([html.Td(z), html.Td(f"{cargo.get(z, 0)} / {n}", className="v")])
+            for z, n in sorted(zones.items(), key=lambda x: -x[1])]
     fleet = [s for s in snap.get("vessels", []) if s.get("tracked")]
     fleet_rows = [html.Tr([html.Td(s.get("name_zh") if lang == "zh" and s.get("name_zh") else s.get("name")),
                            html.Td(s.get("zone") or f"{s['lat']:.1f}, {s['lon']:.1f}", className="v")]) for s in fleet]
     parts = [html.P(f"{len(snap.get('vessels', []))} {t('ais_vessels', lang)}", className="small"),
-             html.Table([html.Tr([html.Th(t("zone", lang)), html.Th(t("vessels", lang))])] + rows, className="kv")]
+             html.Table([html.Tr([html.Th(t("zone", lang)), html.Th(t("vessels_cargo_all", lang))])] + rows, className="kv"),
+             html.P(t("ais_coverage_note", lang), className="card-note")]
     if fleet_rows:
         parts += [html.H3(t("layer_fleet", lang), className="card-title"),
                   html.Table(fleet_rows, className="kv")]
