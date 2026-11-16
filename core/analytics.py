@@ -239,6 +239,18 @@ def scenario(base: dict, shocks: dict, output_mt: float, other_cost: float) -> d
     }
 
 
+def downsample(obj, years: int):
+    """依時間長度降低資料密度，讓圖表傳輸量變小、畫面看起來一樣。
+
+    1 年：每日（約 250 點）；3 年：每 3 天；5 年以上：每週。
+    取每段的最後一個值（等同收盤價概念）。
+    """
+    if years <= 1 or obj is None or len(obj) == 0:
+        return obj
+    rule = "3D" if years <= 3 else "W-FRI"
+    return obj.resample(rule).last().dropna(how="all")
+
+
 def safe_round(x, nd=1):
     """四捨五入；None、NaN、無限大都回傳 None。"""
     if x is None or (isinstance(x, float) and (math.isnan(x) or math.isinf(x))):

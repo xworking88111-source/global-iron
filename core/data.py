@@ -112,3 +112,13 @@ def ais_snapshot() -> dict:
 
 def meta() -> dict:
     return load_json(config.META_FILE)
+
+
+# ---------------------------------------------------------------------------
+# 資料版本：所有資料檔的修改時間。給「計算結果快取」當 key 用——
+# 任何資料檔一更新，版本就變，舊的快取自動失效。
+# ---------------------------------------------------------------------------
+def version() -> tuple:
+    files = [config.PRICES_FILE, config.STOCKS_FILE, config.FUNDAMENTALS_FILE, config.AIS_FILE, config.META_FILE]
+    files += sorted(config.STATIC_DIR.glob("*.json"))
+    return tuple(_mtime(p) for p in files)

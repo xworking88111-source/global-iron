@@ -35,6 +35,7 @@ app = Dash(
     __name__,
     title="Global Iron",
     suppress_callback_exceptions=True,  # 切換頁面時元件會出現／消失，關掉「找不到元件」的警告
+    compress=True,  # 以 gzip 壓縮回應（需要 flask-compress）：圖表 JSON 通常可縮小 5–8 倍
     meta_tags=[{"name": "viewport", "content": "width=device-width, initial-scale=1"}],
 )
 server = app.server  # Dash 底層的 Flask 物件，給 gunicorn 使用
@@ -89,6 +90,23 @@ def render_page(path, search, lang):
 for _module, _ in ROUTES.values():
     if hasattr(_module, "register"):
         _module.register(app)
+
+
+def warm_up() -> None:
+    """預先算好兩種語言的所有頁面，放進快取。
+
+    Render 免費方案 CPU 很弱，重啟或休眠醒來後第一個訪客原本要等每頁現算；
+    預熱之後，第一位訪客也能直接拿到算好的結果。
+    """
+    for lang in ("zh", "en"):
+        for module, _ in ROUTES.values():
+            try:
+                module.layout(lang)
+            except Exception as e:  # noqa: BLE001 - 預熱失敗不該讓網站起不來
+                print(f"warm-up failed for {module.__name__}/{lang}: {e}")
+
+
+warm_up()
 
 
 if __name__ == "__main__":

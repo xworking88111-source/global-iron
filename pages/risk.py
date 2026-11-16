@@ -4,9 +4,10 @@
 from __future__ import annotations
 
 import plotly.graph_objects as go
-from dash import Input, Output, dash_table, dcc, html
+from dash import dash_table, dcc, html
 
 from core import data
+from core.cache import cached
 from core.config import COLORS
 from core.i18n import pick, t
 
@@ -16,7 +17,9 @@ from .common import SERIES, card, source_line, stat, theme
 SEQ_BLUE = [[0, "#1a1a19"], [0.15, "#184f95"], [0.5, "#2a78d6"], [1, "#9ec5f4"]]
 
 
+@cached()
 def layout(lang: str):
+    """這頁內容只跟語言有關（沒有互動選項），所以整頁一次畫好並快取。"""
     ws = data.worldsteel()
     world = ws.get("world_crude_steel", {}).get("2024")
     china = next((c["p2024"] for c in ws.get("country_production", []) if c["iso3"] == "CHN"), None)
@@ -32,16 +35,16 @@ def layout(lang: str):
         html.Div([
             card(t("trade_matrix", lang),
                  # 矩陣有 10 欄，手機上壓縮會擠成一團：給最小寬度，窄螢幕改為左右滑動
-                 html.Div(dcc.Graph(id="rk-matrix", config={"displayModeBar": False}, style={"minWidth": "560px"}),
+                 html.Div(dcc.Graph(id="rk-matrix", figure=_matrix_fig(lang), config={"displayModeBar": False}, style={"minWidth": "560px"}),
                           className="scroll-x")),
-            card(t("net_exports", lang), dcc.Graph(id="rk-net", config={"displayModeBar": False})),
+            card(t("net_exports", lang), dcc.Graph(id="rk-net", figure=_net_fig(lang), config={"displayModeBar": False})),
         ], className="grid-2"),
         html.Div([
-            card(t("ore_trade", lang), dcc.Graph(id="rk-ore", config={"displayModeBar": False})),
-            card(t("country_output", lang), dcc.Graph(id="rk-country", config={"displayModeBar": False})),
+            card(t("ore_trade", lang), dcc.Graph(id="rk-ore", figure=_ore_fig(lang), config={"displayModeBar": False})),
+            card(t("country_output", lang), dcc.Graph(id="rk-country", figure=_country_fig(lang), config={"displayModeBar": False})),
         ], className="grid-2"),
-        card(t("chokepoint_table", lang), html.Div(id="rk-choke"), note=t("risk_review_note", lang)),
-        card(t("timeline", lang), html.Div(id="rk-timeline")),
+        card(t("chokepoint_table", lang), html.Div(_choke_table(lang), id="rk-choke"), note=t("risk_review_note", lang)),
+        card(t("timeline", lang), html.Div(_timeline_table(lang), id="rk-timeline")),
         source_line(lang, "worldsteel, World Steel in Figures 2025; curated chokepoint and event registers"),
     ])
 
@@ -132,21 +135,21 @@ def _table(rows, cols, labels, wrap=True):
     )
 
 
-def register(app):
-    @app.callback(Output("rk-matrix", "figure"), Output("rk-net", "figure"), Output("rk-ore", "figure"),
-                  Output("rk-country", "figure"), Output("rk-choke", "children"), Output("rk-timeline", "children"),
-                  Input("lang", "data"))
-    def update(lang):
-        geo = data.geo_layers()
-        chokes = [{"name": pick(c, "", lang), "relevance": pick(c, "relevance", lang), "risks": pick(c, "risks", lang)}
-                  for c in geo.get("chokepoints", [])]
-        choke_tbl = _table(chokes, ["name", "relevance", "risks"],
-                           {"name": t("layer_chokepoints", lang), "relevance": t("relevance", lang), "risks": t("risks", lang)})
-        ev = data.events()
-        cats = data.event_categories()
-        ev_rows = [{"date": r["date"].strftime("%Y-%m" if r["precision"] == "month" else "%Y-%m-%d"),
-                    "category": pick(cats.get(r["cat"], {}), "", lang), "event": pick(r, "", lang)}
-                   for _, r in ev.sort_values("date", ascending=False).iterrows()]
-        ev_tbl = _table(ev_rows, ["date", "category", "event"],
-                        {"date": t("date", lang), "category": t("category", lang), "event": t("event", lang)})
-        return _matrix_fig(lang), _net_fig(lang), _ore_fig(lang), _country_fig(lang), choke_tbl, ev_tbl
+def _choke_table(lang):
+    """咽喉要道表。"""
+    geo = data.geo_layers()
+    chokes = [{"name": pick(c, "", lang), "relevance": pick(c, "relevance", lang), "risks": pick(c, "risks", lang)}
+              for c in geo.get("chokepoints", [])]
+    return _table(chokes, ["name", "relevance", "risks"],
+                  {"name": t("layer_chokepoints", lang), "relevance": t("relevance", lang), "risks": t("risks", lang)})
+
+
+def _timeline_table(lang):
+    """政策與事件時間軸（新到舊）。"""
+    ev = data.events()
+    cats = data.event_categories()
+    rows = [{"date": r["date"].strftime("%Y-%m" if r["precision"] == "month" else "%Y-%m-%d"),
+             "category": pick(cats.get(r["cat"], {}), "", lang), "event": pick(r, "", lang)}
+            for _, r in ev.sort_values("date", ascending=False).iterrows()]
+    return _table(rows, ["date", "category", "event"],
+                  {"date": t("date", lang), "category": t("category", lang), "event": t("event", lang)})

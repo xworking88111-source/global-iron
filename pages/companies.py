@@ -6,15 +6,16 @@ from urllib.parse import parse_qs
 
 import pandas as pd
 import plotly.graph_objects as go
-from dash import Input, Output, dash_table, dcc, html
+from dash import Input, Output, State, dash_table, dcc, html
 from plotly.subplots import make_subplots
 
 from core import analytics as an
 from core import data
+from core.cache import cached
 from core.config import COLORS
 from core.i18n import pick, t
 
-from .common import RANGES, SERIES, card, empty_fig, source_line, stat, theme
+from .common import RANGES, SERIES, card, empty_fig, peers, source_line, stat, theme
 
 DEFAULT_COMPANY = "csc"
 DEFAULT_PEERS = ["posco", "nippon", "jfe", "hyundai", "baowu", "hoaphat"]
@@ -32,7 +33,17 @@ def layout(lang: str, search: str = ""):
     """公司分析版面。`search` 是網址的查詢字串，例如 ?c=posco 會預選 POSCO。"""
     q = parse_qs((search or "").lstrip("?"))
     sel = q.get("c", [DEFAULT_COMPANY])[0]
+    if not data.company(sel):
+        sel = DEFAULT_COMPANY
+    return _layout(lang, sel)
+
+
+@cached()
+def _layout(lang: str, sel: str):
+    """實際的版面（含初始圖表），依（語言, 選定公司）快取。"""
     opts = _options(lang)
+    peer_ids = tuple(p for p in DEFAULT_PEERS if p != sel)
+    profile, scores, table = _main(sel, peer_ids, lang)
     return html.Div([
         html.Div([html.H2(t("nav_companies", lang))], className="page-head"),
         html.Div([
@@ -40,20 +51,21 @@ def layout(lang: str, search: str = ""):
                       dcc.Dropdown(id="co-select", options=opts, value=sel, clearable=False, className="dd")],
                      className="ctl"),
             html.Div([html.Label(t("compare_with", lang), className="ctl-label"),
-                      dcc.Dropdown(id="co-peers", options=opts, value=[p for p in DEFAULT_PEERS if p != sel],
+                      dcc.Dropdown(id="co-peers", options=opts, value=list(peer_ids),
                                    multi=True, className="dd")], className="ctl grow"),
         ], className="controls"),
-        html.Div(id="co-profile"),
+        html.Div(profile, id="co-profile"),
         html.Div([
-            card(t("scores_title", lang), dcc.Graph(id="co-scores", config={"displayModeBar": False}),
+            card(t("scores_title", lang), dcc.Graph(id="co-scores", figure=scores, config={"displayModeBar": False}),
                  note=t("scores_note", lang)),
             card(t("perf_title", lang),
                  dcc.RadioItems(id="co-range", options=[{"label": k, "value": k} for k in ("1Y", "3Y", "5Y")],
                                 value="3Y", inline=True, className="seg"),
-                 dcc.Graph(id="co-perf", config={"displayModeBar": False}),
+                 dcc.Graph(id="co-perf", figure=_perf_fig((sel,) + peer_ids, "3Y", lang),
+                           config={"displayModeBar": False}),
                  note=t("rebased_note", lang)),
         ], className="grid-2"),
-        card(t("peer_table", lang), html.Div(id="co-table"), note=t("ebitda_t_note", lang)),
+        card(t("peer_table", lang), html.Div(table, id="co-table"), note=t("ebitda_t_note", lang)),
         source_line(lang, "worldsteel 2024 (output); Yahoo Finance (prices, fundamentals snapshot)"),
     ])
 
@@ -122,7 +134,8 @@ def _scores_fig(ids: list[str], pt: pd.DataFrame, lang: str) -> go.Figure:
     return fig
 
 
-def _perf_fig(ids: list[str], rng: str, lang: str) -> go.Figure:
+@cached()
+def _perf_fig(ids: tuple, rng: str, lang: str) -> go.Figure:
     """股價走勢比較（指數化 = 100）。"""
     stocks = data.stock_prices()
     cos = {i: data.company(i) for i in ids}
@@ -130,7 +143,7 @@ def _perf_fig(ids: list[str], rng: str, lang: str) -> go.Figure:
     if stocks.empty or not tick:
         return empty_fig(t("no_data", lang))
     start = stocks.index.max() - pd.DateOffset(years=RANGES[rng])
-    reb = an.rebased(stocks, list(tick.values()), start)
+    reb = an.downsample(an.rebased(stocks, list(tick.values()), start), RANGES[rng]).round(1)
     fig = go.Figure()
     # 顏色跟著公司在使用者清單中的位置（主角 = 第 1 色），不跟著排名變，避免切換時顏色亂跳
     for n, i in enumerate(ids):
@@ -177,17 +190,28 @@ def _table(sel: str, pt: pd.DataFrame, lang: str):
     )
 
 
+@cached()
+def _main(sel: str, peer_ids: tuple, lang: str):
+    """公司檔案卡、同業分數圖、比較表（依選擇快取）。"""
+    pt = peers()
+    ids = [sel] + [p for p in peer_ids if p != sel][:MAX_PEERS]
+    return _profile(sel, pt, lang), _scores_fig(ids, pt, lang), _table(sel, pt, lang)
+
+
+def _ids(sel, chosen) -> tuple:
+    return tuple(p for p in (chosen or []) if p != sel)[:MAX_PEERS]
+
+
 def register(app):
+    # 初始內容已在 layout 畫好；只有使用者改選項才觸發。語言改變時整頁會重畫，所以語言用 State
     @app.callback(Output("co-profile", "children"), Output("co-scores", "figure"), Output("co-table", "children"),
-                  Input("co-select", "value"), Input("co-peers", "value"), Input("lang", "data"))
-    def update(sel, peers, lang):
-        pt = an.peer_table(data.companies(), data.fundamentals(), data.stock_prices())
-        ids = [sel] + [p for p in (peers or []) if p != sel][:MAX_PEERS]
-        return _profile(sel, pt, lang), _scores_fig(ids, pt, lang), _table(sel, pt, lang)
+                  Input("co-select", "value"), Input("co-peers", "value"), State("lang", "data"),
+                  prevent_initial_call=True)
+    def update(sel, chosen, lang):
+        return _main(sel, _ids(sel, chosen), lang)
 
     @app.callback(Output("co-perf", "figure"),
                   Input("co-select", "value"), Input("co-peers", "value"), Input("co-range", "value"),
-                  Input("lang", "data"))
-    def perf(sel, peers, rng, lang):
-        ids = [sel] + [p for p in (peers or []) if p != sel][:MAX_PEERS]
-        return _perf_fig(ids, rng, lang)
+                  State("lang", "data"), prevent_initial_call=True)
+    def perf(sel, chosen, rng, lang):
+        return _perf_fig((sel,) + _ids(sel, chosen), rng, lang)

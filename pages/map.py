@@ -8,14 +8,15 @@ from __future__ import annotations
 import math
 
 import plotly.graph_objects as go
-from dash import Input, Output, dcc, html
+from dash import Input, Output, State, dcc, html
 
 from core import analytics as an
 from core import data
+from core.cache import cached
 from core.config import COLORS, ROUTE_COLOR
 from core.i18n import ownership_label, pick, t
 
-from .common import SERIES, card, source_line
+from .common import SERIES, card, peers, source_line
 
 # 所有圖層與預設開啟的圖層
 LAYERS = ["producers", "miners", "routes", "chokepoints", "ports", "country", "trade", "ais"]
@@ -31,13 +32,16 @@ ROUTE_STYLE = {
 PORT_SYMBOL = {"ore_export": "square", "coal_export": "square-open", "ore_import": "circle-open"}
 
 
+@cached()
 def layout(lang: str):
+    """地圖版面，預設圖層的地圖直接畫好（不用等第二趟請求）。"""
     return html.Div([
         html.Div([html.H2(t("map_title", lang))], className="page-head"),
         html.Div([
             html.Div([
                 # 關掉滾輪縮放：否則捲動頁面經過地圖時會誤觸縮放。改用右上角的放大／縮小／重設按鈕
-                dcc.Graph(id="map-graph", style={"height": "68vh"}, config={
+                dcc.Graph(id="map-graph", figure=build_figure(tuple(DEFAULT_LAYERS), lang),
+                          style={"height": "68vh"}, config={
                     "scrollZoom": False, "displaylogo": False, "displayModeBar": True,
                     "modeBarButtonsToRemove": ["toImage", "pan2d", "select2d", "lasso2d", "hoverClosestGeo"],
                 }),
@@ -65,7 +69,8 @@ def _bubble_size(mt) -> float:
     return 6 + 3.2 * math.sqrt(mt)
 
 
-def build_figure(layers: list[str], lang: str) -> go.Figure:
+@cached()
+def build_figure(layers: tuple, lang: str) -> go.Figure:
     """依勾選的圖層組出整張地圖。圖層由下往上疊：底色 → 線 → 點。"""
     fig = go.Figure()
     geo = data.geo_layers()
@@ -232,7 +237,7 @@ def company_panel(cid: str, lang: str):
     c = data.company(cid)
     if not c:
         return card(None, html.P(t("click_hint", lang), className="muted"))
-    pt = an.peer_table(data.companies(), data.fundamentals(), data.stock_prices())
+    pt = peers()
     m = pt.loc[cid].to_dict() if cid in pt.index else {}
     out = c.get("output_2024_mt")
     has_out = isinstance(out, (int, float)) and not math.isnan(out)
@@ -281,17 +286,21 @@ def ais_summary(lang: str):
 
 
 def register(app):
-    @app.callback(Output("map-graph", "figure"), Input("map-layers", "value"), Input("lang", "data"))
+    # 初始狀態已在 layout 畫好，所以三個 callback 都設 prevent_initial_call；語言改變時整頁會重畫
+    @app.callback(Output("map-graph", "figure"), Input("map-layers", "value"), State("lang", "data"),
+                  prevent_initial_call=True)
     def _fig(layers, lang):
-        return build_figure(layers or [], lang)
+        return build_figure(tuple(layers or []), lang)
 
-    @app.callback(Output("map-detail", "children"), Input("map-graph", "clickData"), Input("lang", "data"))
+    @app.callback(Output("map-detail", "children"), Input("map-graph", "clickData"), State("lang", "data"),
+                  prevent_initial_call=True)
     def _detail(click, lang):
         if not click:
             return card(None, html.P(t("click_hint", lang), className="muted"))
         cid = click["points"][0].get("customdata")
         return company_panel(cid, lang) if isinstance(cid, str) else card(None, html.P(t("click_hint", lang)))
 
-    @app.callback(Output("map-ais-summary", "children"), Input("map-layers", "value"), Input("lang", "data"))
+    @app.callback(Output("map-ais-summary", "children"), Input("map-layers", "value"), State("lang", "data"),
+                  prevent_initial_call=True)
     def _ais(layers, lang):
         return ais_summary(lang) if "ais" in (layers or []) else None

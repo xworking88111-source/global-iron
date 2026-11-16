@@ -5,11 +5,19 @@ import pandas as pd
 import plotly.graph_objects as go
 from dash import html
 
+from core import analytics as an
 from core import data
+from core.cache import cached
 from core.config import COLORS
 from core.i18n import pick, t
 
 SERIES = COLORS["series"]
+
+@cached(maxsize=4)
+def peers():
+    """同業比較表（多個頁面都會用到，算一次大家共用；資料更新時自動重算）。"""
+    return an.peer_table(data.companies(), data.fundamentals(), data.stock_prices())
+
 
 # 時間序列頁面共用的區間選項：標籤 -> 往回幾年
 RANGES = {"1Y": 1, "3Y": 3, "5Y": 5, "10Y": 10}
