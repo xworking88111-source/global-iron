@@ -1,0 +1,44 @@
+# 用免費的 GitHub Actions 定時更新資料。
+# 抓價格／股價／基本面（有設定金鑰的話也抓 AIS），再把更新後的快取檔 commit 回 repo。
+# Render 偵測到 push 會自動重新部署。
+name: update-data
+
+on:
+  schedule:
+    - cron: "30 9 * * 1-5"    # 平日 UTC 09:30 = 台北 17:30，亞洲收盤後
+  workflow_dispatch: {}        # 可在 GitHub 網頁上手動按「Run workflow」執行
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+
+      - name: Market data
+        run: python scripts/update_data.py
+
+      - name: AIS snapshot (only if secret AISSTREAM_API_KEY is set)  # 有設定金鑰才執行
+        if: ${{ env.AISSTREAM_API_KEY != '' }}
+        env:
+          AISSTREAM_API_KEY: ${{ secrets.AISSTREAM_API_KEY }}
+        run: python scripts/collect_ais.py --seconds 420
+        continue-on-error: true
+
+      - name: Commit cache
+        run: |
+          git config user.name "data-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/cache
+          git diff --cached --quiet || git commit -m "data: refresh $(date -u +%F)"
+          git push
+    env:
+      AISSTREAM_API_KEY: ${{ secrets.AISSTREAM_API_KEY }}

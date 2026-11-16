@@ -1,0 +1,8 @@
+{
+  "_meta": {
+    "note_en": "Vessels to track by MMSI (9-digit AIS identity). Look up a ship's MMSI on any public vessel-finder site by name or IMO number and add it here. The AIS collector will report their latest position.",
+    "note_zh": "要追蹤的船舶 MMSI（9 位數 AIS 識別碼）。可在公開船舶查詢網站用船名或 IMO 編號查到 MMSI 後填入，AIS 收集器會回報最新位置。",
+    "example": {"mmsi": 416000000, "name": "EXAMPLE VESSEL", "operator_en": "China Steel Express", "operator_zh": "中鋼運通", "linked_company": "csc"}
+  },
+  "vessels": []
+}

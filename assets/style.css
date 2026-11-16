@@ -1,0 +1,172 @@
+/* Global Iron：深色、類終端機風格的主題。
+   Dash 會自動載入 /assets 裡的所有檔案，不需要另外 import。
+   顏色與 core/config.py 的 COLORS 一致（dataviz 參考色票的深色版本）。 */
+
+:root {
+  --surface: #1a1a19;
+  --surface-2: #232322;
+  --bg: #121211;
+  --border: #383835;
+  --text: #f0efec;
+  --text-2: #c3c2b7;
+  --muted: #8a8980;
+  --accent: #3987e5;
+  --good: #0ca30c;
+  --warning: #fab219;
+  --critical: #d03b3b;
+  --radius: 10px;
+}
+
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font-family: Inter, "Noto Sans TC", "PingFang TC", system-ui, sans-serif; font-size: 14px;
+}
+a { color: var(--accent); text-decoration: none; }
+h2 { font-size: 20px; font-weight: 600; margin: 0; }
+h3 { font-size: 14px; font-weight: 600; margin: 0 0 8px; color: var(--text); }
+.muted { color: var(--muted); }
+.small { font-size: 12.5px; line-height: 1.5; color: var(--text-2); }
+
+/* ---- 頂部導覽列 --------------------------------------------------------- */
+.topbar {
+  position: sticky; top: 0; z-index: 10; display: flex; align-items: center; gap: 24px;
+  padding: 10px 24px; background: rgba(18, 18, 17, 0.92); backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--border);
+}
+.brand { display: flex; align-items: baseline; gap: 12px; min-width: 0; }
+.logo { display: flex; align-items: center; gap: 8px; color: var(--text); font-weight: 700; font-size: 16px; white-space: nowrap; }
+.logo-mark { color: var(--accent); }
+.tagline { color: var(--muted); font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.nav { display: flex; gap: 4px; margin-left: auto; flex-wrap: wrap; }
+.nav-link { color: var(--text-2); padding: 6px 12px; border-radius: 6px; font-size: 13px; }
+.nav-link:hover { background: var(--surface-2); color: var(--text); }
+.nav-link.active { background: var(--surface-2); color: var(--text); box-shadow: inset 0 -2px 0 var(--accent); }
+.lang-btn {
+  background: transparent; color: var(--text); border: 1px solid var(--border); border-radius: 6px;
+  padding: 5px 12px; cursor: pointer; font-size: 13px; white-space: nowrap;
+}
+.lang-btn:hover { border-color: var(--accent); }
+
+/* ---- 頁面版面 --------------------------------------------------------- */
+.page { max-width: 1440px; margin: 0 auto; padding: 20px 24px 40px; }
+.page-head { display: flex; align-items: baseline; gap: 16px; margin-bottom: 14px; }
+.asof { color: var(--muted); font-size: 12px; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 1000px) { .grid-2 { grid-template-columns: 1fr; } .tagline { display: none; } }
+
+.gi-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 14px 16px; margin-bottom: 14px; min-width: 0;
+}
+.card-title { font-size: 13.5px; color: var(--text); }
+.card-note { color: var(--muted); font-size: 12px; margin: 8px 0 0; line-height: 1.5; }
+.source-line { color: var(--muted); font-size: 11.5px; margin-top: 4px; }
+.footer { border-top: 1px solid var(--border); color: var(--muted); font-size: 11.5px; padding: 14px 24px; text-align: center; }
+
+/* ---- 指標卡 ------------------------------------------------------------ */
+.kpi-row { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; margin-bottom: 12px; }
+@media (max-width: 1200px) { .kpi-row { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .kpi-row { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.kpi-tile { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; }
+.kpi-label { color: var(--text-2); font-size: 12px; margin-bottom: 4px; }
+.kpi-value { font-size: 24px; font-weight: 650; font-variant-numeric: tabular-nums; }
+.kpi-unit { color: var(--muted); font-size: 11.5px; margin-left: 6px; }
+.kpi-deltas { display: flex; gap: 10px; margin: 6px 0 8px; flex-wrap: wrap; }
+.delta { font-size: 11.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.delta.up { color: #4fc24f; }
+.delta.down { color: #e66767; }
+.pctl { display: flex; align-items: center; gap: 8px; }
+.pctl-track { flex: 1; height: 4px; background: var(--surface-2); border-radius: 2px; overflow: hidden; }
+.pctl-fill { height: 100%; background: var(--accent); border-radius: 2px; }
+.pctl-text { color: var(--muted); font-size: 11px; white-space: nowrap; }
+
+.regime {
+  display: flex; align-items: center; gap: 10px; padding: 10px 14px; margin-bottom: 14px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+}
+.regime-label { color: var(--muted); font-size: 12px; white-space: nowrap; }
+.regime-dot { font-size: 14px; }
+.regime-dot.critical { color: var(--critical); }
+.regime-dot.warning { color: var(--warning); }
+.regime-dot.good { color: var(--good); }
+.regime-text { color: var(--text); font-size: 13.5px; }
+
+/* ---- 控制項 ------------------------------------------------------------ */
+.controls { display: flex; align-items: flex-end; gap: 16px; flex-wrap: wrap; margin-bottom: 14px; }
+.ctl { min-width: 240px; }
+.ctl.grow { flex: 1; }
+.ctl-label { display: block; color: var(--muted); font-size: 12px; margin: 10px 0 6px; }
+.seg label { display: inline-flex; align-items: center; gap: 4px; margin-right: 12px; color: var(--text-2); cursor: pointer; font-size: 13px; }
+.seg-v label { display: flex; align-items: center; gap: 6px; color: var(--text-2); margin: 4px 0; font-size: 13px; cursor: pointer; }
+input[type="radio"], input[type="checkbox"] { accent-color: var(--accent); }
+.num-input { width: 120px; background: var(--surface-2); color: var(--text); border: 1px solid var(--border); border-radius: 6px; padding: 6px 8px; }
+
+/* Dash 4 元件（下拉選單、滑桿、輸入框）會讀取這些主題變數 */
+:root {
+  --Dash-Text-Primary: #f0efec;
+  --Dash-Text-Strong: #f0efec;
+  --Dash-Text-Weak: #8a8980;
+  --Dash-Text-Disabled: #5f5e58;
+  --Dash-Fill-Inverse-Strong: #232322;   /* 下拉選單／彈出框底色 */
+  --Dash-Fill-Interactive-Strong: #3987e5;
+  --Dash-Fill-Interactive-Weak: #1c2a3d;  /* 滑鼠停留／已選取的選項 */
+  --Dash-Fill-Primary-Hover: #2c2c2a;
+  --Dash-Fill-Primary-Active: #1c2a3d;
+  --Dash-Fill-Disabled: #2a2a28;
+  --Dash-Stroke-Strong: #4a4a46;
+  --Dash-Stroke-Weak: #383835;
+  --Dash-Shading-Strong: rgba(0,0,0,0.5);
+  --Dash-Shading-Weak: rgba(0,0,0,0.3);
+  --Dash-Tooltip-Background-Color: #232322;
+  --Dash-Tooltip-Border-Color: #383835;
+}
+.dash-dropdown { background: var(--surface-2); color: var(--text); border-color: var(--border); }
+
+/* 舊版（Dash 2/3，react-select）下拉選單的覆寫，相容用 */
+.dd .Select-control, .dd .Select-menu-outer { background: var(--surface-2) !important; border-color: var(--border) !important; color: var(--text) !important; }
+.dd .Select-value-label, .dd .Select-placeholder, .dd .Select-input > input { color: var(--text) !important; }
+.dd .VirtualizedSelectOption { background: var(--surface-2); color: var(--text-2); }
+.dd .VirtualizedSelectFocusedOption { background: #2c3e57; color: var(--text); }
+.dd .Select--multi .Select-value { background: #1c2a3d; border-color: #2a4a75; color: var(--text); }
+.dd .Select--multi .Select-value-icon { border-color: #2a4a75; }
+.dd .Select-arrow { border-top-color: var(--muted); }
+
+/* ---- 地圖 --------------------------------------------------------------- */
+.map-wrap { display: grid; grid-template-columns: 1fr 300px; gap: 14px; }
+@media (max-width: 1000px) { .map-wrap { grid-template-columns: 1fr; } }
+.map-main { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.layer-list label { display: flex; align-items: center; gap: 8px; color: var(--text-2); padding: 3px 0; cursor: pointer; font-size: 13px; }
+table.kv { width: 100%; border-collapse: collapse; font-size: 12.5px; margin-bottom: 8px; }
+table.kv td, table.kv th { padding: 4px 0; border-bottom: 1px solid var(--border); text-align: left; }
+table.kv th { color: var(--muted); font-weight: 500; }
+table.kv td.k { color: var(--muted); width: 45%; }
+table.kv td.v { color: var(--text); text-align: right; font-variant-numeric: tabular-nums; }
+.badge-warn { display: inline-block; color: var(--warning); border: 1px solid var(--warning); border-radius: 6px; padding: 2px 8px; font-size: 12px; margin: 4px 0 8px; }
+.link { font-size: 13px; }
+
+/* ---- 數字方塊 ----------------------------------------------------------- */
+.stat-row { display: flex; flex-wrap: wrap; gap: 10px; margin: 10px 0; }
+.stat { background: var(--surface-2); border-radius: 8px; padding: 8px 12px; min-width: 120px; }
+.stat-label { color: var(--muted); font-size: 11.5px; }
+.stat-value { color: var(--text); font-size: 18px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.stat-sub { color: var(--muted); font-size: 11px; }
+.profile-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.profile-name { font-size: 18px; margin: 0; }
+
+/* ---- 情境模擬 -------------------------------------------------------- */
+.scn-wrap { display: grid; grid-template-columns: 320px 1fr; gap: 14px; margin-top: 10px; }
+@media (max-width: 1000px) { .scn-wrap { grid-template-columns: 1fr; } }
+.slider { padding: 0 4px; }
+.rc-slider-track { background-color: var(--accent) !important; }
+.rc-slider-handle { border-color: var(--accent) !important; background: var(--surface) !important; }
+.rc-slider-rail { background-color: var(--border) !important; }
+.rc-slider-mark-text { color: var(--muted) !important; font-size: 11px; }
+
+/* ---- Markdown 文字 -------------------------------------------------------- */
+.md { color: var(--text-2); line-height: 1.6; }
+.md h3 { margin-top: 18px; color: var(--text); }
+.md table { border-collapse: collapse; width: 100%; font-size: 13px; }
+.md th, .md td { border-bottom: 1px solid var(--border); padding: 6px 8px; text-align: left; vertical-align: top; }
+.md th { color: var(--text); }
+.md code { background: var(--surface-2); padding: 1px 5px; border-radius: 4px; }
