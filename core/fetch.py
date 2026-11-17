@@ -304,3 +304,52 @@ def fetch_csc_price_releases() -> list[dict]:
             "source": url, "official": True,
         })
     return out
+
+
+# ---------------------------------------------------------------------------
+# 台灣鋼材進出口：財政部統計資料庫（海關進出口貿易統計，政府資料開放授權）
+# 網址參數格式：fldN=1 選第 N 個「統計項」（國家或貨品），codspc0=起點,個數 選「複分類」（貨品細分類）
+# ym / ymt 是民國年月（例如 11510 = 2026 年 10 月）。沒有驗證碼，是公開的下載連結。
+# ---------------------------------------------------------------------------
+_MOF_DB = "https://web02.mof.gov.tw/njswww/webMain.aspx"
+
+
+def _roc_ym(ts: pd.Timestamp) -> str:
+    """西元年月 -> 民國年月代碼：2026-10 -> '11510'。"""
+    return f"{ts.year - 1911}{ts.month:02d}"
+
+
+def fetch_mof_table(funid: str, flds: list[int], codspc: str = "", start: str = "2016-01") -> pd.DataFrame:
+    """下載財政部統計資料庫的一張表（CSV），轉成長格式：month, col, value。
+
+    col 是原始欄位名稱，例如「中國大陸/ 鐵或非合金鋼及其製品」或「72. 鋼鐵」。
+    只保留單月列（「115年 9月」），年度合計列（「114年」）丟掉；「－」代表沒有資料或還沒公布。
+    """
+    import io
+    import re
+
+    import requests
+
+    end = pd.Timestamp.today()
+    params = {"sys": 220, "ym": _roc_ym(pd.Timestamp(start)), "ymt": _roc_ym(end), "kind": 21, "type": 4,
+              "funid": funid, "cycle": 41, "outmode": 12, "compmode": "00", "outkind": 1, "utf": 1}
+    params.update({f"fld{i}": 1 for i in flds})
+    if codspc:
+        params["codspc0"] = codspc
+    r = _retry(lambda: requests.get(_MOF_DB, params=params, headers=_UA, timeout=90))
+    r.encoding = "utf-8-sig"
+    if "功能代號不存在" in r.text[:50] or not r.text.lstrip().startswith('"'):
+        raise ValueError(f"MOF {funid}: unexpected response {r.text[:80]!r}")
+    df = pd.read_csv(io.StringIO(r.text), dtype=str)
+    first = df.columns[0]
+    rows = []
+    for _, row in df.iterrows():
+        m = re.fullmatch(r"\s*(\d+)年\s*(\d+)月\s*", str(row[first]))
+        if not m:
+            continue
+        month = f"{int(m.group(1)) + 1911}-{int(m.group(2)):02d}"
+        for col in df.columns[1:]:
+            v = str(row[col]).replace(",", "").strip()
+            if re.fullmatch(r"-?\d+(\.\d+)?", v):
+                rows.append({"month": month, "col": col.strip(), "value": float(v)})
+    return pd.DataFrame(rows)

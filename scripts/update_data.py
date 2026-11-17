@@ -180,11 +180,63 @@ def update_csc_prices() -> int:
     return len(old)
 
 
+def update_taiwan_trade() -> int:
+    """台灣鋼材進出口（依國家）與單價／數量指數 -> data/cache/taiwan_steel_trade.csv。
+
+    長格式欄位：month, flow(import/export/index), partner, product, value
+    - 進出口金額單位千美元；指數為官方編製的單價／數量指數
+    - 每次抓 2016 年至今完整歷史再覆蓋（海關會修正近幾個月的數字）
+    """
+    names = {v[1]: k for k, v in {i: p for i, p in config.TW_PARTNERS.items()}.items()}
+    rows = []
+    for flow, spec in config.TW_TABLES.items():
+        try:
+            df = fetch.fetch_mof_table(spec["funid"], list(config.TW_PARTNERS), spec["codspc"])
+        except Exception as e:  # noqa: BLE001
+            log.error("taiwan %s failed: %s", flow, e)
+            continue
+        for col, g in df.groupby("col"):
+            partner_zh, _, product_zh = col.partition("/")
+            idx = names.get(partner_zh.strip())
+            prod = config.TW_PRODUCTS.get(product_zh.strip())
+            if idx is None or prod is None:
+                log.warning("taiwan %s: unknown column %s", flow, col)
+                continue
+            code = config.TW_PARTNERS[idx][0]
+            rows += [{"month": m, "flow": flow, "partner": code, "product": prod, "value": v}
+                     for m, v in zip(g["month"], g["value"])]
+        log.info("taiwan %-7s %d rows, last %s", flow, len(df), df["month"].max() if len(df) else None)
+    for key, spec in config.TW_INDEX_TABLES.items():
+        try:
+            df = fetch.fetch_mof_table(spec["funid"], [spec["fld"]])
+        except Exception as e:  # noqa: BLE001
+            log.error("taiwan index %s failed: %s", key, e)
+            continue
+        df = df[df["col"].str.startswith(spec["match"])]  # 用欄位名核對，避免表單改版選錯欄
+        if df.empty:
+            log.warning("taiwan index %s: column %s not found", key, spec["match"])
+            continue
+        rows += [{"month": m, "flow": "index", "partner": "world", "product": key, "value": v}
+                 for m, v in zip(df["month"], df["value"])]
+    if not rows:
+        return 0
+    new = pd.DataFrame(rows)
+    if config.TW_TRADE_FILE.exists():  # 這次失敗的部分保留舊資料
+        old = pd.read_csv(config.TW_TRADE_FILE, dtype={"month": str})
+        done = set(zip(new["flow"], new["product"]))
+        old = old[[(f, p) not in done for f, p in zip(old["flow"], old["product"])]]
+        new = pd.concat([old, new], ignore_index=True)
+    new = new.drop_duplicates(["month", "flow", "partner", "product"], keep="last")
+    new.sort_values(["flow", "product", "partner", "month"]).to_csv(config.TW_TRADE_FILE, index=False)
+    return new["month"].nunique()
+
+
 def main(which: list[str]) -> None:
     """執行指定的更新工作（沒指定就全部跑），並記錄成功的時間。"""
     meta = data.meta() or {}
     jobs = {"prices": update_prices, "stocks": update_stocks, "fundamentals": update_fundamentals,
-            "quarterly": update_quarterly, "worldsteel": update_worldsteel_monthly, "csc": update_csc_prices}
+            "quarterly": update_quarterly, "worldsteel": update_worldsteel_monthly, "csc": update_csc_prices,
+            "taiwan": update_taiwan_trade}
     for name in which or jobs:
         n = jobs[name]()
         log.info("== %s: %d items", name, n)

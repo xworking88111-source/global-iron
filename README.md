@@ -8,7 +8,7 @@
 
 ## 繁體中文
 
-一個免費、中英雙語的全球鋼鐵市場觀測網站：一眼掌握鋼價、全球鋼廠、貿易流向與航運風險。
+一個免費、中英雙語的全球鋼鐵市場觀測網站，定位是**「全球鋼鐵市場分裂監測」**：從台灣看出去，追蹤關稅牆（美國 232、歐盟防衛措施與 CBAM、中國出口許可證）怎麼把鋼鐵市場切成「受保護的高價區」和「中國主導的低價區」，以及這個分裂對鋼價、貿易路線與航運風險的影響。
 
 **目標使用者**：全球股票投資人、地緣政治研究者、航運與海上保險從業者。
 
@@ -18,6 +18,7 @@
 |---|---|---|
 | 市場總覽 `/` | **本週重點**自動摘要、6 個指標卡（最新價、週／月／年漲跌、10 年分位）、市場狀態判斷、高爐利潤代理、美中熱軋價差、原料走勢＋政策事件標註 | 鋼市現在處於景氣循環的哪裡？ |
 | 月度數據 `/monthly` | 中國每月鋼材出口、worldsteel 每月全球產量（中國 vs 其他、前 10 大國年增率）、中鋼月盤調整與累計 | 供需面最近有沒有變化？ |
+| 台灣視角 `/taiwan` | 台灣鋼材出口目的地（近 12 個月累計、和三年前同期比較）、進口來源占比、官方鋼鐵單價與數量指數、自動觀察；可切換碳鋼／不銹鋼 | 台灣夾在兩個價格區之間，鋼材往哪裡去、從哪裡來？ |
 | 全球地圖 `/map` | 49 家鋼廠與礦商（45 家鋼廠、4 家鐵礦商）（泡泡 = 產量、顏色 = 製程）、各國產量、鐵礦／煤／鋼材航線、11 個咽喉要道、港口、2024 貿易流、AIS 船位、中鋼運通船隊 | 誰在哪裡生產？貨怎麼運？風險在哪？ |
 | 公司分析 `/companies` | 公司檔案、同業相對分數（體質／價值／動能）、股價比較、**季度利潤率趨勢**、可排序比較表。支援 `?c=posco` 直接連結 | 這家公司跟同業比起來狀況如何？ |
 | 情境模擬 `/scenario` | 調整熱軋／鐵礦／焦炭價格，看每噸利潤瀑布圖、年度影響、敏感度 | 原料漲 10%，鋼廠會少賺多少？ |
@@ -41,6 +42,7 @@
 | 各公司季報損益 | Yahoo Finance（`yfinance`） | 每個平日 |
 | 每月全球粗鋼產量 | worldsteel 每月新聞稿（自動抓取） | 每月 |
 | 中國每月成品鋼材出口 | 海關總署數字，經產業媒體轉載（`data/static/china_steel_exports.json`）；海關網站擋程式抓取，改為每月 12 日自動開提醒 | 每月手動 |
+| 台灣鋼材進出口（依國家）、鋼鐵單價／數量指數 | **財政部統計資料庫（自動下載官方 CSV）** | 每個平日 |
 | 中鋼月盤調整 | **中鋼官網新聞稿（自動）**；較早月份來自媒體報導（`data/static/csc_price_changes.json`） | 每個平日 |
 | 公司與各國粗鋼產量、鋼材與鐵礦貿易 | worldsteel《World Steel in Figures 2025》（2024 資料） | 每年 |
 | 船舶位置（AIS） | AISStream.io（免費岸基 AIS） | 每天 4 次 |
@@ -94,6 +96,7 @@ core/                   與介面無關的邏輯（未來可直接給 FastAPI �
   i18n.py               中英文字串
 pages/                  每頁一個模組：layout(lang) + register(app)
 core/highlights.py      「本週重點」規則式摘要
+core/taiwan.py          台灣鋼材進出口分析與自動觀察
 scripts/
   update_data.py        更新價格、股價、基本面
   collect_ais.py        AIS 快照與船隊 MMSI 探索
@@ -133,7 +136,7 @@ Render → New → Blueprint → 選這個 repo，會依 `render.yaml` 自動建
 
 ## English
 
-A free, bilingual (Traditional Chinese / English) monitor of the global steel market: prices, producers, trade flows and shipping risk at a glance.
+A free, bilingual (Traditional Chinese / English) steel-market monitor positioned as **a tracker of the split in the global steel market, seen from Taiwan**: how tariff walls (US Section 232, EU safeguards and CBAM, China's export licences) divide steel into a protected high-price zone and a China-driven low-price zone, and what that means for prices, trade routes and shipping risk.
 
 **Built for:** global equity investors, geopolitical researchers, and shipping / marine-insurance professionals.
 
@@ -143,6 +146,7 @@ A free, bilingual (Traditional Chinese / English) monitor of the global steel ma
 |---|---|---|
 | Market `/` | **This week at a glance** auto-summary, 6 KPI tiles (latest price, 1W/1M/1Y change, 10-year percentile), market-regime call, blast-furnace margin proxy, US vs China HRC gap, raw-material trends with policy-event overlay | Where is steel in the cycle right now? |
 | Monthly `/monthly` | China's monthly steel exports, worldsteel monthly production (China vs rest of world, top-10 YoY), China Steel list-price changes and cumulative | Has supply / demand shifted lately? |
+| Taiwan Lens `/taiwan` | Taiwan's steel export destinations (trailing 12 months, change vs three years earlier), import shares by origin, official steel unit-value and quantity indices, rule-based observations; carbon / stainless toggle | Caught between two price zones, where does Taiwan's steel go and where does it come from? |
 | Global Map `/map` | 49 companies (45 steelmakers, 4 iron-ore miners) (bubble = output, colour = process route), country output, ore/coal/steel sea lanes, 11 chokepoints, ports, 2024 trade flows, AIS vessels, China Steel Express fleet | Who produces where, how does it move, where is the risk? |
 | Companies `/companies` | Company profile, peer-relative scores (health / value / momentum), share-price comparison, **quarterly margin trend**, sortable peer table. Deep links like `?c=posco` | How is this company doing versus peers? |
 | Scenario `/scenario` | Shock HRC / ore / coke prices; per-tonne margin waterfall, annual impact, sensitivities | If ore rises 10%, how much margin does a mill lose? |
@@ -166,6 +170,7 @@ Every page switches language (remembered in the browser) and is laid out for bot
 | Quarterly income statements | Yahoo Finance (`yfinance`) | Weekdays |
 | Monthly global crude steel production | worldsteel monthly press releases (scraped) | Monthly |
 | China's monthly finished-steel exports | GACC figures via trade press (`data/static/china_steel_exports.json`); the customs site blocks automated access, so a reminder issue opens on the 12th | Monthly, manual |
+| Taiwan steel trade by partner; steel unit-value and quantity indices | **Ministry of Finance statistics database (automatic official CSV download)** | Weekdays |
 | China Steel list-price changes | **CSC official press releases (automatic)**; earlier months from media (`data/static/csc_price_changes.json`) | Weekdays |
 | Company and country crude-steel output, steel and ore trade | worldsteel *World Steel in Figures 2025* (2024 data) | Yearly |
 | Vessel positions (AIS) | AISStream.io (free terrestrial AIS) | 4× daily |
@@ -219,6 +224,7 @@ core/                   UI-independent logic (reusable from a future FastAPI bac
   i18n.py               UI strings in both languages
 pages/                  One module per page: layout(lang) + register(app)
 core/highlights.py      Rule-based 'this week at a glance' summary
+core/taiwan.py          Taiwan steel trade analytics and observations
 scripts/
   update_data.py        Refresh prices, equities, fundamentals
   collect_ais.py        AIS snapshot and fleet MMSI discovery

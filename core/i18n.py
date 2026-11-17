@@ -25,8 +25,8 @@ DEFAULT_LANG = "zh"
 STRINGS: dict[str, dict[str, str]] = {
     # ---- 外框／導覽列 -------------------------------------------------------
     "app_title": {"en": "Global Iron — Steel Market Monitor", "zh": "Global Iron 全球鋼鐵市場觀測"},
-    "app_tagline": {"en": "Prices, producers, trade flows and shipping risk at a glance",
-                    "zh": "一眼掌握鋼價、鋼廠、貿易流向與航運風險"},
+    "app_tagline": {"en": "Tracking the split of the global steel market, seen from Taiwan",
+                    "zh": "從台灣看全球鋼鐵市場的分裂：價差、貿易流向與航運風險"},
     "nav_overview": {"en": "Market", "zh": "市場總覽"},
     "nav_map": {"en": "Global Map", "zh": "全球地圖"},
     "nav_companies": {"en": "Companies", "zh": "公司分析"},
@@ -83,6 +83,7 @@ STRINGS: dict[str, dict[str, str]] = {
 
     # ---- 月度數據 ------
     "nav_monthly": {"en": "Monthly", "zh": "月度數據"},
+    "nav_taiwan": {"en": "Taiwan Lens", "zh": "台灣視角"},
     "monthly_intro": {"en": "Three monthly data sets that drive the steel cycle: China's exports, global production, and China Steel's domestic list prices.",
                       "zh": "推動鋼鐵景氣的三組月資料：中國出口、全球產量、中鋼內銷盤價。"},
     "cn_exports_title": {"en": "China finished-steel exports (monthly, Mt)", "zh": "中國成品鋼材出口（每月，百萬噸）"},
@@ -246,6 +247,39 @@ STRINGS: dict[str, dict[str, str]] = {
     "world_output": {"en": "World crude steel", "zh": "全球粗鋼產量"},
     "china_net_exports": {"en": "China net steel exports", "zh": "中國鋼材淨出口"},
     "china_share": {"en": "China share of world output", "zh": "中國占全球產量"},
+
+    # ---- 台灣視角 -----------------------------------------------------------
+    "tw_intro": {"en": "Tariff walls (US Section 232, EU safeguards and CBAM, China's export licences) are splitting steel into a protected high-price zone and a China-driven low-price zone. Taiwan sits in between. Official customs statistics show where Taiwan's steel now goes, where its imports come from, and what is happening to prices and volumes.",
+                 "zh": "關稅牆（美國 232、歐盟防衛措施與 CBAM、中國出口許可證）正把鋼鐵市場切成「受保護的高價區」和「中國主導的低價區」，台灣夾在中間。這一頁用海關官方統計，看台灣的鋼材出口去了哪裡、進口從哪裡來、價格與數量怎麼變。"},
+    "tw_obs_title": {"en": "What the data says", "zh": "資料告訴我們什麼"},
+    "tw_latest": {"en": "Customs data through", "zh": "海關資料截至"},
+    "tw_product": {"en": "Product", "zh": "貨品"},
+    "tw_p_steel": {"en": "Carbon + stainless", "zh": "碳鋼＋不銹鋼"},
+    "tw_p_carbon": {"en": "Carbon steel", "zh": "碳鋼"},
+    "tw_p_stainless": {"en": "Stainless", "zh": "不銹鋼"},
+    "tw_exports_ytd": {"en": "Exports, Jan–{m}", "zh": "出口（1–{m} 月）"},
+    "tw_imports_ytd": {"en": "Imports, Jan–{m}", "zh": "進口（1–{m} 月）"},
+    "tw_net": {"en": "Net exports", "zh": "出超"},
+    "tw_usd_m": {"en": "USD m", "zh": "百萬美元"},
+    "tw_usd_m_12m": {"en": "USD m, trailing 12 months", "zh": "百萬美元，近 12 個月累計"},
+    "tw_total": {"en": "Total", "zh": "合計"},
+    "tw_exports_title": {"en": "Where Taiwan's steel goes", "zh": "台灣鋼材出口去哪裡"},
+    "tw_change_title": {"en": "Change by destination: Jan–{m} {yr} vs {base} (USD m)",
+                        "zh": "各目的地增減：{yr} vs {base} 年 1–{m} 月（百萬美元）"},
+    "tw_exports_note": {"en": "Left: trailing-12-month sums remove seasonality. Values are in US dollars, so they mix price and volume; read them with the volume index below. ASEAN = 10 members plus Timor-Leste.",
+                        "zh": "左圖：近 12 個月累計，可消除季節性。金額以美元計，同時反映價格與數量，請搭配下方的數量指數一起看。東協 = 10 國加東帝汶。"},
+    "tw_imports_title": {"en": "Where Taiwan's steel imports come from (share of trailing-12-month value)",
+                         "zh": "台灣鋼材進口從哪裡來（近 12 個月金額占比）"},
+    "tw_imports_note": {"en": "Indonesia dominates ASEAN's share through stainless steel. Hong Kong is counted under Other. Taiwan levies anti-dumping duties on some Chinese and Korean flat products, which shapes these shares.",
+                        "zh": "東協的占比主要來自印尼的不銹鋼。香港併入「其他」。台灣對部分中國與韓國扁鋼產品課有反傾銷稅，也會影響這些占比。"},
+    "tw_idx_import": {"en": "Imports: iron and steel (HS 72), 2021 = 100", "zh": "進口：鋼鐵（HS 72 章），2021 = 100"},
+    "tw_idx_export": {"en": "Exports: articles of iron or steel (HS 73), 2021 = 100", "zh": "出口：鋼鐵製品（HS 73 章），2021 = 100"},
+    "tw_unit_value": {"en": "Unit-value index (price)", "zh": "單價指數（價格）"},
+    "tw_quantity": {"en": "Quantity index (volume)", "zh": "數量指數（數量）"},
+    "tw_idx_note": {"en": "Official indices compiled by the Ministry of Finance, shown as 3-month moving averages. The statistics database publishes a steel (HS 72) index only for imports and a steel-products (HS 73) index only for exports, so the two charts cover different product groups. The latest month's index is released a month after the trade values.",
+                    "zh": "財政部編製的官方指數，圖上為 3 個月移動平均。統計資料庫的進口只有鋼鐵（HS 72 章）指數、出口只有鋼鐵製品（HS 73 章）指數，所以兩張圖的貨品範圍不同。指數比金額晚一個月公布。"},
+    "tw_source": {"en": "Ministry of Finance statistics database (customs trade statistics, general trade system), Government Open Data Licence; refreshed automatically",
+                  "zh": "財政部統計資料庫（海關進出口貿易統計，一般貿易制度），政府資料開放授權；自動更新"},
 
     # ---- 資料與方法 ---------------------------------------------------------
     "about_title": {"en": "Data sources and methodology", "zh": "資料來源與方法"},

@@ -33,7 +33,7 @@ def _zh(x: float, kind: str = "年") -> str:
     return f"{kind}{'增' if x >= 0 else '減'} {abs(x):.1f}%"
 
 
-def build(max_items: int = 7) -> list[tuple[str, str, str]]:
+def build(max_items: int = 9) -> list[tuple[str, str, str]]:
     items: list[tuple[str, str, str]] = []
     px = data.prices()
 
@@ -102,6 +102,15 @@ def build(max_items: int = 7) -> list[tuple[str, str, str]]:
                       f"中鋼 {last['month'][-2:].lstrip('0')} 月盤熱軋{verb_zh}" + (f" {abs(last['hrc']):,} 元/噸" if last["hrc"] else "")
                       + f"，{last['month'][:4]} 年累計 {cum:+,} 元",
                       f"China Steel {pd.Timestamp(last['month']).strftime('%b')} HRC list price {last['hrc']:+,} TWD/t; {last['month'][:4]} cumulative {cum:+,}"))
+
+    # 6b. 台灣視角：出口目的地變化最大的一條（詳見「台灣視角」頁）
+    try:
+        from . import taiwan
+        tw = taiwan.observations()
+        if tw:
+            items.append(tw[0])
+    except Exception:  # noqa: BLE001 - 台灣資料缺漏時不影響其他重點
+        pass
 
     # 7. 近 60 天的政策／事件
     ev = data.events()

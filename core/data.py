@@ -126,7 +126,7 @@ def meta() -> dict:
 # ---------------------------------------------------------------------------
 def version() -> tuple:
     files = [config.PRICES_FILE, config.STOCKS_FILE, config.FUNDAMENTALS_FILE, config.AIS_FILE, config.META_FILE,
-             config.QUARTERLY_FILE, config.WS_MONTHLY_FILE, config.CSC_OFFICIAL_FILE]
+             config.QUARTERLY_FILE, config.WS_MONTHLY_FILE, config.CSC_OFFICIAL_FILE, config.TW_TRADE_FILE]
     files += sorted(config.STATIC_DIR.glob("*.json"))
     return tuple(_mtime(p) for p in files)
 
@@ -161,7 +161,7 @@ def csc_prices() -> dict:
     return {"_meta": static.get("_meta", {}), "changes": [by_month[m] for m in sorted(by_month)]}
 
 
-@lru_cache(maxsize=4)
+@lru_cache(maxsize=8)
 def _load_csv(path: str, mtime: float, parse_dates: tuple = ()) -> pd.DataFrame:
     return pd.read_csv(path, parse_dates=list(parse_dates))
 
@@ -175,6 +175,16 @@ def quarterly() -> pd.DataFrame:
 def worldsteel_monthly() -> pd.DataFrame:
     """worldsteel 每月產量：month, kind(region/country), entity, mt, yoy_pct, ytd_mt, ytd_yoy_pct。"""
     p = config.WS_MONTHLY_FILE
+    if not p.exists():
+        return pd.DataFrame()
+    df = _load_csv(str(p), _mtime(p)).copy()
+    df["month"] = df["month"].astype(str)
+    return df
+
+
+def taiwan_trade() -> pd.DataFrame:
+    """台灣鋼材進出口：month, flow(import/export/index), partner, product, value。"""
+    p = config.TW_TRADE_FILE
     if not p.exists():
         return pd.DataFrame()
     df = _load_csv(str(p), _mtime(p)).copy()

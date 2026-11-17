@@ -30,6 +30,7 @@ META_FILE = CACHE_DIR / "meta.json"               # 各類資料最後更新時�
 QUARTERLY_FILE = CACHE_DIR / "quarterly.csv"      # 各公司季報重點（當地幣別）
 WS_MONTHLY_FILE = CACHE_DIR / "worldsteel_monthly.csv"  # worldsteel 每月產量（區域＋前 10 大國）
 CSC_OFFICIAL_FILE = CACHE_DIR / "csc_official.json"     # 中鋼官網盤價新聞稿（自動抓取）
+TW_TRADE_FILE = CACHE_DIR / "taiwan_steel_trade.csv"    # 台灣鋼材進出口（財政部統計資料庫，自動抓取）
 
 # ---------------------------------------------------------------------------
 # 價格序列
@@ -101,3 +102,34 @@ COLORS = {
 
 # 煉鋼製程 -> 分類色（只用 3 類，讓地圖上的散點對色盲讀者也分得出來）
 ROUTE_COLOR = {"BF": COLORS["series"][0], "EAF": COLORS["series"][1], "MIX": COLORS["series"][2]}
+
+
+# ---------------------------------------------------------------------------
+# 台灣鋼材進出口（財政部統計資料庫）
+# 數字是統計資料庫表單裡「統計項」的位置（第幾個勾選框），對應的國家寫在後面。
+# 表單改版時位置可能會變，抓取程式會用欄位名稱再核對一次。
+# ---------------------------------------------------------------------------
+TW_PARTNERS = {  # 位置: (代碼, 中文欄位名, 英文)
+    0: ("world", "全球", "World"), 3: ("cn", "中國大陸", "China"), 4: ("hk", "香港", "Hong Kong"),
+    5: ("jp", "日本", "Japan"), 6: ("kr", "南韓", "South Korea"), 8: ("asean", "東協11國(註2)", "ASEAN"),
+    9: ("th", "泰國", "Thailand"), 10: ("my", "馬來西亞", "Malaysia"), 11: ("id", "印尼", "Indonesia"),
+    14: ("vn", "越南", "Vietnam"), 21: ("in", "印度", "India"), 36: ("tr", "土耳其", "Türkiye"),
+    39: ("us", "美國", "United States"), 40: ("ca", "加拿大", "Canada"), 42: ("mx", "墨西哥", "Mexico"),
+    44: ("br", "巴西", "Brazil"), 52: ("ru", "俄羅斯", "Russia"), 62: ("eu", "歐盟(註1)", "EU"),
+    72: ("au", "澳大利亞", "Australia"),
+}
+TW_PRODUCTS = {  # 欄位名中的貨品名稱 -> 代碼
+    "鐵或非合金鋼及其製品": "carbon", "不銹鋼及其製品": "stainless", "鐵屬廢料及重鑄錠": "scrap",
+}
+TW_TABLES = {
+    # 進口：國家 × 貨品細分類（千美元）；複分類第 16–18 項 = 廢鋼、碳鋼、不銹鋼
+    "import": {"funid": "i9204", "codspc": "16,3,"},
+    # 出口：國家 × 貨品細分類（千美元）；複分類第 13–14 項 = 碳鋼、不銹鋼
+    "export": {"funid": "i9203", "codspc": "13,2,"},
+}
+TW_INDEX_TABLES = {  # 單價／數量指數（2021 = 100）：位置 -> 欄位名中要出現的字
+    "import_uv": {"funid": "i9303", "fld": 18, "match": "72."},   # 進口單價指數，72 章鋼鐵
+    "import_qty": {"funid": "i9305", "fld": 18, "match": "72."},  # 進口數量指數，72 章鋼鐵
+    "export_uv": {"funid": "i9302", "fld": 16, "match": "73."},   # 出口單價指數，73 章鋼鐵製品
+    "export_qty": {"funid": "i9304", "fld": 16, "match": "73."},  # 出口數量指數，73 章鋼鐵製品
+}
