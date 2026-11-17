@@ -231,12 +231,79 @@ def update_taiwan_trade() -> int:
     return new["month"].nunique()
 
 
+def update_tokyo_steel() -> int:
+    """東京製鐵每月販售價格 PDF -> data/cache/tokyo_steel_prices.csv，另存最新市況說明。
+
+    第一次會把 2007 年起的 PDF 全部抓一次（每份間隔 1 秒，避免造成對方負擔）；
+    之後只抓還沒有的月份，加上最近兩個月重新核對。
+    """
+    import time
+
+    try:
+        links = fetch.list_tokyo_steel_prices()
+    except Exception as e:  # noqa: BLE001
+        log.error("tokyo steel list failed: %s", e)
+        return 0
+    old = pd.read_csv(config.TOKYO_STEEL_FILE, dtype={"month": str}) if config.TOKYO_STEEL_FILE.exists() else pd.DataFrame()
+    # 已經有任一品項價格的月份就不再重抓（整列空白的月份下次會重試）
+    have = set(old.loc[old[list(fetch.TOKYO_STEEL_ITEMS)].notna().any(axis=1), "month"]) if len(old) else set()
+    recent = sorted(links)[-2:]
+    rows = []
+    for month in sorted(links):
+        if month in have and month not in recent:
+            continue
+        try:
+            r = fetch.fetch_tokyo_steel_pdf(links[month])
+        except Exception as e:  # noqa: BLE001
+            log.warning("tokyo steel %s failed: %s", month, e)
+            continue
+        if "hrc" not in r:
+            log.warning("tokyo steel %s: HRC not found in PDF", month)
+        rows.append({"month": month, **r})
+        time.sleep(1)
+    if rows:
+        new = pd.concat([old, pd.DataFrame(rows)], ignore_index=True).drop_duplicates("month", keep="last")
+        cols = ["month", "announced"] + list(fetch.TOKYO_STEEL_ITEMS)
+        new = new.reindex(columns=cols).sort_values("month").reset_index(drop=True)
+        # 品質檢查：某月和前後兩個月都差超過 15%、而前後兩月彼此接近 → 多半是讀錯欄位，丟掉
+        for k in fetch.TOKYO_STEEL_ITEMS:
+            v, a, b = new[k], new[k].shift(1), new[k].shift(-1)
+            bad = ((v / a - 1).abs() > 0.15) & ((v / b - 1).abs() > 0.15) & ((a / b - 1).abs() < 0.08)
+            for i in new.index[bad]:
+                log.warning("tokyo steel %s %s=%s looks wrong (neighbours %s/%s), dropped", new.at[i, "month"], k, v[i], a[i], b[i])
+            new.loc[bad, k] = float("nan")
+        new.to_csv(config.TOKYO_STEEL_FILE, index=False, float_format="%.0f")
+        log.info("tokyo steel: %d new/updated, last %s HRC %s", len(rows), new["month"].iloc[-1], new["hrc"].iloc[-1])
+    # 市況情報：官網通常在月中公布下個月的價格（PDF 稍後才上架），所以先從文字判斷漲跌
+    try:
+        text = fetch.fetch_tokyo_steel_comment()
+    except Exception as e:  # noqa: BLE001
+        log.warning("tokyo steel comment failed: %s", e)
+        text = ""
+    if text:
+        import re
+
+        head = text.split("。")[0]
+        m = re.match(r"(\d{1,2})月", head)
+        move = "flat" if "据え置" in head else "up" if "値上げ" in head else "down" if "値下げ" in head else ""
+        latest = max(links) if links else ""
+        month = ""
+        if m and latest:  # 推算年份：說明的月份若小於最新 PDF 月份，就是隔年
+            y, lm = int(latest[:4]), int(latest[5:])
+            mm = int(m.group(1))
+            month = f"{y + (1 if mm < lm else 0)}-{mm:02d}"
+        note = {"month": month, "move": move, "headline_ja": head + "。", "text_ja": text,
+                "source": "https://www.tokyosteel.co.jp/salesprice/", "fetched": _now()}
+        config.TOKYO_STEEL_NOTE_FILE.write_text(json.dumps(note, ensure_ascii=False, indent=1), encoding="utf-8")
+    return len(rows) + bool(text)
+
+
 def main(which: list[str]) -> None:
     """執行指定的更新工作（沒指定就全部跑），並記錄成功的時間。"""
     meta = data.meta() or {}
     jobs = {"prices": update_prices, "stocks": update_stocks, "fundamentals": update_fundamentals,
             "quarterly": update_quarterly, "worldsteel": update_worldsteel_monthly, "csc": update_csc_prices,
-            "taiwan": update_taiwan_trade}
+            "taiwan": update_taiwan_trade, "tokyo": update_tokyo_steel}
     for name in which or jobs:
         n = jobs[name]()
         log.info("== %s: %d items", name, n)

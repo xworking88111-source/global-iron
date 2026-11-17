@@ -353,3 +353,118 @@ def fetch_mof_table(funid: str, flds: list[int], codspc: str = "", start: str = 
             if re.fullmatch(r"-?\d+(\.\d+)?", v):
                 rows.append({"month": month, "col": col.strip(), "value": float(v)})
     return pd.DataFrame(rows)
+
+
+# ---------------------------------------------------------------------------
+# 東京製鐵（日本最大電爐廠）每月販售價格表
+# ---------------------------------------------------------------------------
+# 官網「販売情報」頁列出 2007 年起每個月的價格表 PDF（文字型，可直接抽字）。
+# 日本只有東京製鐵公開完整盤價；日本製鐵、JFE 只公布調幅，所以用它當日本鋼價的官方參考。
+_TOKYO_STEEL = "https://www.tokyosteel.co.jp/"
+# 代表性品項：(區段開頭, 區段結尾, 取區段內第幾個價格)
+# 價格 = 「不帶 + 號、至少 2 萬日圓」的數字（帶 + 號的是規格加價）。
+# 區段一定要有結尾：某品項當月停售時（例如 2009-06 熱軋寫「────」），才不會誤抓到下一個品項的價格。
+TOKYO_STEEL_ITEMS = {
+    "hrc":   (r"ホットコイル", r"酸洗コイル", 1),     # 熱軋鋼捲 1.7≦t≦22.0（第 0 個是較薄的 1.5–1.7mm）
+    "hbeam": (r"中\s*巾", r"広\s*巾", 0),            # H 型鋼中幅基準尺寸（建築用，電爐廠主力）
+    "plate": (r"厚\s*板", r"熱延鋼板", None),         # 厚板 9.0≦t≦40.0（有沒有 8.0mm 那一列，見下方）
+    "rebar": (r"異形棒鋼", r"\*|＊|単位|$", 1),       # 鋼筋：D13 或 D13–D25（第 0 個是 D10）
+}
+
+
+def list_tokyo_steel_prices() -> dict[str, str]:
+    """販売情報頁 -> {"2026-11": PDF 網址}。"""
+    import re
+
+    import requests
+
+    r = _retry(lambda: requests.get(_TOKYO_STEEL + "salesprice/", headers=_UA, timeout=60))
+    r.raise_for_status()
+    out = {}
+    for path, y, m in re.findall(r'href="(?:\.\./)?(assets/docs/salesprice/price/\d{4}/(\d{4})\.(\d{2})\.pdf)"', r.text):
+        out[f"{y}-{m}"] = _TOKYO_STEEL + path
+    return out
+
+
+def parse_tokyo_steel_pdf(content: bytes) -> dict:
+    """價格表 PDF -> {"announced": "10/19", "hrc": 106000, ...}（日圓／公噸，含運到工地的 O/T NET 價）。
+
+    全形數字先用 NFKC 轉半形；只看第一頁以外的品項時，同一品項以第一次出現為準。
+    """
+    import io
+    import re
+    import unicodedata
+
+    from pypdf import PdfReader
+
+    pages = [p.extract_text() or "" for p in PdfReader(io.BytesIO(content)).pages]
+    text = unicodedata.normalize("NFKC", "\n".join(pages))
+    if "ホットコイル" not in text and sum(0x3E2E <= ord(c) <= 0x3E37 for c in text) > 200:
+        return _parse_tokyo_steel_garbled(pages)
+    out: dict = {}
+    m = re.search(r"\n\s*(\d{1,2}/\d{1,2})\s*\n", text)  # 表頭下方的發布日期，例如 10/19
+    if m:
+        out["announced"] = m.group(1)
+    for key, (start, end, idx) in TOKYO_STEEL_ITEMS.items():
+        m = re.search(start, text)
+        if not m:
+            continue
+        e = re.search(end, text[m.end():])
+        seg = text[m.start():m.end() + (e.start() if e else len(text))]
+        if idx is None:  # 厚板：較新的價格表第一列是 8.0mm，9–40mm 在第二列；舊表只有 9–40mm 起
+            idx = 1 if re.match(r"厚\s*板\s*8\.0", seg) else 0
+        nums = [int(n.replace(",", "")) for n in re.findall(r"(?<![+\d,])(\d{2,3},\d{3})(?![\d,])", seg)]
+        nums = [n for n in nums if n >= 20000]
+        if len(nums) > idx:
+            out[key] = nums[idx]
+    return out
+
+
+def _parse_tokyo_steel_garbled(pages: list[str]) -> dict:
+    """少數月份（例如 2025-06、2025-11）的 PDF 字型沒有對照表，抽出來的字是亂碼。
+
+    數字仍是固定位移（U+3E2E = 0，\\x0f = 逗號，㸩 = +），可以還原；但標題文字還原不了，
+    只好依版面順序取值：第 1 頁 = H 型鋼…鋼筋，第 2 頁 = 熱軋鋼捲…厚板。
+    取到的值會在 update_tokyo_steel() 和前後月份比對，差太多就丟掉。
+    """
+    import re
+
+    def nums(t: str) -> list[int]:
+        t = "".join(chr(ord(c) - 0x3E2E + 48) if 0x3E2E <= ord(c) <= 0x3E37 else
+                    "," if c == "\x0f" else "+" if c == "㸩" else c for c in t)
+        return [v for v in (int(n.replace(",", "")) for n in re.findall(r"(?<![+\d,])(\d{2,3},\d{3})(?![\d,])", t))
+                if v >= 20000]
+
+    out: dict = {}
+    if len(pages) >= 2:
+        p1, p2 = nums(pages[0]), nums(pages[1])
+        if len(p1) > 4:
+            out["hbeam"] = p1[4]     # 細幅 4 個級距之後，就是中幅基準
+            out["rebar"] = p1[-2]    # 鋼筋 D10、D13–D25、D29–D32 → 取中間
+        if len(p2) > 12:
+            out["hrc"] = p2[1]       # 熱軋 1.5–1.7、1.7–22 → 取第 2 個
+            out["plate"] = p2[12]    # 熱軋 2、酸洗 2、鍍鋅 6、縞捲 1、厚板 8mm → 第 13 個是 9–40mm
+    return out
+
+
+def fetch_tokyo_steel_pdf(url: str) -> dict:
+    import requests
+
+    r = _retry(lambda: requests.get(url, headers=_UA, timeout=60))
+    r.raise_for_status()
+    if not r.content.startswith(b"%PDF"):
+        raise ValueError(f"not a PDF: {url}")
+    return parse_tokyo_steel_pdf(r.content)
+
+
+def fetch_tokyo_steel_comment() -> str:
+    """販売情報頁的「市況情報」：東京製鐵對下個月定價的說明（日文原文）。"""
+    import re
+
+    import requests
+
+    r = _retry(lambda: requests.get(_TOKYO_STEEL + "salesprice/", headers=_UA, timeout=60))
+    s = re.sub(r"<script.*?</script>|<style.*?</style>", "", r.text, flags=re.S)
+    s = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", s))
+    m = re.search(r"MARKET INFORMATION\s*市況情報\s*(.+?)\s*(?:以上\s*)?PREVIOUS", s)
+    return m.group(1).strip() if m else ""

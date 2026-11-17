@@ -126,7 +126,8 @@ def meta() -> dict:
 # ---------------------------------------------------------------------------
 def version() -> tuple:
     files = [config.PRICES_FILE, config.STOCKS_FILE, config.FUNDAMENTALS_FILE, config.AIS_FILE, config.META_FILE,
-             config.QUARTERLY_FILE, config.WS_MONTHLY_FILE, config.CSC_OFFICIAL_FILE, config.TW_TRADE_FILE]
+             config.QUARTERLY_FILE, config.WS_MONTHLY_FILE, config.CSC_OFFICIAL_FILE, config.TW_TRADE_FILE,
+             config.TOKYO_STEEL_FILE, config.TOKYO_STEEL_NOTE_FILE]
     files += sorted(config.STATIC_DIR.glob("*.json"))
     return tuple(_mtime(p) for p in files)
 
@@ -180,6 +181,21 @@ def worldsteel_monthly() -> pd.DataFrame:
     df = _load_csv(str(p), _mtime(p)).copy()
     df["month"] = df["month"].astype(str)
     return df
+
+
+def tokyo_steel() -> pd.DataFrame:
+    """東京製鐵每月販售價格（日圓／公噸）：index = 月份，欄位 hrc, hbeam, plate, rebar, announced。"""
+    p = config.TOKYO_STEEL_FILE
+    if not p.exists():
+        return pd.DataFrame()
+    df = _load_csv(str(p), _mtime(p)).copy()
+    df.index = pd.to_datetime(df.pop("month"))
+    return df
+
+
+def tokyo_steel_note() -> dict:
+    """東京製鐵最新「市況情報」：{"month": "2026-12", "move": "flat/up/down", "text_ja": ..., "fetched": ...}。"""
+    return load_json(config.TOKYO_STEEL_NOTE_FILE)
 
 
 def taiwan_trade() -> pd.DataFrame:

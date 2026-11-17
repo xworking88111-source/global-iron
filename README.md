@@ -16,8 +16,8 @@
 
 | 頁面 | 內容 | 主要回答的問題 |
 |---|---|---|
-| 市場總覽 `/` | **本週重點**自動摘要、6 個指標卡（最新價、週／月／年漲跌、10 年分位）、市場狀態判斷、高爐利潤代理、美中熱軋價差、原料走勢＋政策事件標註 | 鋼市現在處於景氣循環的哪裡？ |
-| 月度數據 `/monthly` | 中國每月鋼材出口、worldsteel 每月全球產量（中國 vs 其他、前 10 大國年增率）、中鋼月盤調整與累計 | 供需面最近有沒有變化？ |
+| 市場總覽 `/` | **本週重點**自動摘要、6 個指標卡（最新價、週／月／年漲跌、10 年分位）、市場狀態判斷、高爐利潤代理、美日中熱軋價差、原料走勢＋政策事件標註 | 鋼市現在處於景氣循環的哪裡？ |
+| 月度數據 `/monthly` | 中國每月鋼材出口、worldsteel 每月全球產量（中國 vs 其他、前 10 大國年增率）、東京製鐵每月盤價（2007 年起）、中鋼月盤調整與累計 | 供需面最近有沒有變化？ |
 | 台灣視角 `/taiwan` | 台灣鋼材出口目的地（近 12 個月累計、和三年前同期比較）、進口來源占比、官方鋼鐵單價與數量指數、自動觀察；可切換碳鋼／不銹鋼 | 台灣夾在兩個價格區之間，鋼材往哪裡去、從哪裡來？ |
 | 全球地圖 `/map` | 49 家鋼廠與礦商（45 家鋼廠、4 家鐵礦商）（泡泡 = 產量、顏色 = 製程）、各國產量、鐵礦／煤／鋼材航線、11 個咽喉要道、港口、2024 貿易流、AIS 船位、中鋼運通船隊 | 誰在哪裡生產？貨怎麼運？風險在哪？ |
 | 公司分析 `/companies` | 公司檔案、同業相對分數（體質／價值／動能）、股價比較、**季度利潤率趨勢**、可排序比較表。支援 `?c=posco` 直接連結 | 這家公司跟同業比起來狀況如何？ |
@@ -43,6 +43,7 @@
 | 每月全球粗鋼產量 | worldsteel 每月新聞稿（自動抓取） | 每月 |
 | 中國每月成品鋼材出口 | 海關總署數字，經產業媒體轉載（`data/static/china_steel_exports.json`）；海關網站擋程式抓取，改為每月 12 日自動開提醒 | 每月手動 |
 | 台灣鋼材進出口（依國家）、鋼鐵單價／數量指數 | **財政部統計資料庫（自動下載官方 CSV）** | 每個平日 |
+| 東京製鐵每月盤價 | **東京製鐵官網每月價格表 PDF（自動）** | 每個平日 |
 | 中鋼月盤調整 | **中鋼官網新聞稿（自動）**；較早月份來自媒體報導（`data/static/csc_price_changes.json`） | 每個平日 |
 | 公司與各國粗鋼產量、鋼材與鐵礦貿易 | worldsteel《World Steel in Figures 2025》（2024 資料） | 每年 |
 | 船舶位置（AIS） | AISStream.io（免費岸基 AIS） | 每天 4 次 |
@@ -144,8 +145,8 @@ A free, bilingual (Traditional Chinese / English) steel-market monitor positione
 
 | Page | What it shows | Question it answers |
 |---|---|---|
-| Market `/` | **This week at a glance** auto-summary, 6 KPI tiles (latest price, 1W/1M/1Y change, 10-year percentile), market-regime call, blast-furnace margin proxy, US vs China HRC gap, raw-material trends with policy-event overlay | Where is steel in the cycle right now? |
-| Monthly `/monthly` | China's monthly steel exports, worldsteel monthly production (China vs rest of world, top-10 YoY), China Steel list-price changes and cumulative | Has supply / demand shifted lately? |
+| Market `/` | **This week at a glance** auto-summary, 6 KPI tiles (latest price, 1W/1M/1Y change, 10-year percentile), market-regime call, blast-furnace margin proxy, US vs Japan vs China HRC gap, raw-material trends with policy-event overlay | Where is steel in the cycle right now? |
+| Monthly `/monthly` | China's monthly steel exports, worldsteel monthly production (China vs rest of world, top-10 YoY), Tokyo Steel monthly list prices (since 2007), China Steel list-price changes and cumulative | Has supply / demand shifted lately? |
 | Taiwan Lens `/taiwan` | Taiwan's steel export destinations (trailing 12 months, change vs three years earlier), import shares by origin, official steel unit-value and quantity indices, rule-based observations; carbon / stainless toggle | Caught between two price zones, where does Taiwan's steel go and where does it come from? |
 | Global Map `/map` | 49 companies (45 steelmakers, 4 iron-ore miners) (bubble = output, colour = process route), country output, ore/coal/steel sea lanes, 11 chokepoints, ports, 2024 trade flows, AIS vessels, China Steel Express fleet | Who produces where, how does it move, where is the risk? |
 | Companies `/companies` | Company profile, peer-relative scores (health / value / momentum), share-price comparison, **quarterly margin trend**, sortable peer table. Deep links like `?c=posco` | How is this company doing versus peers? |
@@ -171,6 +172,7 @@ Every page switches language (remembered in the browser) and is laid out for bot
 | Monthly global crude steel production | worldsteel monthly press releases (scraped) | Monthly |
 | China's monthly finished-steel exports | GACC figures via trade press (`data/static/china_steel_exports.json`); the customs site blocks automated access, so a reminder issue opens on the 12th | Monthly, manual |
 | Taiwan steel trade by partner; steel unit-value and quantity indices | **Ministry of Finance statistics database (automatic official CSV download)** | Weekdays |
+| Tokyo Steel monthly list prices | **Tokyo Steel official monthly price-list PDFs (automatic)** | Weekdays |
 | China Steel list-price changes | **CSC official press releases (automatic)**; earlier months from media (`data/static/csc_price_changes.json`) | Weekdays |
 | Company and country crude-steel output, steel and ore trade | worldsteel *World Steel in Figures 2025* (2024 data) | Yearly |
 | Vessel positions (AIS) | AISStream.io (free terrestrial AIS) | 4× daily |

@@ -83,10 +83,12 @@ def china_bf_spread(px: pd.DataFrame,
     return (df["cn_hrc"] - ore_ratio * df["cn_ore"] - coke_ratio * df["cn_coke"]).rename("spread")
 
 
-def hrc_usd_per_tonne(px: pd.DataFrame) -> pd.DataFrame:
-    """把中國與美國熱軋換到同一基準（美元／公噸）。
+def hrc_usd_per_tonne(px: pd.DataFrame, jp_list: pd.Series | None = None) -> pd.DataFrame:
+    """把中國、美國（和日本）熱軋換到同一基準（美元／公噸）。
 
-    兩者價差大致等於：美國關稅保護 + 運費 + 美國本土供給溢價。
+    美中價差大致等於：美國關稅保護 + 運費 + 美國本土供給溢價。
+    jp_list 是東京製鐵每月熱軋盤價（日圓／公噸，index = 該月 1 日）：盤價整個月適用，
+    所以往後填滿到每一天，再用當天匯率換成美元。
     """
     out = pd.DataFrame(index=px.index)
     if {"cn_hrc", "fx_cny"}.issubset(px.columns):
@@ -94,6 +96,11 @@ def hrc_usd_per_tonne(px: pd.DataFrame) -> pd.DataFrame:
         out["China"] = px["cn_hrc"] / fx
     if "us_hrc" in px.columns:
         out["US"] = px["us_hrc"] / config.SHORT_TON_IN_TONNES  # 短噸換公噸
+    if jp_list is not None and len(jp_list.dropna()) and "fx_jpy" in px.columns:
+        jp = jp_list.dropna().sort_index()
+        daily = jp.reindex(px.index.union(jp.index)).ffill().reindex(px.index)
+        daily[px.index < jp.index.min()] = float("nan")
+        out["Japan"] = daily / px["fx_jpy"].ffill()
     return out.dropna(how="all")
 
 

@@ -11,7 +11,7 @@ Each page answers one part of that story:
 | Question | Page |
 |---|---|
 | How wide is the gap across the wall? How squeezed are Chinese mills? | Market |
-| How did China's exports, world output and China Steel's prices move this month? | Monthly |
+| How did China's exports, world output and Asian mills' list prices (Tokyo Steel, China Steel) move this month? | Monthly |
 | Where does Taiwan's steel go, and where do its imports come from? | Taiwan Lens |
 | Which mills sit behind the wall, which fight in the low-price zone? | Companies, Scenario |
 | Trade routes and maritime chokepoint risk | Global Map, Trade & Risk |
@@ -25,7 +25,7 @@ Curated data (data/static/*.json) ───────────────�
 
 | Step | What | Code | Frequency |
 |---|---|---|---|
-| 1. Fetch | Futures, equities, fundamentals, quarterly results, worldsteel monthly output, China Steel prices, Taiwan steel trade | `scripts/update_data.py` | Weekdays (GitHub Actions) |
+| 1. Fetch | Futures, equities, fundamentals, quarterly results, worldsteel monthly output, Tokyo Steel and China Steel prices, Taiwan steel trade | `scripts/update_data.py` | Weekdays (GitHub Actions) |
 | 1. Fetch | AIS vessels, China Steel Express fleet | `scripts/collect_ais.py` | 4× daily |
 | 2. Store | CSV / JSON committed back to GitHub, keeping full history | `data/cache/` | After each fetch |
 | 3. Analyse | Spreads, percentiles, peer scores, scenario model, weekly highlights, Taiwan trade observations | `core/analytics.py`, `core/highlights.py`, `core/taiwan.py` | On page view, results cached |
@@ -44,6 +44,7 @@ Curated data (data/static/*.json) ───────────────�
 | Share prices, fundamentals, quarterly results | Exchanges via Yahoo Finance | Automatic | Medium-high: occasional gaps; zero values treated as missing |
 | Annual company / country output, trade | worldsteel *World Steel in Figures 2025* | Curated from the PDF | High: official statistics |
 | Monthly global production | worldsteel monthly press releases | Automatic (web tables) | High: official (some countries estimated) |
+| Tokyo Steel list prices | Tokyo Steel website, monthly price-list PDFs (since 2007) | **Automatic** PDF text extraction; mid-month the market comment gives next month's direction early | High: official list prices (usually above actual deals) |
 | China Steel list prices | CSC newsroom | **Automatic** from official releases; earlier months from media | High (official) / medium-high (media) |
 | Taiwan steel trade by partner; steel unit-value and quantity indices | Ministry of Finance statistics database (customs trade statistics) | **Automatic** download of official CSVs (Government Open Data Licence, no captcha) | High: official statistics, in USD |
 | China steel exports | China Customs (GACC) | Curated from trade-press reports; monthly automatic reminder | Medium-high: reported months cross-checked; derived months flagged |
@@ -55,6 +56,7 @@ Curated data (data/static/*.json) ───────────────�
 **Quality checks:**
 - China exports: monthly figures must add up to the official year-to-date total (e.g. Jan–Sep sum 85.66 vs reported 85.64 Mt)
 - China Steel prices: official releases compared month by month with earlier media-based figures (Oct–Dec identical)
+- Tokyo Steel: each product is located by its section heading, then the price without a "+" sign is taken ("+" marks grade extras); spot-checked against the original PDFs for 2007, 2010, 2013, 2016, 2020, 2023 and 2026
 - worldsteel: tables parsed by column header (old and new layouts differ); space thousand separators stripped
 
 ## 3. Metrics and calculations
@@ -73,12 +75,16 @@ Margin proxy = HRC futures − 1.6 × iron ore futures − 0.5 × coke futures  
 - **Limit**: excludes energy, labour, alloys and other conversion costs (about CNY 600–900/t), so **the level is not a profit figure**. Read the **trend and 10-year percentile**.
 - **Market regime**: percentile below 20 = margins squeezed, 20–45 weak, 45–70 normal, above 70 strong.
 
-### 3.3 US vs China HRC gap
+### 3.3 HRC gap: US vs Japan vs China
 ```
 China (USD/t) = SHFE HRC ÷ USD/CNY
 US (USD/t)    = CME HRC ÷ 0.907 (short ton to metric tonne)
 ```
 The gap roughly reflects US tariff protection (Section 232), freight and US supply tightness.
+
+The chart also shows **Japan**: Tokyo Steel's monthly HRC list price (JPY/t) applies for the whole month and is converted at each day's JPY rate. It is a delivered, published list price and usually sits above actual deals, so use it for direction and relative position (US inside the wall, Japan, China's low-price zone), not for precise spreads.
+
+**Why only Tokyo Steel and China Steel among Asian mills?** Nippon Steel, JFE, Baosteel and POSCO do not publish full list prices; they only disclose changes through the media. China Steel also discloses only changes (shown as cumulative changes on the Monthly page). Tokyo Steel is the one major Asian mill that publishes its full price list on its website in a form that can be read automatically and legitimately.
 
 ### 3.4 Peer scores (0–100, relative ranks)
 Companies are ranked **within their group** (steelmakers vs steelmakers, miners vs miners), because miners' ~50% margins would make every steelmaker look poor.
@@ -114,7 +120,7 @@ Assumes all crude steel sells at the HRC price: a reasonable upper bound for fla
 Generated by fixed rules; every bullet traces back to a number on the site:
 1. The two biggest weekly moves above 1%
 2. Margin-proxy percentile ≤ 10 flags "squeezed", ≥ 80 flags "rich"
-3. US HRC at 1.5× China's or more flags the tariff wall
+3. US HRC at 1.5× China's or more flags the tariff wall, listing the three tiers: US, Japan (Tokyo Steel list) and China
 4. Latest China exports, global production, China Steel price
 5. The largest change among Taiwan's steel export destinations
 6. Policy events in the last 60 days

@@ -63,12 +63,22 @@ def build(max_items: int = 9) -> list[tuple[str, str, str]]:
                           f"China blast-furnace margin proxy at 10-year percentile {pctl:.0f}: rich margins, watch for restarts"))
 
     # 3. 美中價差：美國熱軋是中國的幾倍
-    gap = an.hrc_usd_per_tonne(px).dropna()
-    if len(gap):
-        ratio = gap["US"].iloc[-1] / gap["China"].iloc[-1]
+    #    有東京製鐵盤價時，一起列出日本：牆內（美國）、中間（日本）、低價區（中國）三層
+    ts = data.tokyo_steel()
+    gap = an.hrc_usd_per_tonne(px, ts["hrc"] if "hrc" in ts else None)
+    gap = gap.dropna(subset=[c for c in ("US", "China") if c in gap])
+    if len(gap) and {"US", "China"} <= set(gap.columns):
+        us, cn = gap["US"].iloc[-1], gap["China"].iloc[-1]
+        jp = gap["Japan"].ffill().iloc[-1] if "Japan" in gap else float("nan")
+        ratio = us / cn
         if ratio >= 1.5:
-            items.append(("info", f"美國熱軋價格是中國的 {ratio:.1f} 倍（每噸 {gap['US'].iloc[-1]:,.0f} vs {gap['China'].iloc[-1]:,.0f} 美元）：關稅壁壘仍高",
-                          f"US HRC is {ratio:.1f}x China's (USD {gap['US'].iloc[-1]:,.0f} vs {gap['China'].iloc[-1]:,.0f}/t): tariff wall still high"))
+            if pd.notna(jp):
+                items.append(("info", f"熱軋每噸：美國 {us:,.0f}、日本（東京製鐵盤價）{jp:,.0f}、中國 {cn:,.0f} 美元。美國是中國的 {ratio:.1f} 倍，關稅牆仍高",
+                              f"HRC per tonne: US {us:,.0f}, Japan (Tokyo Steel list) {jp:,.0f}, China {cn:,.0f} USD. "
+                              f"The US is {ratio:.1f}x China: the tariff wall is still high"))
+            else:
+                items.append(("info", f"美國熱軋價格是中國的 {ratio:.1f} 倍（每噸 {us:,.0f} vs {cn:,.0f} 美元）：關稅壁壘仍高",
+                              f"US HRC is {ratio:.1f}x China's (USD {us:,.0f} vs {cn:,.0f}/t): tariff wall still high"))
 
     # 4. 中國出口（最新月份）
     ex = data.china_exports()

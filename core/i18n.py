@@ -49,6 +49,9 @@ STRINGS: dict[str, dict[str, str]] = {
     "not_per_tonne": {"en": "ETF price, not per tonne", "zh": "ETF 價格，非每噸價格"},
     "kpi_cn_hrc": {"en": "China HRC", "zh": "中國熱軋卷"},
     "kpi_us_hrc": {"en": "US HRC", "zh": "美國熱軋卷"},
+    "us_short": {"en": "US", "zh": "美國"},
+    "japan_short": {"en": "Japan", "zh": "日本"},
+    "kpi_jp_hrc": {"en": "Japan HRC (Tokyo Steel list)", "zh": "日本熱軋（東京製鐵盤價）"},
     "kpi_ore": {"en": "Iron ore 62%", "zh": "鐵礦 62%"},
     "kpi_coke": {"en": "Met. coke", "zh": "焦炭"},
     "kpi_spread": {"en": "China BF margin proxy", "zh": "中國高爐利潤代理"},
@@ -72,9 +75,13 @@ STRINGS: dict[str, dict[str, str]] = {
                      "zh": "中國高爐利潤代理：熱軋 − 1.6×鐵礦 − 0.5×焦炭（人民幣/噸）"},
     "chart_spread_note": {"en": "Excludes other conversion costs (~CNY 600–900/t). Read the trend and percentile, not the level.",
                           "zh": "未扣其他加工成本（約每噸 600–900 元人民幣）。請看趨勢與分位，不要看絕對值。"},
-    "chart_gap": {"en": "HRC: US vs China (USD per tonne)", "zh": "熱軋卷：美國 vs 中國（美元/公噸）"},
-    "chart_gap_note": {"en": "The gap reflects US tariff protection (Section 232), freight and domestic supply tightness.",
-                       "zh": "價差反映美國關稅保護（232 條款）、運費與美國本土供給吃緊。"},
+    "chart_gap": {"en": "HRC: US vs Japan vs China (USD per tonne)", "zh": "熱軋卷：美國 vs 日本 vs 中國（美元/公噸）"},
+    "chart_gap_note": {"en": "The US–China gap reflects US tariff protection (Section 232), freight and domestic supply tightness. "
+                             "Japan is Tokyo Steel's official monthly list price (delivered, converted at the daily JPY rate); "
+                             "list prices sit above actual deals, so read its direction rather than its exact level.",
+                       "zh": "美中價差反映美國關稅保護（232 條款）、運費與美國本土供給吃緊。"
+                             "日本是東京製鐵官方每月盤價（含運到貨，按當天日圓匯率換算）；盤價通常高於實際成交價，"
+                             "請看方向，不要看精確水位。"},
     "range": {"en": "Range", "zh": "區間"},
     "show_events": {"en": "Show events", "zh": "顯示事件"},
     "rebased_note": {"en": "Indexed to 100 at start of range so different units compare.",
@@ -84,8 +91,8 @@ STRINGS: dict[str, dict[str, str]] = {
     # ---- 月度數據 ------
     "nav_monthly": {"en": "Monthly", "zh": "月度數據"},
     "nav_taiwan": {"en": "Taiwan Lens", "zh": "台灣視角"},
-    "monthly_intro": {"en": "Three monthly data sets that drive the steel cycle: China's exports, global production, and China Steel's domestic list prices.",
-                      "zh": "推動鋼鐵景氣的三組月資料：中國出口、全球產量、中鋼內銷盤價。"},
+    "monthly_intro": {"en": "Monthly data that drive the steel cycle: China's exports, global production, and Asian mills' official list prices (Tokyo Steel, China Steel).",
+                      "zh": "推動鋼鐵景氣的月資料：中國出口、全球產量，以及亞洲鋼廠的官方盤價（東京製鐵、中鋼）。"},
     "cn_exports_title": {"en": "China finished-steel exports (monthly, Mt)", "zh": "中國成品鋼材出口（每月，百萬噸）"},
     "cn_exports_note": {"en": "Customs (GACC) figures via trade press. China's export surge is the main reason for weak global steel prices.",
                         "zh": "海關總署數字，經產業媒體轉載。中國出口暴增是這兩年全球鋼價低迷的主因。"},
@@ -115,6 +122,24 @@ STRINGS: dict[str, dict[str, str]] = {
     "src_official": {"en": "Source: CSC official release", "zh": "來源：中鋼官網新聞稿"},
     "src_media": {"en": "Source: media report", "zh": "來源：媒體報導"},
     "monthly_change": {"en": "Monthly change", "zh": "單月調整"},
+    "ts_title": {"en": "Tokyo Steel monthly list prices (JPY per tonne)", "zh": "東京製鐵每月盤價（每公噸日圓）"},
+    "ts_hrc": {"en": "Hot-rolled coil", "zh": "熱軋鋼捲"},
+    "ts_hbeam": {"en": "H-beam", "zh": "H 型鋼"},
+    "ts_plate": {"en": "Heavy plate", "zh": "厚板"},
+    "ts_rebar": {"en": "Rebar", "zh": "鋼筋"},
+    "ts_hrc_usd": {"en": "HRC in USD", "zh": "熱軋換算美元"},
+    "ts_vs_peak": {"en": "vs 2022 peak", "zh": "比 2022 高點"},
+    "ts_next": {"en": "Tokyo Steel has announced {m}", "zh": "東京製鐵已公布 {m} 盤價"},
+    "ts_move_flat": {"en": "all products unchanged", "zh": "全品項平盤"},
+    "ts_move_up": {"en": "price increase", "zh": "調漲"},
+    "ts_move_down": {"en": "price cut", "zh": "調降"},
+    "ts_original": {"en": "Tokyo Steel's market comment (Japanese)", "zh": "東京製鐵市況說明（日文原文）"},
+    "ts_note": {"en": "Japan's largest electric-arc-furnace mill and the only Japanese maker that publishes its full list prices "
+                      "(Nippon Steel and JFE disclose only changes). Delivered prices (O/T NET); products shown: HRC 1.7–22 mm, "
+                      "H-beam medium-flange base size, plate 9–40 mm, rebar D13–D25. Parsed automatically from the official monthly PDF price lists since 2007.",
+                "zh": "日本最大的電爐鋼廠，也是唯一公開完整盤價的日本鋼廠（日本製鐵、JFE 只公布調幅）。"
+                      "價格為含運到貨價（O/T NET）；品項：熱軋 1.7–22mm、H 型鋼中幅基準尺寸、厚板 9–40mm、鋼筋 D13–D25。"
+                      "自 2007 年起，每月自動從官網價格表 PDF 讀取。"},
     "cumulative": {"en": "Cumulative", "zh": "累計"},
     "ups_downs": {"en": "Up / down months", "zh": "調漲／調降月數"},
     "months_up_down": {"en": "months", "zh": "個月"},

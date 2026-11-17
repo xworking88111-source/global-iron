@@ -2,14 +2,16 @@
 
 1. 中國成品鋼材出口（海關）：這兩年鋼價低迷的頭號原因
 2. worldsteel 每月粗鋼產量：減產有沒有真的發生
-3. 中鋼月盤調整：台灣內銷鋼價的風向球
+3. 東京製鐵每月盤價：日本（電爐鋼）的官方價格
+4. 中鋼月盤調整：台灣內銷鋼價的風向球
 
 --- English ---
 Monthly data: three monthly data sets on supply and demand.
 
 1. China's finished-steel exports (customs): the main reason for weak prices
 2. worldsteel monthly crude steel production: are output cuts real?
-3. China Steel's monthly list-price changes: a bellwether for Taiwan's domestic market
+3. Tokyo Steel's monthly list prices: Japan's official (electric-arc) steel prices
+4. China Steel's monthly list-price changes: a bellwether for Taiwan's domestic market
 """
 from __future__ import annotations
 
@@ -131,7 +133,57 @@ def _production_block(lang: str):
 
 
 # ---------------------------------------------------------------------------
-# 3. 中鋼月盤
+# 3. 東京製鐵每月盤價
+# ---------------------------------------------------------------------------
+TS_ITEMS = ["hrc", "hbeam", "plate", "rebar"]
+
+
+def _tokyo_block(lang: str):
+    df = data.tokyo_steel()
+    if df.empty or "hrc" not in df:
+        return card(t("ts_title", lang), html.P(t("no_data", lang)))
+    fig = go.Figure()
+    for i, k in enumerate(TS_ITEMS):
+        if k in df:
+            s = df[k].dropna()
+            fig.add_trace(go.Scatter(x=s.index, y=s, mode="lines", name=t(f"ts_{k}", lang), line_shape="hv",
+                                     line=dict(color=SERIES[i], width=2), hovertemplate="%{y:,.0f} JPY/t"))
+    theme(fig, height=320)
+    fig.update_layout(yaxis_title="JPY/t")
+
+    h = df["hrc"].dropna()
+    last_m, last = h.index[-1], h.iloc[-1]
+    prev = h.iloc[-2] if len(h) > 1 else last
+    yr = h[h.index <= last_m - pd.DateOffset(years=1)]
+    peak = h[(h.index >= "2022-01-01") & (h.index < "2023-01-01")].max()
+    px = data.prices()
+    fx = px["fx_jpy"].dropna().iloc[-1] if "fx_jpy" in px else None
+    stats = [
+        stat(f"{t('ts_hrc', lang)} ({last_m:%Y-%m})", f"{last:,.0f}",
+             f"JPY/t · {_chg((last / prev - 1) * 100, lang, 'mom')}"
+             + (f" · {_chg((last / yr.iloc[-1] - 1) * 100, lang, 'yoy')}" if len(yr) else "")),
+    ]
+    if fx:
+        stats.append(stat(t("ts_hrc_usd", lang), f"{last / fx:,.0f}", f"USD/t · JPY {fx:,.1f}"))
+    if pd.notna(peak):
+        stats.append(stat(t("ts_vs_peak", lang), f"{(last / peak - 1) * 100:+.0f}%", f"{t('ts_hrc', lang)} {peak:,.0f}"))
+
+    # 下個月盤價：官網月中先公布文字說明，PDF 價格表晚幾天才上架
+    note = data.tokyo_steel_note()
+    nxt = None
+    if note.get("month") and note["month"] > f"{last_m:%Y-%m}" and note.get("move"):
+        m = pd.Timestamp(note["month"] + "-01")
+        mlabel = f"{m.year} 年 {m.month} 月" if lang == "zh" else f"{m:%b %Y}"
+        nxt = html.P([html.B(t("ts_next", lang).format(m=mlabel) + ("：" if lang == "zh" else ": ")),
+                      t(f"ts_move_{note['move']}", lang), " · ",
+                      html.A(t("ts_original", lang) + " ↗", href=note.get("source", ""), target="_blank", className="link")],
+                     className="small")
+    return card(t("ts_title", lang), html.Div(stats, className="stat-row"), nxt,
+                dcc.Graph(figure=fig, config=GRAPH_CONFIG), note=t("ts_note", lang))
+
+
+# ---------------------------------------------------------------------------
+# 4. 中鋼月盤
 # ---------------------------------------------------------------------------
 def _csc_block(lang: str):
     raw = data.csc_prices()
@@ -191,8 +243,10 @@ def layout(lang: str):
         html.P(t("monthly_intro", lang), className="muted"),
         _exports_block(lang),
         _production_block(lang),
+        _tokyo_block(lang),
         _csc_block(lang),
         source_line(lang, "GACC via SteelOrbis / SMM / SunSirs / GMK Center; worldsteel monthly press releases; "
+                          "Tokyo Steel official monthly price lists (tokyosteel.co.jp); "
                           "CSC price announcements via Taiwanese media (see data/static/*.json for links)"),
     ])
 

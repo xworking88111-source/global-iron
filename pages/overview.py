@@ -175,16 +175,19 @@ def build_charts(rng: str, show_ev: bool, lang: str):
     theme(f1, legend=False)
 
     # --- 2. 美國 vs 中國熱軋（美元/公噸）-----------------------------------------
-    gap = an.hrc_usd_per_tonne(px)
+    ts = data.tokyo_steel()
+    gap = an.hrc_usd_per_tonne(px, ts["hrc"] if "hrc" in ts else None)
     gap = an.downsample(gap[gap.index >= start].ffill(), years).round(0)
-    names = {"China": t("kpi_cn_hrc", lang), "US": t("kpi_us_hrc", lang)}
-    colors = {"China": SERIES[0], "US": SERIES[1]}
+    names = {"China": t("kpi_cn_hrc", lang), "US": t("kpi_us_hrc", lang), "Japan": t("kpi_jp_hrc", lang)}
+    colors = {"China": SERIES[0], "US": SERIES[1], "Japan": SERIES[2]}
     f2 = go.Figure()
     for col in gap.columns:
         f2.add_trace(go.Scatter(x=gap.index, y=gap[col], mode="lines", name=names[col],
-                                line=dict(color=colors[col], width=2),
+                                line=dict(color=colors[col], width=2, shape="hv" if col == "Japan" else "linear"),
                                 hovertemplate="%{y:,.0f} USD/t"))
-    add_end_labels(f2, gap, names, colors)
+    # 線尾標籤用短名（美國／日本／中國），完整名稱留在圖例，手機上才不會把圖擠窄
+    short = {"China": t("china", lang), "US": t("us_short", lang), "Japan": t("japan_short", lang)}
+    add_end_labels(f2, gap, short, colors)
     if show_ev and len(gap):
         add_events(f2, start, lang, y_top=float(gap.max().max()))
     theme(f2)
