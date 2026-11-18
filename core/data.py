@@ -127,7 +127,7 @@ def meta() -> dict:
 def version() -> tuple:
     files = [config.PRICES_FILE, config.STOCKS_FILE, config.FUNDAMENTALS_FILE, config.AIS_FILE, config.META_FILE,
              config.QUARTERLY_FILE, config.WS_MONTHLY_FILE, config.CSC_OFFICIAL_FILE, config.TW_TRADE_FILE,
-             config.TOKYO_STEEL_FILE, config.TOKYO_STEEL_NOTE_FILE]
+             config.TOKYO_STEEL_FILE, config.TOKYO_STEEL_NOTE_FILE, config.TRADE_REMEDY_FILE]
     files += sorted(config.STATIC_DIR.glob("*.json"))
     return tuple(_mtime(p) for p in files)
 
@@ -190,6 +190,16 @@ def tokyo_steel() -> pd.DataFrame:
         return pd.DataFrame()
     df = _load_csv(str(p), _mtime(p)).copy()
     df.index = pd.to_datetime(df.pop("month"))
+    return df
+
+
+def trade_remedies() -> pd.DataFrame:
+    """WTO 反傾銷／反補貼調查（HS 第 XV 類，逐案）：type, case_id, reporter, exporter, initiated, product, ...。"""
+    p = config.TRADE_REMEDY_FILE
+    if not p.exists():
+        return pd.DataFrame()
+    df = _load_csv(str(p), _mtime(p)).copy()
+    df["initiated"] = pd.to_datetime(df["initiated"])
     return df
 
 

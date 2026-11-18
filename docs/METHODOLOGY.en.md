@@ -13,6 +13,7 @@ Each page answers one part of that story:
 | How wide is the gap across the wall? How squeezed are Chinese mills? | Market |
 | How did China's exports, world output and Asian mills' list prices (Tokyo Steel, China Steel) move this month? | Monthly |
 | Where does Taiwan's steel go, and where do its imports come from? | Taiwan Lens |
+| Who is walling off steel imports? Are the walls aimed at China? Is Taiwan caught too? | Trade Walls |
 | Which mills sit behind the wall, which fight in the low-price zone? | Companies, Scenario |
 | Trade routes and maritime chokepoint risk | Global Map, Trade & Risk |
 
@@ -25,7 +26,7 @@ Curated data (data/static/*.json) ───────────────�
 
 | Step | What | Code | Frequency |
 |---|---|---|---|
-| 1. Fetch | Futures, equities, fundamentals, quarterly results, worldsteel monthly output, Tokyo Steel and China Steel prices, Taiwan steel trade | `scripts/update_data.py` | Weekdays (GitHub Actions) |
+| 1. Fetch | Futures, equities, fundamentals, quarterly results, worldsteel monthly output, Tokyo Steel and China Steel prices, Taiwan steel trade, WTO trade-remedy cases | `scripts/update_data.py` | Weekdays (GitHub Actions) |
 | 1. Fetch | AIS vessels, China Steel Express fleet | `scripts/collect_ais.py` | 4× daily |
 | 2. Store | CSV / JSON committed back to GitHub, keeping full history | `data/cache/` | After each fetch |
 | 3. Analyse | Spreads, percentiles, peer scores, scenario model, weekly highlights, Taiwan trade observations | `core/analytics.py`, `core/highlights.py`, `core/taiwan.py` | On page view, results cached |
@@ -46,6 +47,7 @@ Curated data (data/static/*.json) ───────────────�
 | Monthly global production | worldsteel monthly press releases | Automatic (web tables) | High: official (some countries estimated) |
 | Tokyo Steel list prices | Tokyo Steel website, monthly price-list PDFs (since 2007) | **Automatic** PDF text extraction; mid-month the market comment gives next month's direction early | High: official list prices (usually above actual deals) |
 | China Steel list prices | CSC newsroom | **Automatic** from official releases; earlier months from media | High (official) / medium-high (media) |
+| Steel anti-dumping / countervailing investigations (case level) | WTO Trade Remedies Data Portal (trade-remedies.wto.org) | **Automatic** via the portal's own "Download data" Excel export | High: members' official notifications to the WTO; reported every six months, so the newest cases lag about half a year |
 | Taiwan steel trade by partner; steel unit-value and quantity indices | Ministry of Finance statistics database (customs trade statistics) | **Automatic** download of official CSVs (Government Open Data Licence, no captcha) | High: official statistics, in USD |
 | China steel exports | China Customs (GACC) | Curated from trade-press reports; monthly automatic reminder | Medium-high: reported months cross-checked; derived months flagged |
 | Vessel positions | AISStream terrestrial AIS | Automatic | Uneven: good in Europe/Japan, sparse in China/Taiwan/Australia |
@@ -116,16 +118,25 @@ Assumes all crude steel sells at the HRC price: a reasonable upper bound for fla
 - **Limits**: values mix price and volume, so read them with the quantity index; no tonnage is published in this table; the latest month's index is released a month after the values.
 - **Observations**: the largest three-year fall and rise among export destinations, the EU's share of exports, China's share of carbon-steel imports, Indonesia's share of stainless imports, the import unit-value index and the export quantity index.
 
-### 3.7 This week at a glance (home page)
+### 3.7 Trade Walls
+- **Data**: anti-dumping (AD) and countervailing (CVD) investigations from the WTO Trade Remedies Data Portal, case by case, keeping HS Section XV (base metals and articles thereof).
+- **What counts as steel**: Section XV minus non-ferrous metals (aluminium, copper, nickel, zinc…) and ferroalloys (silicomanganese, ferrosilicon…); products whose name mentions steel, iron or stainless still count (e.g. aluminium-zinc coated or tin-plated steel).
+- **Unit**: one investigation = one reporting member × one exporting country × one product. SACU, the GCC and the Eurasian Economic Union open cases as a bloc and each member then reports them, so members are merged and de-duplicated.
+- **Why only new initiations**: the "measure in force until" field is often not updated, so counting measures currently in force would overstate them (a 1986 measure still shows as in force). Initiation dates are the cleanest field.
+- **Not included**: safeguards (US Section 232, the EU steel safeguard, India's safeguard duty) are not trade-remedy investigations; they appear in the policy timeline on the Trade & Risk page.
+- **Limits**: members report every six months, so the newest cases appear about half a year late; an incomplete last year is labelled with the months it covers.
+
+### 3.8 This week at a glance (home page)
 Generated by fixed rules; every bullet traces back to a number on the site:
 1. The two biggest weekly moves above 1%
 2. Margin-proxy percentile ≤ 10 flags "squeezed", ≥ 80 flags "rich"
 3. US HRC at 1.5× China's or more flags the tariff wall, listing the three tiers: US, Japan (Tokyo Steel list) and China
 4. Latest China exports, global production, China Steel price
 5. The largest change among Taiwan's steel export destinations
-6. Policy events in the last 60 days
+6. New steel AD/CVD investigations worldwide in the latest half-year (vs the same period last year)
+7. Policy events in the last 60 days
 
-### 3.8 AIS vessels
+### 3.9 AIS vessels
 - Listen for 5 minutes inside boxes around ports (~65 km) and chokepoints; keep each ship's latest position.
 - "Cargo / all": AIS type codes 70–79 are confirmed cargo ships; many ships have not broadcast their type during the window, so "all" runs high.
 - China Steel Express fleet: MMSIs are found by ship-name matching, then tracked worldwide by MMSI.

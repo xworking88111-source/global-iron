@@ -468,3 +468,39 @@ def fetch_tokyo_steel_comment() -> str:
     s = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", s))
     m = re.search(r"MARKET INFORMATION\s*市況情報\s*(.+?)\s*(?:以上\s*)?PREVIOUS", s)
     return m.group(1).strip() if m else ""
+
+
+# ---------------------------------------------------------------------------
+# WTO 貿易救濟資料庫（反傾銷 AD、反補貼 CVD 調查，逐案）
+# ---------------------------------------------------------------------------
+# 官方入口 trade-remedies.wto.org 的「Download data」按鈕：篩選條件是 base64 編碼的 JSON，
+# 空條件 {} 就是全部案件。資料來自各會員每半年向 WTO 申報，所以會落後約半年。
+_WTO_TR = "https://trade-remedies.wto.org/en/{kind}/investigations/download/{filters}"
+_WTO_COLS = {"Investigation number": "case_id", "Reporting member": "reporter", "Exporting member": "exporter",
+             "Initiation date": "initiated", "HS Section code": "hs_section", "Subject product": "product",
+             "Conclusion": "conclusion", "Measure in force from": "in_force_from",
+             "Measure in force until": "in_force_until"}
+
+
+def fetch_wto_trade_remedies(kind: str, hs_section: str = "XV") -> pd.DataFrame:
+    """kind = "antidumping" 或 "countervailing"。只留 HS 第 XV 類（卑金屬及其製品：鋼鐵、鋁、銅…）。"""
+    import base64
+    import io
+
+    import requests
+
+    url = _WTO_TR.format(kind=kind, filters=base64.b64encode(b"{}").decode())
+    r = _retry(lambda: requests.get(url, headers=_UA, timeout=180))
+    r.raise_for_status()
+    if not r.content.startswith(b"PK"):  # xlsx 是 zip 格式
+        raise ValueError(f"WTO {kind}: not an Excel file ({r.headers.get('content-type')})")
+    df = pd.read_excel(io.BytesIO(r.content))
+    missing = set(_WTO_COLS) - set(df.columns)
+    if missing:
+        raise ValueError(f"WTO {kind}: columns changed, missing {missing}")
+    df = df[list(_WTO_COLS)].rename(columns=_WTO_COLS)
+    df = df[df["hs_section"] == hs_section].copy()
+    for c in ("initiated", "in_force_from", "in_force_until"):
+        df[c] = pd.to_datetime(df[c], errors="coerce").dt.strftime("%Y-%m-%d")
+    df.insert(0, "type", "AD" if kind == "antidumping" else "CVD")
+    return df

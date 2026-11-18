@@ -33,6 +33,7 @@ CSC_OFFICIAL_FILE = CACHE_DIR / "csc_official.json"     # 中鋼官網盤價新�
 TW_TRADE_FILE = CACHE_DIR / "taiwan_steel_trade.csv"    # 台灣鋼材進出口（財政部統計資料庫，自動抓取）
 TOKYO_STEEL_FILE = CACHE_DIR / "tokyo_steel_prices.csv"  # 東京製鐵每月販售價格（官網 PDF，自動抓取）
 TOKYO_STEEL_NOTE_FILE = CACHE_DIR / "tokyo_steel_note.json"  # 東京製鐵最新「市況情報」（下個月定價說明）
+TRADE_REMEDY_FILE = CACHE_DIR / "trade_remedies.csv"  # WTO 反傾銷／反補貼調查（卑金屬類，逐案，自動抓取）
 
 # ---------------------------------------------------------------------------
 # 價格序列

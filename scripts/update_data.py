@@ -298,12 +298,36 @@ def update_tokyo_steel() -> int:
     return len(rows) + bool(text)
 
 
+def update_trade_remedies() -> int:
+    """WTO 反傾銷（AD）與反補貼（CVD）調查 -> data/cache/trade_remedies.csv（只留卑金屬類，逐案）。
+
+    每次下載全部歷史再覆蓋（各會員會補報、更新結案結果）；某一類失敗時保留舊資料。
+    """
+    parts = []
+    old = pd.read_csv(config.TRADE_REMEDY_FILE, dtype=str) if config.TRADE_REMEDY_FILE.exists() else pd.DataFrame()
+    for kind, code in (("antidumping", "AD"), ("countervailing", "CVD")):
+        try:
+            df = fetch.fetch_wto_trade_remedies(kind)
+            log.info("wto %s: %d base-metal cases, latest %s", code, len(df), df["initiated"].max())
+            parts.append(df)
+        except Exception as e:  # noqa: BLE001
+            log.error("wto %s failed: %s", code, e)
+            if len(old):
+                parts.append(old[old["type"] == code])
+    if not parts:
+        return 0
+    new = pd.concat(parts, ignore_index=True).sort_values(["initiated", "type", "reporter", "exporter"])
+    new.to_csv(config.TRADE_REMEDY_FILE, index=False)
+    return len(new)
+
+
 def main(which: list[str]) -> None:
     """執行指定的更新工作（沒指定就全部跑），並記錄成功的時間。"""
     meta = data.meta() or {}
     jobs = {"prices": update_prices, "stocks": update_stocks, "fundamentals": update_fundamentals,
             "quarterly": update_quarterly, "worldsteel": update_worldsteel_monthly, "csc": update_csc_prices,
-            "taiwan": update_taiwan_trade, "tokyo": update_tokyo_steel}
+            "taiwan": update_taiwan_trade, "tokyo": update_tokyo_steel,
+            "remedies": update_trade_remedies}
     for name in which or jobs:
         n = jobs[name]()
         log.info("== %s: %d items", name, n)

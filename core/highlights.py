@@ -33,7 +33,7 @@ def _zh(x: float, kind: str = "年") -> str:
     return f"{kind}{'增' if x >= 0 else '減'} {abs(x):.1f}%"
 
 
-def build(max_items: int = 9) -> list[tuple[str, str, str]]:
+def build(max_items: int = 10) -> list[tuple[str, str, str]]:
     items: list[tuple[str, str, str]] = []
     px = data.prices()
 
@@ -120,6 +120,15 @@ def build(max_items: int = 9) -> list[tuple[str, str, str]]:
         if tw:
             items.append(tw[0])
     except Exception:  # noqa: BLE001 - 台灣資料缺漏時不影響其他重點
+        pass
+
+    # 6c. 貿易壁壘：最新半年的新立案件數（詳見「貿易壁壘」頁）
+    try:
+        from . import walls
+        wl = walls.observations()
+        if len(wl) > 1:
+            items.append(wl[1])
+    except Exception:  # noqa: BLE001 - WTO 資料缺漏時不影響其他重點
         pass
 
     # 7. 近 60 天的政策／事件

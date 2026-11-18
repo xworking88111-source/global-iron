@@ -241,3 +241,12 @@ table.kv td.v { color: var(--text); text-align: right; font-variant-numeric: tab
   .md th, .md td { min-width: 120px; }
   .md td code { white-space: nowrap; }
 }
+
+/* 貿易壁壘：最新案件清單（手機上比表格好讀） */
+.case-list { list-style: none; margin: 4px 0 0; padding: 0; columns: 2; column-gap: 28px; }
+.case-list li { break-inside: avoid; padding: 8px 0; border-bottom: 1px solid var(--border); }
+.case-meta { display: flex; flex-wrap: wrap; gap: 4px 10px; font-size: 12.5px; color: var(--text-2); }
+.case-meta .tag { padding: 0 6px; border-radius: 4px; background: var(--surface-2); }
+.case-meta .tag.open { color: var(--text); }
+.case-product { font-size: 13.5px; color: var(--text); line-height: 1.45; margin-top: 2px; }
+@media (max-width: 900px) { .case-list { columns: 1; } }
