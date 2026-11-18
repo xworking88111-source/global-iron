@@ -257,7 +257,7 @@ month,flow,partner,product,value
 2026-06,export,au,carbon,1926.0
 2026-07,export,au,carbon,17484.0
 2026-08,export,au,carbon,23938.0
-2026-09,export,au,carbon,23884.0
+2026-09,export,au,carbon,23462.0
 2026-10,export,au,carbon,24088.0
 2016-01,export,br,carbon,48.0
 2016-02,export,br,carbon,420.0
@@ -640,7 +640,7 @@ month,flow,partner,product,value
 2026-06,export,cn,carbon,10269.0
 2026-07,export,cn,carbon,13704.0
 2026-08,export,cn,carbon,9048.0
-2026-09,export,cn,carbon,9932.0
+2026-09,export,cn,carbon,10261.0
 2026-10,export,cn,carbon,8638.0
 2016-01,export,eu,carbon,32806.0
 2016-02,export,eu,carbon,16060.0
@@ -900,7 +900,7 @@ month,flow,partner,product,value
 2026-06,export,hk,carbon,430.0
 2026-07,export,hk,carbon,1452.0
 2026-08,export,hk,carbon,464.0
-2026-09,export,hk,carbon,1039.0
+2026-09,export,hk,carbon,1028.0
 2026-10,export,hk,carbon,374.0
 2016-01,export,id,carbon,8338.0
 2016-02,export,id,carbon,6191.0
@@ -1290,7 +1290,7 @@ month,flow,partner,product,value
 2026-06,export,jp,carbon,20966.0
 2026-07,export,jp,carbon,34783.0
 2026-08,export,jp,carbon,24912.0
-2026-09,export,jp,carbon,38590.0
+2026-09,export,jp,carbon,38425.0
 2026-10,export,jp,carbon,30881.0
 2016-01,export,kr,carbon,5018.0
 2016-02,export,kr,carbon,9277.0
@@ -1420,7 +1420,7 @@ month,flow,partner,product,value
 2026-06,export,kr,carbon,7434.0
 2026-07,export,kr,carbon,13296.0
 2026-08,export,kr,carbon,2510.0
-2026-09,export,kr,carbon,12326.0
+2026-09,export,kr,carbon,12251.0
 2026-10,export,kr,carbon,16344.0
 2016-01,export,mx,carbon,6035.0
 2016-02,export,mx,carbon,7894.0
@@ -2362,7 +2362,7 @@ month,flow,partner,product,value
 2026-06,export,world,carbon,226320.0
 2026-07,export,world,carbon,409094.0
 2026-08,export,world,carbon,318393.0
-2026-09,export,world,carbon,426753.0
+2026-09,export,world,carbon,426409.0
 2026-10,export,world,carbon,437513.0
 2016-01,export,asean,stainless,26980.0
 2016-02,export,asean,stainless,26823.0
@@ -5646,7 +5646,7 @@ month,flow,partner,product,value
 2026-06,import,in,carbon,91.0
 2026-07,import,in,carbon,605.0
 2026-08,import,in,carbon,30.0
-2026-09,import,in,carbon,1791.0
+2026-09,import,in,carbon,1747.0
 2026-10,import,in,carbon,528.0
 2016-01,import,jp,carbon,47913.0
 2016-02,import,jp,carbon,52127.0
@@ -6780,7 +6780,7 @@ month,flow,partner,product,value
 2026-06,import,world,carbon,372079.0
 2026-07,import,world,carbon,265994.0
 2026-08,import,world,carbon,284702.0
-2026-09,import,world,carbon,167610.0
+2026-09,import,world,carbon,167566.0
 2026-10,import,world,carbon,189465.0
 2016-01,import,asean,scrap,3116.0
 2016-02,import,asean,scrap,2908.0
@@ -10835,7 +10835,8 @@ month,flow,partner,product,value
 2026-06,index,world,export_qty,68.74
 2026-07,index,world,export_qty,73.96
 2026-08,index,world,export_qty,71.05
-2026-09,index,world,export_qty,70.06
+2026-09,index,world,export_qty,70.01
+2026-10,index,world,export_qty,70.65
 2016-01,index,world,export_uv,87.5
 2016-02,index,world,export_uv,87.61
 2016-03,index,world,export_uv,86.16
@@ -10965,6 +10966,7 @@ month,flow,partner,product,value
 2026-07,index,world,export_uv,125.16
 2026-08,index,world,export_uv,129.73
 2026-09,index,world,export_uv,130.41
+2026-10,index,world,export_uv,132.38
 2016-01,index,world,import_qty,83.73
 2016-02,index,world,import_qty,69.85
 2016-03,index,world,import_qty,103.59
@@ -11094,6 +11096,7 @@ month,flow,partner,product,value
 2026-07,index,world,import_qty,71.61
 2026-08,index,world,import_qty,74.35
 2026-09,index,world,import_qty,50.68
+2026-10,index,world,import_qty,59.9
 2016-01,index,world,import_uv,60.16
 2016-02,index,world,import_uv,58.92
 2016-03,index,world,import_uv,57.84
@@ -11222,4 +11225,5 @@ month,flow,partner,product,value
 2026-06,index,world,import_uv,93.63
 2026-07,index,world,import_uv,97.82
 2026-08,index,world,import_uv,100.24
-2026-09,index,world,import_uv,95.63
+2026-09,index,world,import_uv,95.62
+2026-10,index,world,import_uv,95.44
