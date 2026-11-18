@@ -20,6 +20,7 @@
 | 月度數據 `/monthly` | 中國每月鋼材出口、worldsteel 每月全球產量（中國 vs 其他、前 10 大國年增率）、東京製鐵每月盤價（2007 年起）、中鋼月盤調整與累計 | 供需面最近有沒有變化？ |
 | 台灣視角 `/taiwan` | 台灣鋼材出口目的地（近 12 個月累計、和三年前同期比較）、進口來源占比、官方鋼鐵單價與數量指數、自動觀察；可切換碳鋼／不銹鋼 | 台灣夾在兩個價格區之間，鋼材往哪裡去、從哪裡來？ |
 | 貿易壁壘 `/walls` | WTO 鋼鐵反傾銷／反補貼調查：每年新立案件數（對中國 vs 其他）、近兩年築牆最積極的國家、最新案件清單、自動觀察；可切換被調查國（中國／台灣） | 誰在對鋼鐵築牆？牆主要對著誰？台灣有沒有被波及？ |
+| 月報 `/report` | 用固定規則從本站資料寫成的雙語每月情勢報告（不用 AI 生成文字）；每月 25 日後自動歸檔，可回看過去各期、下載 Markdown | 這個月整體情勢怎麼樣？ |
 | 全球地圖 `/map` | 49 家鋼廠與礦商（45 家鋼廠、4 家鐵礦商）（泡泡 = 產量、顏色 = 製程）、各國產量、鐵礦／煤／鋼材航線、11 個咽喉要道、港口、2024 貿易流、AIS 船位、中鋼運通船隊 | 誰在哪裡生產？貨怎麼運？風險在哪？ |
 | 公司分析 `/companies` | 公司檔案、同業相對分數（體質／價值／動能）、股價比較、**季度利潤率趨勢**、可排序比較表。支援 `?c=posco` 直接連結 | 這家公司跟同業比起來狀況如何？ |
 | 情境模擬 `/scenario` | 調整熱軋／鐵礦／焦炭價格，看每噸利潤瀑布圖、年度影響、敏感度 | 原料漲 10%，鋼廠會少賺多少？ |
@@ -101,6 +102,7 @@ pages/                  每頁一個模組：layout(lang) + register(app)
 core/highlights.py      「本週重點」規則式摘要
 core/taiwan.py          台灣鋼材進出口分析與自動觀察
 core/walls.py           WTO 鋼鐵貿易救濟案件分析與自動觀察
+core/report.py          每月情勢報告（規則產生）與歸檔
 scripts/
   update_data.py        更新價格、股價、基本面
   collect_ais.py        AIS 快照與船隊 MMSI 探索
@@ -152,6 +154,7 @@ A free, bilingual (Traditional Chinese / English) steel-market monitor positione
 | Monthly `/monthly` | China's monthly steel exports, worldsteel monthly production (China vs rest of world, top-10 YoY), Tokyo Steel monthly list prices (since 2007), China Steel list-price changes and cumulative | Has supply / demand shifted lately? |
 | Taiwan Lens `/taiwan` | Taiwan's steel export destinations (trailing 12 months, change vs three years earlier), import shares by origin, official steel unit-value and quantity indices, rule-based observations; carbon / stainless toggle | Caught between two price zones, where does Taiwan's steel go and where does it come from? |
 | Trade Walls `/walls` | WTO steel anti-dumping / countervailing investigations: new cases per year (against China vs others), the members building walls most actively in the last two years, latest cases, rule-based observations; China / Taiwan target toggle | Who is walling off steel, against whom, and is Taiwan caught too? |
+| Monthly Brief `/report` | A bilingual monthly situation report written from the site's data by fixed rules (no AI-generated prose); archived automatically after the 25th, past editions selectable, Markdown download | How did the whole picture change this month? |
 | Global Map `/map` | 49 companies (45 steelmakers, 4 iron-ore miners) (bubble = output, colour = process route), country output, ore/coal/steel sea lanes, 11 chokepoints, ports, 2024 trade flows, AIS vessels, China Steel Express fleet | Who produces where, how does it move, where is the risk? |
 | Companies `/companies` | Company profile, peer-relative scores (health / value / momentum), share-price comparison, **quarterly margin trend**, sortable peer table. Deep links like `?c=posco` | How is this company doing versus peers? |
 | Scenario `/scenario` | Shock HRC / ore / coke prices; per-tonne margin waterfall, annual impact, sensitivities | If ore rises 10%, how much margin does a mill lose? |
@@ -233,6 +236,7 @@ pages/                  One module per page: layout(lang) + register(app)
 core/highlights.py      Rule-based 'this week at a glance' summary
 core/taiwan.py          Taiwan steel trade analytics and observations
 core/walls.py           WTO steel trade-remedy case analytics and observations
+core/report.py          Rule-based monthly situation report and archive
 scripts/
   update_data.py        Refresh prices, equities, fundamentals
   collect_ais.py        AIS snapshot and fleet MMSI discovery

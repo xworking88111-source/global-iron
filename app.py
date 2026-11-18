@@ -34,7 +34,7 @@ from dash import Dash, Input, Output, State, dcc, html
 
 from core import data
 from core.i18n import DEFAULT_LANG, t
-from pages import about, companies, map as map_page, monthly, overview, risk, scenario, taiwan, walls
+from pages import about, companies, map as map_page, monthly, overview, risk, report, scenario, taiwan, walls
 
 # 網址路徑 -> （頁面模組, 導覽列文字的 key）
 ROUTES = {
@@ -42,6 +42,7 @@ ROUTES = {
     "/monthly": (monthly, "nav_monthly"),
     "/taiwan": (taiwan, "nav_taiwan"),
     "/walls": (walls, "nav_walls"),
+    "/report": (report, "nav_report"),
     "/map": (map_page, "nav_map"),
     "/companies": (companies, "nav_companies"),
     "/scenario": (scenario, "nav_scenario"),

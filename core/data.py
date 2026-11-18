@@ -129,6 +129,7 @@ def version() -> tuple:
              config.QUARTERLY_FILE, config.WS_MONTHLY_FILE, config.CSC_OFFICIAL_FILE, config.TW_TRADE_FILE,
              config.TOKYO_STEEL_FILE, config.TOKYO_STEEL_NOTE_FILE, config.TRADE_REMEDY_FILE]
     files += sorted(config.STATIC_DIR.glob("*.json"))
+    files += sorted((config.CACHE_DIR / "reports").glob("*.json"))  # 月報歸檔
     return tuple(_mtime(p) for p in files)
 
 

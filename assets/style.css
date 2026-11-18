@@ -250,3 +250,9 @@ table.kv td.v { color: var(--text); text-align: right; font-variant-numeric: tab
 .case-meta .tag.open { color: var(--text); }
 .case-product { font-size: 13.5px; color: var(--text); line-height: 1.45; margin-top: 2px; }
 @media (max-width: 900px) { .case-list { columns: 1; } }
+
+/* 月報 */
+.rp-lead { border-left: 3px solid var(--accent); }
+.rp-headline { font-size: 16px; line-height: 1.6; color: var(--text); margin: 4px 0 6px; font-weight: 500; }
+.rp-list { margin: 0 0 8px; padding-left: 20px; }
+.rp-list li { padding: 3px 0; font-size: 14px; line-height: 1.6; color: var(--text); }

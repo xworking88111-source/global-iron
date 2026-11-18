@@ -321,13 +321,24 @@ def update_trade_remedies() -> int:
     return len(new)
 
 
+def update_report() -> int:
+    """每月 25 日以後的第一次更新：把當下的月報凍結成 data/cache/reports/YYYY-MM.json。"""
+    from core import report
+
+    month = report.archive_if_due()
+    if month:
+        log.info("report archived: %s", month)
+    return 1 if month else 0
+
+
 def main(which: list[str]) -> None:
     """執行指定的更新工作（沒指定就全部跑），並記錄成功的時間。"""
     meta = data.meta() or {}
     jobs = {"prices": update_prices, "stocks": update_stocks, "fundamentals": update_fundamentals,
             "quarterly": update_quarterly, "worldsteel": update_worldsteel_monthly, "csc": update_csc_prices,
             "taiwan": update_taiwan_trade, "tokyo": update_tokyo_steel,
-            "remedies": update_trade_remedies}
+            "remedies": update_trade_remedies,
+            "report": update_report}  # 月報要放最後：用的是這次剛更新完的資料
     for name in which or jobs:
         n = jobs[name]()
         log.info("== %s: %d items", name, n)

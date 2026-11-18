@@ -92,6 +92,21 @@ STRINGS: dict[str, dict[str, str]] = {
     "nav_monthly": {"en": "Monthly", "zh": "月度數據"},
     "nav_taiwan": {"en": "Taiwan Lens", "zh": "台灣視角"},
     "nav_walls": {"en": "Trade Walls", "zh": "貿易壁壘"},
+    "nav_report": {"en": "Monthly Brief", "zh": "月報"},
+    "rp_intro": {"en": "A monthly situation report on the split steel market, written from this site's data by fixed rules: "
+                       "every sentence traces back to a number on the other pages.",
+                 "zh": "全球鋼鐵市場分裂的每月情勢報告。用固定規則從本站資料寫成，每一句都能回溯到其他頁面上的數字。"},
+    "rp_title": {"en": "Global steel split: {m}", "zh": "全球鋼鐵市場分裂月報：{m}"},
+    "rp_asof": {"en": "Data as of {d}", "zh": "資料截至 {d}"},
+    "rp_live_note": {"en": "updates with the data; frozen into the archive after the 25th",
+                     "zh": "隨資料更新；每月 25 日以後凍結歸檔"},
+    "rp_live": {"en": "Latest (live)", "zh": "最新（即時）"},
+    "rp_edition": {"en": "Edition", "zh": "期數"},
+    "rp_download": {"en": "Download Markdown", "zh": "下載 Markdown"},
+    "rp_more": {"en": "See the data", "zh": "看詳細資料"},
+    "rp_method": {"en": "No AI-generated text: sentences are templates filled with data, so wording stays plain and the numbers can be checked. "
+                        "Not investment advice.",
+                  "zh": "沒有用 AI 生成文字：每句都是模板加上資料，所以用字樸素，但數字都能核對。不構成投資建議。"},
     "wl_intro": {"en": "Anti-dumping and countervailing investigations are the bricks of the steel trade wall. Every case on steel "
                        "reported to the WTO, who opens them, and whom they target.",
                  "zh": "反傾銷與反補貼調查是鋼鐵貿易牆的磚塊。這頁整理各國向 WTO 申報的每一件鋼鐵案件：誰在立案、對象是誰。"},
