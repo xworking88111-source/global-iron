@@ -114,7 +114,7 @@ def observations() -> list[tuple[str, str, str]]:
                     f"Taiwan steel exports to {name(code, 'en')}: USD {ex.loc[yr, code]:,.0f}m in {period_en} {yr}, "
                     f"{p:+.0f}% vs {base}"))
 
-    # 2. 歐盟占出口比重：歐盟防衛措施與 CBAM 的影響
+    # 2. 歐盟占出口比重：歐盟鋼鐵配額與 CBAM 的影響
     if "eu" in ex and "world" in ex:
         s_now, s_then = ex.loc[yr, "eu"] / ex.loc[yr, "world"] * 100, ex.loc[base, "eu"] / ex.loc[base, "world"] * 100
         out.append(("warn" if s_now < s_then else "info",

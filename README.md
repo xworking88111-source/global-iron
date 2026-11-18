@@ -8,7 +8,7 @@
 
 ## 繁體中文
 
-一個免費、中英雙語的全球鋼鐵市場觀測網站，定位是**「全球鋼鐵市場分裂監測」**：從台灣看出去，追蹤關稅牆（美國 232、歐盟防衛措施與 CBAM、中國出口許可證）怎麼把鋼鐵市場切成「受保護的高價區」和「中國主導的低價區」，以及這個分裂對鋼價、貿易路線與航運風險的影響。
+一個免費、中英雙語的全球鋼鐵市場觀測網站，定位是**「全球鋼鐵市場分裂監測」**：從台灣看出去，追蹤關稅牆（美國 232、歐盟鋼鐵配額與 CBAM、中國出口許可證）怎麼把鋼鐵市場切成「受保護的高價區」和「中國主導的低價區」，以及這個分裂對鋼價、貿易路線與航運風險的影響。
 
 **目標使用者**：全球股票投資人、地緣政治研究者、航運與海上保險從業者。
 
@@ -142,7 +142,7 @@ Render → New → Blueprint → 選這個 repo，會依 `render.yaml` 自動建
 
 ## English
 
-A free, bilingual (Traditional Chinese / English) steel-market monitor positioned as **a tracker of the split in the global steel market, seen from Taiwan**: how tariff walls (US Section 232, EU safeguards and CBAM, China's export licences) divide steel into a protected high-price zone and a China-driven low-price zone, and what that means for prices, trade routes and shipping risk.
+A free, bilingual (Traditional Chinese / English) steel-market monitor positioned as **a tracker of the split in the global steel market, seen from Taiwan**: how tariff walls (US Section 232, EU steel quotas and CBAM, China's export licences) divide steel into a protected high-price zone and a China-driven low-price zone, and what that means for prices, trade routes and shipping risk.
 
 **Built for:** global equity investors, geopolitical researchers, and shipping / marine-insurance professionals.
 

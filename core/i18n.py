@@ -114,10 +114,10 @@ STRINGS: dict[str, dict[str, str]] = {
     "wl_years_title": {"en": "New steel trade-remedy investigations per year (anti-dumping + countervailing)",
                        "zh": "每年新立案的鋼鐵貿易救濟調查（反傾銷＋反補貼）"},
     "wl_years_note": {"en": "One investigation = one reporting member × one exporting country × one product. Customs-union cases "
-                            "(SACU, GCC, Eurasian Economic Union) are counted once. Safeguards (e.g. US Section 232, EU safeguard) "
+                            "(SACU, GCC, Eurasian Economic Union) are counted once. Safeguards and quota regimes (e.g. US Section 232, EU steel quotas) "
                             "are not trade-remedy cases and appear in the policy timeline instead.",
                       "zh": "一件調查 = 一個申報國 × 一個被調查國 × 一項產品。關稅同盟（南部非洲、海灣、歐亞經濟聯盟）的案件只算一次。"
-                            "防衛措施（如美國 232、歐盟防衛措施）不屬於這類案件，列在「貿易與風險」頁的政策時間軸。"},
+                            "防衛措施與配額制度（如美國 232、歐盟鋼鐵配額）不屬於這類案件，列在「貿易與風險」頁的政策時間軸。"},
     "wl_vs_china": {"en": "Against China", "zh": "對中國"},
     "wl_vs_other": {"en": "Against others", "zh": "對其他國家"},
     "wl_cases": {"en": "Investigations", "zh": "件數"},
@@ -323,8 +323,8 @@ STRINGS: dict[str, dict[str, str]] = {
     "china_share": {"en": "China share of world output", "zh": "中國占全球產量"},
 
     # ---- 台灣視角 -----------------------------------------------------------
-    "tw_intro": {"en": "Tariff walls (US Section 232, EU safeguards and CBAM, China's export licences) are splitting steel into a protected high-price zone and a China-driven low-price zone. Taiwan sits in between. Official customs statistics show where Taiwan's steel now goes, where its imports come from, and what is happening to prices and volumes.",
-                 "zh": "關稅牆（美國 232、歐盟防衛措施與 CBAM、中國出口許可證）正把鋼鐵市場切成「受保護的高價區」和「中國主導的低價區」，台灣夾在中間。這一頁用海關官方統計，看台灣的鋼材出口去了哪裡、進口從哪裡來、價格與數量怎麼變。"},
+    "tw_intro": {"en": "Tariff walls (US Section 232, EU steel quotas and CBAM, China's export licences) are splitting steel into a protected high-price zone and a China-driven low-price zone. Taiwan sits in between. Official customs statistics show where Taiwan's steel now goes, where its imports come from, and what is happening to prices and volumes.",
+                 "zh": "關稅牆（美國 232、歐盟鋼鐵配額與 CBAM、中國出口許可證）正把鋼鐵市場切成「受保護的高價區」和「中國主導的低價區」，台灣夾在中間。這一頁用海關官方統計，看台灣的鋼材出口去了哪裡、進口從哪裡來、價格與數量怎麼變。"},
     "tw_obs_title": {"en": "What the data says", "zh": "資料告訴我們什麼"},
     "tw_latest": {"en": "Customs data through", "zh": "海關資料截至"},
     "tw_product": {"en": "Product", "zh": "貨品"},

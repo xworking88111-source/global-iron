@@ -4,7 +4,7 @@ Where every number on the site comes from, how it is calculated, how to read it,
 
 ## 0. Positioning: monitoring the split of the global steel market
 
-US Section 232 tariffs, EU safeguards and CBAM, and China's export licences are splitting steel into two zones: a **protected high-price zone** behind tariff walls (US, Europe) and a **China-driven low-price zone** (China, plus the steel that is kept out of the West and flows to Asia and the Middle East). Taiwan sits in between.
+US Section 232 tariffs, EU steel quotas (a safeguard until June 2026, replaced in July 2026 by a new regulation with a 50% out-of-quota duty) and CBAM, and China's export licences are splitting steel into two zones: a **protected high-price zone** behind tariff walls (US, Europe) and a **China-driven low-price zone** (China, plus the steel that is kept out of the West and flows to Asia and the Middle East). Taiwan sits in between.
 
 Each page answers one part of that story:
 
@@ -124,7 +124,7 @@ Assumes all crude steel sells at the HRC price: a reasonable upper bound for fla
 - **What counts as steel**: Section XV minus non-ferrous metals (aluminium, copper, nickel, zinc…) and ferroalloys (silicomanganese, ferrosilicon…); products whose name mentions steel, iron or stainless still count (e.g. aluminium-zinc coated or tin-plated steel).
 - **Unit**: one investigation = one reporting member × one exporting country × one product. SACU, the GCC and the Eurasian Economic Union open cases as a bloc and each member then reports them, so members are merged and de-duplicated.
 - **Why only new initiations**: the "measure in force until" field is often not updated, so counting measures currently in force would overstate them (a 1986 measure still shows as in force). Initiation dates are the cleanest field.
-- **Not included**: safeguards (US Section 232, the EU steel safeguard, India's safeguard duty) are not trade-remedy investigations; they appear in the policy timeline on the Trade & Risk page.
+- **Not included**: safeguards and quota regimes (US Section 232, the EU steel quota regulation, India's safeguard duty) are not trade-remedy investigations; they appear in the policy timeline on the Trade & Risk page.
 - **Limits**: members report every six months, so the newest cases appear about half a year late; an incomplete last year is labelled with the months it covers.
 
 ### 3.8 Monthly Brief

@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "note": "Curated market-moving events for overlay on price charts. 'precision' = day | month. Dates checked against legal/press sources on 2026-11-16. Add new events here (no code change needed).",
+    "note": "Curated market-moving events for overlay on price charts. 'precision' = day | month. Dates checked against legal/press sources on 2026-11-18. Add new events here (no code change needed).",
     "categories": {
       "tariff": {
         "en": "Trade measure",
@@ -23,7 +23,7 @@
         "zh": "航運"
       }
     },
-    "note_zh": "影響市場的重要事件，疊加在價格圖上。precision = day（精確到日）或 month（精確到月）。日期已於 2026-11-16 對照法規與新聞來源查核。新增事件只要編輯這個檔案，不用改程式。"
+    "note_zh": "影響市場的重要事件，疊加在價格圖上。precision = day（精確到日）或 month（精確到月）。日期已於 2026-11-18 對照法規與新聞來源查核。新增事件只要編輯這個檔案，不用改程式。"
   },
   "events": [
     {
@@ -119,8 +119,8 @@
       "precision": "day",
       "cat": "tariff",
       "region": "EU",
-      "en": "European Commission proposes new steel regime: quotas cut 47% to 18.3 Mt/yr, 50% out-of-quota duty (from July 2026 if adopted)",
-      "zh": "歐盟執委會提出新鋼鐵機制：免稅配額削減 47% 至每年 1,830 萬噸、超額關稅 50%（若通過，2026 年 7 月起實施）"
+      "en": "European Commission proposes new steel regime to replace the safeguard: quotas cut 47% to 18.3 Mt/yr, 50% out-of-quota duty (adopted June 2026)",
+      "zh": "歐盟執委會提出取代防衛措施的新鋼鐵機制：免稅配額削減 47% 至每年 1,830 萬噸、超額關稅 50%（2026 年 6 月通過）"
     },
     {
       "date": "2026-01-01",
@@ -129,6 +129,14 @@
       "region": "EU",
       "en": "EU CBAM definitive phase begins (certificates for embedded emissions)",
       "zh": "歐盟 CBAM 正式階段開始（須依內含排放購買憑證）"
+    },
+    {
+      "date": "2026-07-01",
+      "precision": "day",
+      "cat": "tariff",
+      "region": "EU",
+      "en": "EU steel regulation (EU) 2026/1384 applies, replacing the safeguard that expired on 30 June: duty-free quotas ~18.3 Mt/yr (about 47% below 2024), 50% out-of-quota duty, 30 product categories",
+      "zh": "歐盟鋼鐵新法規（EU）2026/1384 上路，取代 6 月 30 日到期的防衛措施：免稅配額約每年 1,830 萬噸（比 2024 年少約 47%）、超額關稅 50%、涵蓋 30 類產品"
     }
   ]
 }
