@@ -1,0 +1,128 @@
+{
+ "month": "2026-11",
+ "generated": "2026-11-25",
+ "headline_zh": "牆內外價差擴大：美國熱軋是中國的 3.3 倍（一個月前 3.0 倍）；中國鋼廠利潤在 10 年最低區間；中國今年鋼材出口 95 百萬噸，只比去年少 2.3%。",
+ "headline_en": "The gap across the wall widened: US HRC is 3.3x China's (3.0x a month ago); Chinese mill margins are at 10-year lows; China's exports so far this year are 95 Mt, only down 2.3% on last year.",
+ "sections": [
+  {
+   "key": "prices",
+   "zh_title": "牆內外價差",
+   "en_title": "The price gap across the wall",
+   "zh": [
+    "熱軋卷每公噸：美國 1,577 美元、中國 473 美元，日本（東京製鐵盤價）666 美元。",
+    "美國價格是中國的 3.3 倍，一個月前是 3.0 倍：牆內外價差擴大。",
+    "美國熱軋近一個月上漲 10.8%。",
+    "中國熱軋近一個月下跌 1.0%。"
+   ],
+   "en": [
+    "Hot-rolled coil per tonne: US USD 1,577, China USD 473, Japan (Tokyo Steel list) USD 666.",
+    "US prices are 3.3x China's, against 3.0x a month ago: the gap across the wall has widened.",
+    "US HRC is up 10.8% over the past month.",
+    "China HRC is down 1.0% over the past month."
+   ],
+   "link": "/"
+  },
+  {
+   "key": "china",
+   "zh_title": "中國：低價區的源頭",
+   "en_title": "China: the source of the low-price zone",
+   "zh": [
+    "中國高爐利潤代理落在 10 年來最低的 1% 區間，鋼廠普遍在虧損邊緣。",
+    "2026 年 10 月鋼材出口 9.85 百萬噸，比上月減少 6.1%；今年累計 95.5 百萬噸，比去年同期減少 2.3%。",
+    "2026 年 10 月中國粗鋼產量 70.8 百萬噸（年減 1.6%），占全球 50%；減產還沒有真的發生。"
+   ],
+   "en": [
+    "China's blast-furnace margin proxy is in the bottom 1% of its 10-year range, with mills near break-even.",
+    "Steel exports were 9.85 Mt in Oct 2026, down 6.1% from the previous month; year to date 95.5 Mt, down 2.3% on last year.",
+    "China made 70.8 Mt of crude steel in Oct 2026 (-1.6% YoY), 50% of the world; output cuts have not really happened yet."
+   ],
+   "link": "/monthly"
+  },
+  {
+   "key": "asia",
+   "zh_title": "亞洲鋼廠盤價",
+   "en_title": "Asian mills' list prices",
+   "zh": [
+    "東京製鐵 2026 年 11 月熱軋盤價每公噸 106,000 日圓，比一年前上漲 23.3%。",
+    "已公布 2026 年 12 月盤價：全品項平盤。",
+    "中鋼 2026 年 12 月熱軋盤價調漲 300 元／噸，2026 年累計 +5,400 元。"
+   ],
+   "en": [
+    "Tokyo Steel's HRC list price for Nov 2026 is JPY 106,000/t, up 23.3% on a year earlier.",
+    "It has announced all products unchanged for Dec 2026.",
+    "China Steel's HRC list price for Dec 2026: +300 TWD/t; 2026 cumulative +5,400."
+   ],
+   "link": "/monthly"
+  },
+  {
+   "key": "taiwan",
+   "zh_title": "台灣：夾在兩個價格區之間",
+   "en_title": "Taiwan: caught between two price zones",
+   "zh": [
+    "台灣鋼材出口到歐盟：2026 年 1–10 月 713 百萬美元，比 2023 年同期減少 61%。",
+    "台灣鋼材出口到美國：2026 年 1–10 月 995 百萬美元，比 2023 年同期增加 54%。",
+    "歐盟占台灣鋼材出口的比重從 2023 年的 26% 變成 14%。",
+    "台灣進口碳鋼有 24% 來自中國（去年同期 19%）。"
+   ],
+   "en": [
+    "Taiwan steel exports to EU: USD 713m in Jan–Oct 2026, -61% vs 2023.",
+    "Taiwan steel exports to United States: USD 995m in Jan–Oct 2026, +54% vs 2023.",
+    "EU share of Taiwan's steel exports: 26% in 2023 → 14% now.",
+    "24% of Taiwan's carbon-steel imports come from China (same period last year 19%)."
+   ],
+   "link": "/taiwan"
+  },
+  {
+   "key": "walls",
+   "zh_title": "貿易壁壘",
+   "en_title": "Trade walls",
+   "zh": [
+    "2025 年全球新立案的鋼鐵反傾銷／反補貼調查 102 件，其中 38 件針對中國（37%）；過去 10 年平均每年 74 件。",
+    "2026 年 1–6 月全球新立案的鋼鐵反傾銷／反補貼調查 46 件（去年同期 57 件），對中國 14 件。",
+    "2025 年以來對中國鋼鐵立案最多：澳洲 7 件、加拿大 7 件、印度 4 件。",
+    "台灣鋼材也被波及：2025 年以來有 6 件調查把台灣列為對象（日本 3、加拿大 1、歐盟 1、美國 1）。"
+   ],
+   "en": [
+    "102 new steel AD/CVD investigations worldwide in 2025, 38 of them against China (37%); 10-year average 74 a year.",
+    "46 new steel AD/CVD investigations worldwide in Jan–Jun 2026 (same period last year: 57), 14 against China.",
+    "Most cases against Chinese steel since 2025: Australia 7, Canada 7, India 4.",
+    "Taiwan is caught too: 6 cases since 2025 name Taiwan (Japan 3, Canada 1, EU 1, US 1)."
+   ],
+   "link": "/walls"
+  },
+  {
+   "key": "shipping",
+   "zh_title": "航運與政策",
+   "en_title": "Shipping and policy",
+   "zh": [
+    "乾散貨運價（BDRY）近一個月上漲 3.3%。",
+    "布蘭特原油近一個月下跌 22.0%。",
+    "本站政策與事件時間軸近 60 天沒有新增事件。"
+   ],
+   "en": [
+    "Dry-bulk freight (BDRY) is up 3.3% over the past month.",
+    "Brent crude is down 22.0% over the past month.",
+    "The site's policy and event timeline has no new entries in the last 60 days."
+   ],
+   "link": "/risk"
+  },
+  {
+   "key": "watch",
+   "zh_title": "下個月觀察",
+   "en_title": "What to watch next month",
+   "zh": [
+    "12 月 7–10 日：中國海關公布 11 月鋼材出口；財政部公布台灣 11 月進出口。",
+    "12 月中旬：東京製鐵與中鋼公布下個月盤價。",
+    "12 月 20–25 日：worldsteel 公布 11 月全球粗鋼產量。",
+    "WTO 貿易救濟案件每半年更新一次；各國新立案通常會先出現在新聞，再晚約半年進入資料庫。"
+   ],
+   "en": [
+    "Dec 7–10: China customs publishes Nov steel exports; Taiwan's Ministry of Finance publishes Nov trade.",
+    "Mid-Dec: Tokyo Steel and China Steel announce next month's list prices.",
+    "Dec 20–25: worldsteel publishes Nov world crude steel output.",
+    "WTO trade-remedy data update every six months; new cases usually show up in the news first and enter the database about half a year later."
+   ],
+   "link": null
+  }
+ ]
+}
